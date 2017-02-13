@@ -24,7 +24,7 @@ Last update: 2017-02-13
 Elenco modifiche:
 
 -I path dei file (controllare i DefineGeneral.h) sono stati resi assoluti.
- Quindi, si invita l'utente a modificarli con il percorso appropriato alla propria architettura. 
+ Quindi, si invita l'utente a modificarli con il percorso appropriato al proprio sistema. 
 
 -Modificate le funzioni MoveTo e MoveToMult nel file CommandExecutor.c. Adesso, viene chiamata la
 funzione SetTargetPos e non più la funzione SetCountTargetPos. Questo perché il firmware nella
@@ -73,4 +73,35 @@ Modificati in:
 Il nome dei registri è stato cambiato per essere più vicino a quello del firmware. Alcuni registri,
 come StopAddr, sono stati eliminati perché non più usati.
 
--Aggiunta in coda dei nuovi registri per poter modificare le nuove variabili utente.
+-Aggiunta in coda dei nuovi registri per poter modificare le nuove variabili utente nel file DefineGeneral.h
+
+#define			HOME_DONE			0xA001
+#define			MAX_TARGET_POS		0xA003
+#define			ENCODER_MIN			0xA00D
+#define			ENCODER_MAX			0xA00E
+#define			PHASE_CURRENT_USER	0xA010
+#define			DELTA_ANALOG_POS	0xA012
+#define			DELTA_ANALOG_NEG	0xA013
+#define			DELAY_CHECKROT		0xA014
+
+-Aggiunte le seguenti funzioni nel file DriverFunction.h (dichiarazione) e DriverFunction.c (implementazione):
+
+int SetHomeDone (modbus_t *ctx, uint16_t home_done, string header);
+int SetMaxTargetPosition(modbus_t *ctx, unsigned int max_target_position, string header);
+int SetEncoderMin (modbus_t *ctx, uint16_t encoder_min, string header);
+int SetEncoderMax (modbus_t *ctx, uint16_t encoder_max, string header);
+int SetPhaseCurrentUser (modbus_t *ctx, uint16_t phase_current_user, string header);
+int SetDeltaAnalogPos (modbus_t *ctx, uint16_t delta_analog_pos, string header);
+int SetDeltaAnalogNeg (modbus_t *ctx, int16_t delta_analog_neg, string header);
+int SetDelayCheckRot (modbus_t *ctx, uint16_t check_rot, string header);
+
+uint16_t ReadHomeDone(modbus_t *ctx, int* rc_arg, string header);
+int ReadMaxTargetPosition(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadEncoderMin(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadEncoderMax(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadPhaseCurrentUser(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadDeltaAnalogPos(modbus_t *ctx, int* rc_arg, string header);
+int16_t ReadDeltaAnalogNeg(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadDelayCheckRot(modbus_t *ctx, int* rc_arg, string header);
+
+
