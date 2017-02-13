@@ -1783,7 +1783,8 @@ void MoveTo(modbus_t* ctx, int moveto_drv_num, char* buffer)
 	if (error_status != -1)
 	{
 		//Setting CountTargetPosition.
-		function_status = SetCountTargetPosition(ctx, moveto_value, "Exp :");
+		//function_status = SetCountTargetPosition(ctx, moveto_value, "Exp :");
+		function_status = SetTargetPosition(ctx, moveto_value, "Exp :");
 		if (function_status != -1)
 		{
 			//Requesting a relative movimentation.
@@ -1895,7 +1896,8 @@ void MoveToMult(modbus_t* ctx, int moveto_drv_num, char* buffer)
 	if (error_status != -1)
 	{
 		//Setting CountTargetPosition.		
-		function_status = SetCountTargetPosition(ctx, moveto_value, "Exp :");
+		//function_status = SetCountTargetPosition(ctx, moveto_value, "Exp :");
+		function_status = SetTargetPosition(ctx, moveto_value, "Exp :");
 		if (function_status != -1)
 		{
 			//Requesting a relative movimentation.		

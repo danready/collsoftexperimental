@@ -50,24 +50,27 @@
 //Definition of the addresses used in the program.
 //The address of the registers could be checked using the manual of the drivers,
 //the address of the variables could be checked at the beginning of the software firmware of the drivers.
-#define			StopAddr				0xA000
-#define			StatusAddr 				0xA102
-#define 		ControlModeAddress		0xA104
-#define			CurrentPositionAddress	0xA10B
-#define			TargetPositionAddress	0xA301
-#define			AddressCounterA			0xA10F
-#define			AddressMaxVel			0xA107
-#define			AddressVelHome			0xA00A
-#define			AddressAcceleration		0xA109
-#define			AddressDeceleration		0xA10A
-#define			AddressRefVal			0xA300
-#define			AddressAnalogInput0		0xA202
-#define			AddressAnalogOutput0	0xA204
-#define			SerialNumberAddress		0x9D05
-#define			PhaseCurrentAddress		0xA103
-#define			StatusStateAddress		0xA005
-#define			RequestStateAddress		0xA008
-#define			count_TargetPosAddress	0xA003
+#define			CURRENT_POSITION	0xA10B
+#define			TARGET_POSITION		0xA301
+#define			MAX_VEL				0xA107
+#define			VEL_HOME			0xA008
+#define			ACCELERATION		0xA109
+#define			DECELERATION		0xA10A
+#define			ANALOG_INPUT_0		0xA202
+#define			ANALOG_OUTPUT_0		0xA204
+#define			SERIAL_NUMBER		0x9D05
+#define			PHASE_CURRENT		0xA103
+#define			STATUS_STATE		0xA005
+#define			REQUEST_STATE		0xA007
+
+#define			HOME_DONE			0xA001
+#define			MAX_TARGET_POS		0xA003
+#define			ENCODER_MIN			0xA00D
+#define			ENCODER_MAX			0xA00E
+#define			PHASE_CURRENT_USER	0xA010
+#define			DELTA_ANALOG_POS	0xA012
+#define			DELTA_ANALOG_NEG	0xA013
+#define			DELAY_CHECKROT		0xA014
 
 //Check the firmware documentation to obtain a detailed explanation of these definitions
 #define			STATEHOMING				4

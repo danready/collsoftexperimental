@@ -24,7 +24,7 @@ Last update: 2017-02-13
 Elenco modifiche:
 
 -I path dei file (controllare i DefineGeneral.h) sono stati resi assoluti.
- Quindi, si invita l'utente a modificarli con il percorso appropriato al proprio sistema. 
+ Quindi, si invita l'utente a modificarli con il percorso appropriato alla propria architettura. 
 
 -Modificate le funzioni MoveTo e MoveToMult nel file CommandExecutor.c. Adesso, viene chiamata la
 funzione SetTargetPos e non più la funzione SetCountTargetPos. Questo perché il firmware nella
