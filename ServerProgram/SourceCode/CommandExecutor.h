@@ -112,14 +112,38 @@ void SetParMult (modbus_t* ctx, int set_par_value, char* buffer);
 //set_status_state drv_num status_state
 
 void SetStatusStateVariable (modbus_t* ctx, int set_status_state_drv, char* buffer);
-void GetStatusStateVariable (modbus_t* ctx, int set_status_state_drv);
+void GetStatusStateVariable (modbus_t* ctx, int get_status_state_drv);
 
 void SetRequestStateVariable (modbus_t* ctx, int set_request_state_drv, char* buffer);
-void GetRequestStateVariable (modbus_t* ctx, int set_request_state_drv);
+void GetRequestStateVariable (modbus_t* ctx, int get_request_state_drv);
 
 void SaveEprom (modbus_t* ctx, int save_eprom_drv);
 
 void CheckFault (modbus_t* ctx, int check_fault_drv);
+
+void SetHomeDoneVariable (modbus_t* ctx, int set_home_done_drv, char* buffer);
+void GetHomeDoneVariable (modbus_t* ctx, int get_home_done_drv);
+
+void SetEncoderMaxVariable (modbus_t* ctx, int set_encoder_max_drv, char* buffer);
+void GetEncoderMaxVariable (modbus_t* ctx, int get_encoder_max_drv);
+
+void SetEncoderMinVariable (modbus_t* ctx, int set_encoder_min_drv, char* buffer);
+void GetEncoderMinVariable (modbus_t* ctx, int get_encoder_min_drv);
+
+void SetDeltaAnalogPosVariable (modbus_t* ctx, int set_delta_analog_pos_drv, char* buffer);
+void GetDeltaAnalogPosVariable (modbus_t* ctx, int get_delta_analog_pos_drv);
+
+void SetDeltaAnalogNegVariable (modbus_t* ctx, int set_delta_analog_neg_drv, char* buffer);
+void GetDeltaAnalogNegVariable (modbus_t* ctx, int get_delta_analog_neg_drv);
+
+void SetPhaseCurrentUserVariable (modbus_t* ctx, int set_phase_current_user_drv, char* buffer);
+void GetPhaseCurrentUserVariable (modbus_t* ctx, int get_phase_current_user_drv);
+
+void SetDelayCheckRotVariable (modbus_t* ctx, int set_delay_check_rot_drv, char* buffer);
+void GetDelayCheckRotVariable (modbus_t* ctx, int get_delay_check_rot_drv);
+
+void SetMaxTargetPositionVariable (modbus_t* ctx, int set_max_target_position_drv, char* buffer);
+void GetMaxTargetPositionVariable (modbus_t* ctx, int get_max_target_position_drv);
 
 //check_position drvnum
 /////////////////////////////////////
