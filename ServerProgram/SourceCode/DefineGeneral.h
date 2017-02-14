@@ -131,6 +131,7 @@
 //is executed at the begininng of an encoding procedure.
 #define ENCODINGHOME	0
 
+#define FAILED_STATUS_STATE_RC	99
 
 //These parameters indicate the limits of the drivers settings. For example,
 //the value of the acceleration must be included in [MINACCELERATION, MAXACCELERATION] interval.

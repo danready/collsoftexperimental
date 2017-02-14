@@ -981,6 +981,63 @@ int main(int argc, char *argv[])
 
 			}				
 			
+			//set_status_state drvnum status_state
+			//This command set to status_state the variable status_state of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Ss][Tt][Aa][Tt][Uu][Ss]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Ss][Tt][Aa][Tt][Uu][Ss]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
+			{
+				char* buffer_status_state;
+				
+				uint16_t status_state_drv = 0;
+				
+				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Ss][Tt][Aa][Tt][Uu][Ss]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
+				{
+					status_state_drv = FindIntegerValue(buffer);
+					buffer_status_state = buffer;
+				}
+				else
+				{
+					status_state_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					buffer_status_state = command_received_by_user.command_sent_by_user;
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					SetStatusStateVariable(ctx, status_state_drv, buffer_status_state);
+				}
+				else
+				{
+					output_module->Output("set_status_state: " + to_string(status_state_drv) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
+				}
+			}
+
+			//set_status_state drvnum status_state
+			//This command set to status_state the variable status_state of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Ss][Tt][Aa][Tt][Uu][Ss]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Ss][Tt][Aa][Tt][Uu][Ss]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
+			{
+				
+				uint16_t status_state_drv = 0;
+				
+				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Ss][Tt][Aa][Tt][Uu][Ss]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
+				{
+					status_state_drv = FindIntegerValue(buffer);
+				}
+				else
+				{
+					status_state_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					GetStatusStateVariable(ctx, status_state_drv);
+				}
+				else
+				{
+					output_module->Output("get_status_state: " + to_string(status_state_drv) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
+				}
+			}		
+			
 			//Unrecognized comand.
 			else
 			{

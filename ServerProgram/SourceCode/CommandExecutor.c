@@ -1548,9 +1548,9 @@ void Homing(modbus_t* ctx, int homing_value)
 		return;
 	}
 	
-	//status_state == 3 is not a state contemplated by the firmware, so it is
+	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
 	//a neutral value to initialized the variable.
-	uint16_t status_state = 3;
+	uint16_t status_state = FAILED_STATUS_STATE_RC;
 	
 	//This variable records the success following functions.
 	int rc;
@@ -1568,6 +1568,9 @@ void Homing(modbus_t* ctx, int homing_value)
 		usleep(SLEEPSTATUS_STATE);
 		count ++;
 		status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		
+		if (rc == -1)
+			status_state = FAILED_STATUS_STATE_RC;		
 	}
 	
 	if (count == LIMITSTATUS_STATE)
@@ -1638,9 +1641,9 @@ void GetMovePar(modbus_t* ctx, int mov_par_value)
 	//Try to set the driver indicated by the mov_par_value as the active one.
 	function_status = modbus_set_slave(ctx, mov_par_value);
 	
-	//status_state == 3 is not a state contemplated by the firmware, so it is
+	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
 	//a neutral value to initialized the variable.
-	uint16_t status_state = 3;
+	uint16_t status_state = FAILED_STATUS_STATE_RC;
 	
 	//This variable records the success following functions.	
 	int rc;
@@ -1658,6 +1661,9 @@ void GetMovePar(modbus_t* ctx, int mov_par_value)
 		usleep(SLEEPSTATUS_STATE);
 		count ++;
 		status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		
+		if (rc == -1)
+			status_state = FAILED_STATUS_STATE_RC;
 	}	
 	
 	
@@ -1747,9 +1753,9 @@ void MoveTo(modbus_t* ctx, int moveto_drv_num, char* buffer)
 		return;
 	}
 	
-	//status_state == 3 is not a state contemplated by the firmware, so it is
+	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
 	//a neutral value to initialized the variable.	
-	uint16_t status_state = 3;
+	uint16_t status_state = FAILED_STATUS_STATE_RC;
 	
 	//This variable records the success following functions.		
 	int rc;
@@ -1767,6 +1773,9 @@ void MoveTo(modbus_t* ctx, int moveto_drv_num, char* buffer)
 		usleep(SLEEPSTATUS_STATE);
 		count ++;
 		status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		
+		if (rc == -1)
+			status_state = FAILED_STATUS_STATE_RC;
 	}
 	
 	if (count == LIMITSTATUS_STATE)
@@ -1860,9 +1869,9 @@ void MoveToMult(modbus_t* ctx, int moveto_drv_num, char* buffer)
 		return;
 	}
 	
-	//status_state == 3 is not a state contemplated by the firmware, so it is
+	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
 	//a neutral value to initialized the variable.		
-	uint16_t status_state = 3;
+	uint16_t status_state = FAILED_STATUS_STATE_RC;
 	
 	//This variable records the success following functions.	
 	int rc;
@@ -1880,6 +1889,9 @@ void MoveToMult(modbus_t* ctx, int moveto_drv_num, char* buffer)
 		usleep(SLEEPSTATUS_STATE);
 		count ++;
 		status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		
+		if (rc == -1)
+			status_state = FAILED_STATUS_STATE_RC;
 	}
 	
 	if (count == LIMITSTATUS_STATE)
@@ -1980,9 +1992,9 @@ void Encode(modbus_t* ctx, int encode_drv_num, EncoderStruct& drv_parameters)
 		return;
 	}
 	
-	//status_state == 3 is not a state contemplated by the firmware, so it is
+	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
 	//a neutral value to initialized the variable.	
-	uint16_t status_state = 3; //Warning!
+	uint16_t status_state = FAILED_STATUS_STATE_RC; //Warning!
 	
 	//This variable records the success following functions.		
 	int rc;
@@ -2000,6 +2012,9 @@ void Encode(modbus_t* ctx, int encode_drv_num, EncoderStruct& drv_parameters)
 		usleep(SLEEPSTATUS_STATE);
 		count ++;
 		status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		
+		if (rc == -1)
+			status_state = FAILED_STATUS_STATE_RC;
 	}
 	
 	if (count == LIMITSTATUS_STATE)
@@ -2039,6 +2054,10 @@ void Encode(modbus_t* ctx, int encode_drv_num, EncoderStruct& drv_parameters)
 			usleep(SLEEPSTATUS_STATE);
 			count ++;
 			status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		
+			if (rc == -1)
+				status_state = FAILED_STATUS_STATE_RC;		
+		
 		}
 		
 		if (count == LIMITSTATUS_STATE)
@@ -2143,9 +2162,9 @@ int CheckPositionEncoderSingle (modbus_t* ctx, int position_encoder_drv_num)
 		return -2;
 	}
 	
-	//status_state == 3 is not a state contemplated by the firmware, so it is
+	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
 	//a neutral value to initialized the variable.		
-	uint16_t status_state = 3;
+	uint16_t status_state = FAILED_STATUS_STATE_RC;
 	
 	//This variable records the success following functions.			
 	int rc;
@@ -2163,6 +2182,10 @@ int CheckPositionEncoderSingle (modbus_t* ctx, int position_encoder_drv_num)
 		usleep(SLEEPSTATUS_STATE);
 		count ++;
 		status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		
+		if (rc == -1)
+			status_state = FAILED_STATUS_STATE_RC;
+		
 	}
 	
 	if (count == LIMITSTATUS_STATE)
@@ -2279,9 +2302,9 @@ int CheckPositionEncoderSingleWarning (modbus_t* ctx, int position_encoder_drv_n
 		return -2;
 	}
 	
-	//status_state == 3 is not a state contemplated by the firmware, so it is
+	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
 	//a neutral value to initialized the variable.	
-	uint16_t status_state = 3;
+	uint16_t status_state = FAILED_STATUS_STATE_RC;
 	
 	//This variable records the success following functions.		
 	int rc;
@@ -2299,6 +2322,9 @@ int CheckPositionEncoderSingleWarning (modbus_t* ctx, int position_encoder_drv_n
 		usleep(SLEEPSTATUS_STATE);
 		count ++;
 		status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		
+		if (rc == -1)
+			status_state = FAILED_STATUS_STATE_RC;		
 	}
 	
 	if (count == LIMITSTATUS_STATE)
@@ -2410,9 +2436,9 @@ int CheckPositionEncoderToAll (modbus_t* ctx, int position_encoder_drv_num)
 		return -2;
 	}
 	
-	//status_state == 3 is not a state contemplated by the firmware, so it is
+	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
 	//a neutral value to initialized the variable.		
-	uint16_t status_state = 3;
+	uint16_t status_state = FAILED_STATUS_STATE_RC;
 	
 	//This variable records the success following functions.	
 	int rc;
@@ -2430,6 +2456,9 @@ int CheckPositionEncoderToAll (modbus_t* ctx, int position_encoder_drv_num)
 		usleep(SLEEPSTATUS_STATE);
 		count ++;
 		status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		
+		if (rc == -1)
+			status_state = FAILED_STATUS_STATE_RC;		
 	}
 	
 	if (count == LIMITSTATUS_STATE)
@@ -2588,4 +2617,92 @@ void ReadActualEncoderValue()
 	}
 	
 	output_module->Output(output_tmp);
+}
+
+void SetStatusStateVariable(modbus_t* ctx, int status_state_drv, char* buffer)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	//This variable is used to stored the TargetPosition obtained by buffer.	
+	uint16_t status_state_value = 0;
+	
+	//This variable is useful to browse the buffer in order to find the TargetPosition val.
+	char* mypunt;
+	
+	//Skipping "move_to" and "drvnum".
+	mypunt = FindPointer(buffer);
+	
+	//Retrieving "val" that is the status_state value and storing it in status_state_value.
+	status_state_value = FindIntegerValue(mypunt);	
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, status_state_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("Exp: error, set status state not done: set slave failed\n");
+		return;
+	}
+	
+	error_status = SetStatusState(ctx, status_state_value, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: SetStatusState done\n");
+	}
+	else
+	{
+		output_module->Output("Exp: error, movimentation not done because status state is blocked to an invalid state\n");
+		return;		
+	}
+}
+
+
+void GetStatusStateVariable(modbus_t* ctx, int status_state_drv)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	uint16_t status_state_value = 0;
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, status_state_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("Exp: error, get status state not done: set slave failed\n");
+		return;
+	}
+	
+	error_status = 0;
+	status_state_value = ReadStatusState(ctx, &error_status, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: get status state done\n");
+	}
+	else
+	{
+		output_module->Output("Exp: error, get status state not done because an error occurred reading the register\n");
+		return;		
+	}
 }
