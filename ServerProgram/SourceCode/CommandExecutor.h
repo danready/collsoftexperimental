@@ -110,8 +110,16 @@ void Encode(modbus_t* ctx, int encode_drv_num, EncoderStruct& drv_parameters);
 //setmult_par max_vel acceleration deceleration PhaseCurrent AnalogOutput0 drvnum1 drvnum2 drvnum3 drvnum....
 void SetParMult (modbus_t* ctx, int set_par_value, char* buffer);
 //set_status_state drv_num status_state
+
 void SetStatusStateVariable (modbus_t* ctx, int set_status_state_drv, char* buffer);
 void GetStatusStateVariable (modbus_t* ctx, int set_status_state_drv);
+
+void SetRequestStateVariable (modbus_t* ctx, int set_request_state_drv, char* buffer);
+void GetRequestStateVariable (modbus_t* ctx, int set_request_state_drv);
+
+void SaveEprom (modbus_t* ctx, int save_eprom_drv);
+
+void CheckFault (modbus_t* ctx, int check_fault_drv);
 
 //check_position drvnum
 /////////////////////////////////////

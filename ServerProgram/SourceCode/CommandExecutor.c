@@ -2709,3 +2709,227 @@ void GetStatusStateVariable(modbus_t* ctx, int status_state_drv)
 		return;		
 	}
 }
+
+void SetRequestStateVariable(modbus_t* ctx, int request_state_drv, char* buffer)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	//This variable is used to stored the TargetPosition obtained by buffer.	
+	uint16_t request_state_value = 0;
+	
+	//This variable is useful to browse the buffer in order to find the TargetPosition val.
+	char* mypunt;
+	
+	//Skipping "move_to" and "drvnum".
+	mypunt = FindPointer(buffer);
+	
+	//Retrieving "val" that is the status_state value and storing it in status_state_value.
+	request_state_value = FindIntegerValue(mypunt);	
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, request_state_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("Exp: error, set request state not done: set slave failed\n");
+		return;
+	}
+	
+	error_status = SetRequestState(ctx, request_state_value, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: SetRequestState done\n");
+	}
+	else
+	{
+		output_module->Output("Exp: error, movimentation not done because request state is blocked to an invalid state\n");
+		return;		
+	}
+}
+
+
+void GetRequestStateVariable(modbus_t* ctx, int request_state_drv)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	uint16_t request_state_value = 0;
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, request_state_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("get_status_state: " + to_string(request_state_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("Exp: error, get status state not done: set slave failed\n");
+		return;
+	}
+	
+	error_status = 0;
+	request_state_value = ReadRequestState(ctx, &error_status, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: get status state done\n");
+		output_module->Output("get_status_state: " + to_string(request_state_drv) + " " + to_string(request_state_value) + '\n');
+	}
+	else
+	{
+		output_module->Output("Exp: error, get status state not done because an error occurred reading the register\n");
+		output_module->Output("get_status_state: " + to_string(request_state_drv) + " " + to_string(-1) + '\n');
+		return;		
+	}
+}
+
+//This function orders the driver indicated by eprom_vale to execute
+//the save_eprom procedure (set_config).
+//See firmware documentation for more information about the procedure.  
+void SaveEprom(modbus_t* ctx, int eprom_value)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable will be used to record the success status of the
+	//the functions interacting with the drivers.		
+	int function_status = 0;
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+		
+	//Singleton to manage the output of the program.		
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the set_par_value as the active driver.	
+	function_status = modbus_set_slave(ctx, eprom_value);
+	
+	//If failed
+	if (function_status == -1) 
+	{	
+		error_status = -1;	
+		output_module->Output("Exp: error, homing not done: set slave failed\n");
+		return;
+	}
+	
+	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
+	//a neutral value to initialized the variable.
+	uint16_t status_state = FAILED_STATUS_STATE_RC;
+	
+	//This variable records the success following functions.
+	int rc;
+	
+	//Try to read the actual state.
+	status_state = ReadStatusState(ctx, &rc, "Exp: "); //Questo rc non va messo qui!!!!
+
+	//status_state = 4 or status_state = 5 means that the previous operation is terminated.
+	//Obviously these information are hard coded!	
+	//count is a timeout: if the operation is not ultimated in the times specified by LIMITSTATUS_STATE,
+	//the homing function is aborted.
+	int count = 0;
+	while (status_state != 4 && status_state != 5 && status_state != 0 && count < LIMITSTATUS_STATE)
+	{
+		usleep(SLEEPSTATUS_STATE);
+		count ++;
+		status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		
+		if (rc == -1)
+			status_state = FAILED_STATUS_STATE_RC;		
+	}
+	
+	if (count == LIMITSTATUS_STATE)
+	{
+		output_module->Output("Exp: error, saving not done because status state is blocked to an invalid state\n");
+		return;
+	}
+	
+	//The firmware requires the software to set to 0 the status state before executing other operations.
+	function_status = SetStatusState(ctx, 0, "Exp: ");
+	if (function_status == -1) error_status = -1;
+	
+	//If no error occurred
+	if (error_status != -1)
+	{
+		//Starting the homing procedure.
+		function_status = SetRequestState(ctx, STATESAVING, "Exp :");
+		if (function_status != -1)
+		{
+			output_module->Output("Exp: Saving done\n");
+		}
+		else
+		{	
+			error_status = -1;
+			output_module->Output("Exp: error, saving not done: SetRequestState failed\n");
+			return;	
+		}
+		
+	}
+	else
+	{
+		output_module->Output("Exp: error, saving not done because SetStatusState function failed\n");
+		return;		
+	}
+}
+
+void CheckFault(modbus_t* ctx, int check_fault_drv)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	uint16_t check_fault_value = 0;
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the request_state_drv as the active one.
+	error_status = modbus_set_slave(ctx, check_fault_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("check_fault: " + to_string(check_fault_value) + " " + to_string(-1) + '\n');
+		output_module->Output("Exp: error, check_fault not done: set slave failed\n");
+		return;
+	}
+	
+	error_status = 0;
+	check_fault_value = ReadFault(ctx, &error_status, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: check fault done\n");
+		output_module->Output("check_fault: " + to_string(check_fault_drv) + " " + to_string(check_fault_value) + '\n');
+	}
+	else
+	{
+		output_module->Output("Exp: error, check fault not done because an error occurred reading the register\n");
+		output_module->Output("check_fault: " + to_string(check_fault_drv) + " " + to_string(-1) + '\n');
+		return;		
+	}
+}

@@ -166,6 +166,10 @@ uint16_t ReadAnalogOutput0(modbus_t *ctx, int* rc_arg, string header);
 //header is the prefix of every output printed by the function.
 uint16_t ReadStatusState(modbus_t *ctx, int* rc_arg, string header);
 
+//Function used to read the RequestState register.
+//header is the prefix of every output printed by the function.
+uint16_t ReadRequestState(modbus_t *ctx, int* rc_arg, string header);
+
 //Function used to read the analog_input0 parameter.
 //header is the prefix of every output printed by the function.
 uint16_t ReadAnalogInput0(modbus_t *ctx, int* rc_arg, string header);
@@ -209,5 +213,9 @@ int16_t ReadDeltaAnalogNeg(modbus_t *ctx, int* rc_arg, string header);
 //Function used to read the delay_check_rot variable.
 //header is the prefix of every output printed by the function.
 uint16_t ReadDelayCheckRot(modbus_t *ctx, int* rc_arg, string header);
+
+//Function used to read the fault register.
+//header is the prefix of every output printed by the function.
+uint16_t ReadFault(modbus_t *ctx, int* rc_arg, string header);
 
 #endif

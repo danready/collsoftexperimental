@@ -72,7 +72,10 @@
 #define			DELTA_ANALOG_NEG	0xA013
 #define			DELAY_CHECKROT		0xA014
 
+#define			FAULT				0xA100
+
 //Check the firmware documentation to obtain a detailed explanation of these definitions
+#define			STATESAVING				2
 #define			STATEHOMING				4
 #define			STATEMOVEREL			17
 

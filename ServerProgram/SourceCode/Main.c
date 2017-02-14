@@ -1012,7 +1012,7 @@ int main(int argc, char *argv[])
 				}
 			}
 
-			//set_status_state drvnum status_state
+			//get_status_state drvnum
 			//This command set to status_state the variable status_state of the driver indicated by drvnum.
 			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Ss][Tt][Aa][Tt][Uu][Ss]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Ss][Tt][Aa][Tt][Uu][Ss]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
@@ -1040,6 +1040,121 @@ int main(int argc, char *argv[])
 				}
 			}		
 			
+			//set_request_state drvnum status_state
+			//This command set to status_state the variable status_state of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Rr][Ee][Qq][Uu][Ee][Ss][Tt]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Rr][Ee][Qq][Uu][Ee][Ss][Tt]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
+			{
+				char* buffer_request_state;
+				
+				uint16_t request_state_drv = 0;
+				
+				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Rr][Ee][Qq][Uu][Ee][Ss][Tt]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
+				{
+					request_state_drv = FindIntegerValue(buffer);
+					buffer_request_state = buffer;
+				}
+				else
+				{
+					request_state_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					buffer_request_state = command_received_by_user.command_sent_by_user;
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					SetRequestStateVariable(ctx, request_state_drv, buffer_request_state);
+				}
+				else
+				{
+					output_module->Output("get_request_state: " + to_string(request_state_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}
+
+			//get_request_state drvnum
+			//This command set to status_state the variable status_state of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Rr][Ee][Qq][Uu][Ee][Ss][Tt]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Rr][Ee][Qq][Uu][Ee][Ss][Tt]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
+			{
+				
+				uint16_t request_state_drv = 0;
+				
+				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Rr][Ee][Qq][Uu][Ee][Ss][Tt]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
+				{
+					request_state_drv = FindIntegerValue(buffer);
+				}
+				else
+				{
+					request_state_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					GetRequestStateVariable(ctx, request_state_drv);
+				}
+				else
+				{
+					output_module->Output("get_request_state: " + to_string(request_state_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}					
+	
+			//save_eprom drvnum
+			//This command begins the save_eprom procedure of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Ss][Aa][Vv][Ee]_[Ee][Pp][Rr][Oo][Mm][ \t]+[0-9]{1,2}[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Aa][Vv][Ee]_[Ee][Pp][Rr][Oo][Mm][ \t]+[0-9]{1,2}[ \t]*$"))
+			{
+				
+				uint16_t save_eprom_drv = 0;
+				
+				if (reg_matches (buffer, "^[Ss][Aa][Vv][Ee]_[Ee][Pp][Rr][Oo][Mm][ \t]+[0-9]{1,2}[ \t]*$"))
+				{
+					save_eprom_drv = FindIntegerValue(buffer);
+				}
+				else
+				{
+					save_eprom_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					GetRequestStateVariable(ctx, save_eprom_drv);
+				}
+				else
+				{
+					output_module->Output("save_eprom: " + to_string(save_eprom_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}		
+			
+			//check_fault drvnum
+			//This command set to status_state the variable status_state of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Cc][Hh][Ee][Cc][Kk]_[Ff][Aa][Uu][Ll][Tt][ \t]+[0-9]{1,2}[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Cc][Hh][Ee][Cc][Kk]_[Ff][Aa][Uu][Ll][Tt][ \t]+[0-9]{1,2}[ \t]*$"))
+			{
+				
+				uint16_t check_fault_drv = 0;
+				
+				if (reg_matches (buffer, "^[Cc][Hh][Ee][Cc][Kk]_[Ff][Aa][Uu][Ll][Tt][ \t]+[0-9]{1,2}[ \t]*$"))
+				{
+					check_fault_drv = FindIntegerValue(buffer);
+				}
+				else
+				{
+					check_fault_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					CheckFault(ctx, check_fault_drv);
+				}
+				else
+				{
+					output_module->Output("check_fault: " + to_string(check_fault_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}					
+						
 			//Unrecognized comand.
 			else
 			{

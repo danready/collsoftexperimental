@@ -1400,6 +1400,59 @@ uint16_t ReadStatusState(modbus_t *ctx, int* rc_arg, string header)
 	
 }
 
+//Function used to read the request_state register of the driver.
+//rc_arg will contain the status of the operation. 
+uint16_t ReadRequestState(modbus_t *ctx, int* rc_arg, string header)
+{
+	//Singleton to manage the output of the program.		
+	OutputModule *output_module;
+	output_module = OutputModule::Instance ();
+	
+	//Recording the function name.			
+	string tmp_string(__func__);
+	string tmp_errno;	
+	
+	output_module->Output(header + "\n");
+
+	output_module->Output(header + tmp_string + "Reading request_state...\n");
+	
+	//This buffer will be used to store the data received by the driver.	
+	uint16_t data[STANDARDBUFFERLIMIT];
+	
+	//collect success/error status.		
+	int rc;
+
+	//clearing data.
+	bzero(data, STANDARDBUFFERLIMIT);
+	data[0] = 0;
+	
+	//reading request_state register and put the data read in "data" array.		
+	rc = modbus_read_registers(ctx, REQUEST_STATE, 1, &data[0]);
+	
+	//collecting the status.		
+	*rc_arg = rc;
+	
+	//sleeping a while in order to give the programmer the time to send the data.		
+	usleep(SLEEPMODBUS);
+	
+	//If an error occurred.		
+	if (rc == -1) 
+	{
+		//recording the error.			
+		tmp_errno = modbus_strerror(errno);
+		output_module->Output(header + "READING READBACK REMOTE STATE FAILED " + tmp_string + "\t" + tmp_errno + "\n");
+		
+		return 0;
+	}
+	else
+	{
+		//If success, printing and returning the value read.				
+		output_module->Output(header + tmp_string + ": Reading request_state DONE rc: " + to_string(rc) + " \t request_state content is: " + to_string((int)data[0]) + "\n");
+		return data[0];
+	}	
+	
+}
+
 //Function used to read the analog_input0 of the driver.
 //rc_arg will contain the status of the operation. 
 uint16_t ReadAnalogInput0(modbus_t *ctx, int* rc_arg, string header)
@@ -1895,6 +1948,60 @@ uint16_t ReadDelayCheckRot(modbus_t *ctx, int* rc_arg, string header)
 	{
 		//If success, printing and returning the value read.				
 		output_module->Output(header + tmp_string + ": Reading delay_check_rot DONE rc: " + to_string(rc) + " \t delay_check_rot content is: " + to_string((int)data[0]) + "\n");
+		return data[0];
+	}	
+	
+}
+
+//Function used to read the fault variable of the driver.
+//rc_arg will contain the status of the operation. 
+uint16_t ReadFault(modbus_t *ctx, int* rc_arg, string header)
+{
+	
+	//Singleton to manage the output of the program.		
+	OutputModule *output_module;
+	output_module = OutputModule::Instance ();
+	
+	//Recording the function name.			
+	string tmp_string(__func__);
+	string tmp_errno;	
+	
+	output_module->Output(header + "\n");
+
+	output_module->Output(header + tmp_string + "Reading fault...\n");
+	
+	//This buffer will be used to store the data received by the driver.	
+	uint16_t data[STANDARDBUFFERLIMIT];
+	
+	//collect success/error status.		
+	int rc;
+
+	//clearing data.
+	bzero(data, STANDARDBUFFERLIMIT);
+	data[0] = 0;
+	
+	//reading delay_check_rot register and put the data read in "data" array.		
+	rc = modbus_read_registers(ctx, FAULT, 1, &data[0]);
+	
+	//collecting the status.		
+	*rc_arg = rc;
+	
+	//sleeping a while in order to give the programmer the time to send the data.		
+	usleep(SLEEPMODBUS);
+	
+	//If an error occurred.		
+	if (rc == -1) 
+	{
+		//recording the error.			
+		tmp_errno = modbus_strerror(errno);
+		output_module->Output(header + "READING READBACK REMOTE STATE FAILED " + tmp_string + "\t" + tmp_errno + "\n");
+		
+		return 0;
+	}
+	else
+	{
+		//If success, printing and returning the value read.				
+		output_module->Output(header + tmp_string + ": Reading fault DONE rc: " + to_string(rc) + " \t fault content is: " + to_string((int)data[0]) + "\n");
 		return data[0];
 	}	
 	
