@@ -23,8 +23,8 @@
 #include "DriverFunction.h"
 #include "CommandExecutor.h"
 #include "Linear.h"
-#include "dirent.h"
 
+#include <dirent.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -1007,7 +1007,8 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("set_status_state: " + to_string(status_state_drv) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
+					output_module->Output("get_status_state: " + to_string(status_state_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}
 
@@ -1034,7 +1035,8 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("get_status_state: " + to_string(status_state_drv) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
+					output_module->Output("get_status_state: " + to_string(status_state_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}		
 			

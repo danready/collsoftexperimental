@@ -2688,6 +2688,7 @@ void GetStatusStateVariable(modbus_t* ctx, int status_state_drv)
 	error_status = modbus_set_slave(ctx, status_state_drv);
 	if (error_status == -1) 
 	{	
+		output_module->Output("get_status_state: " + to_string(status_state_drv) + " " + to_string(-1) + '\n');
 		output_module->Output("Exp: error, get status state not done: set slave failed\n");
 		return;
 	}
@@ -2699,10 +2700,12 @@ void GetStatusStateVariable(modbus_t* ctx, int status_state_drv)
 	if (error_status != -1)
 	{
 		output_module->Output("Exp: get status state done\n");
+		output_module->Output("get_status_state: " + to_string(status_state_drv) + " " + to_string(status_state_value) + '\n');
 	}
 	else
 	{
 		output_module->Output("Exp: error, get status state not done because an error occurred reading the register\n");
+		output_module->Output("get_status_state: " + to_string(status_state_drv) + " " + to_string(-1) + '\n');
 		return;		
 	}
 }
