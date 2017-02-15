@@ -1273,6 +1273,65 @@ int main(int argc, char *argv[])
 				}
 			}													
 						
+			//set_encoder_min drvnum encoder_max
+			//This command set to encoder_min the variable encoder_min of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Ii][Nn][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Ii][Nn][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
+			{
+				char* buffer_encoder_min;
+				
+				uint16_t encoder_min_drv = 0;
+				
+				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Ii][Nn][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
+				{
+					encoder_min_drv = FindIntegerValue(buffer);
+					buffer_encoder_min = buffer;
+				}
+				else
+				{
+					encoder_min_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					buffer_encoder_min = command_received_by_user.command_sent_by_user;
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					SetEncoderMinVariable(ctx, encoder_min_drv, buffer_encoder_min);
+				}
+				else
+				{
+					output_module->Output("encoder_min: " + to_string(encoder_min_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}
+
+			//get_encoder_min drvnum
+			//This command set to encoder_min the variable home_done of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Ii][Nn][ \t]+[0-9]{1,2}[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Ii][Nn][ \t]+[0-9]{1,2}[ \t]*$"))
+			{
+				
+				uint16_t encoder_min_drv = 0;
+				
+				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Ii][Nn][ \t]+[0-9]{1,2}[ \t]*$"))
+				{
+					encoder_min_drv = FindIntegerValue(buffer);
+				}
+				else
+				{
+					encoder_min_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					GetEncoderMinVariable(ctx, encoder_min_drv);
+				}
+				else
+				{
+					output_module->Output("encoder_min: " + to_string(encoder_min_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}								
+						
 			//Unrecognized comand.
 			else
 			{
