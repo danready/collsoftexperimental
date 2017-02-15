@@ -2933,3 +2933,186 @@ void CheckFault(modbus_t* ctx, int check_fault_drv)
 		return;		
 	}
 }
+
+
+void SetHomeDoneVariable(modbus_t* ctx, int home_done_drv, char* buffer)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	//This variable is used to stored the TargetPosition obtained by buffer.	
+	uint16_t home_done_value = 0;
+	
+	//This variable is useful to browse the buffer in order to find the TargetPosition val.
+	char* mypunt;
+	
+	//Skipping "move_to" and "drvnum".
+	mypunt = FindPointer(buffer);
+	
+	//Retrieving "val" that is the status_state value and storing it in status_state_value.
+	home_done_value = FindIntegerValue(mypunt);	
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, home_done_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("Exp: error, set request home done not done: set slave failed\n");
+		return;
+	}
+	
+	error_status = SetHomeDone(ctx, home_done_value, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: SetHomeDone done\n");
+	}
+	else
+	{
+		output_module->Output("Exp: error, setting home done failed because request state is blocked to an invalid state\n");
+		return;		
+	}
+}
+
+
+void GetHomeDoneVariable(modbus_t* ctx, int home_done_drv)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	uint16_t home_done_value = 0;
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, home_done_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("home_done: " + to_string(home_done_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("Exp: error, home done failed: set slave failed\n");
+		return;
+	}
+	
+	error_status = 0;
+	home_done_value = ReadHomeDone(ctx, &error_status, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: reading home done success\n");
+		output_module->Output("home_done: " + to_string(home_done_drv) + " " + to_string(home_done_value) + '\n');
+	}
+	else
+	{
+		output_module->Output("Exp: error, getting home done failed because an error occurred reading the register\n");
+		output_module->Output("home_done: " + to_string(home_done_drv) + " " + to_string(-1) + '\n');
+		return;		
+	}
+}
+
+void SetEncoderMaxVariable(modbus_t* ctx, int encoder_max_drv, char* buffer)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	//This variable is used to stored the TargetPosition obtained by buffer.	
+	uint16_t encoder_max_value = 0;
+	
+	//This variable is useful to browse the buffer in order to find the TargetPosition val.
+	char* mypunt;
+
+	//Skipping words
+	mypunt = FindPointer(buffer);
+	
+	//Retrieving "val" that is the status_state value and storing it in status_state_value.
+	encoder_max_value = FindIntegerValue(mypunt);	
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, encoder_max_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("Exp: error, set encoder max not done: set slave failed\n");
+		return;
+	}
+	
+	error_status = SetEncoderMax(ctx, encoder_max_value, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: SetEncoderMax done\n");
+	}
+	else
+	{
+		output_module->Output("Exp: error, setting encoder max failed because request state is blocked to an invalid state\n");
+		return;		
+	}
+}
+
+
+void GetEncoderMaxVariable(modbus_t* ctx, int encoder_max_drv)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	uint16_t encoder_max_value = 0;
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, encoder_max_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("encoder_max: " + to_string(encoder_max_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("Exp: error, encoder max failed: set slave failed\n");
+		return;
+	}
+	
+	error_status = 0;
+	encoder_max_value = ReadEncoderMax(ctx, &error_status, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: reading encoder max success\n");
+		output_module->Output("encoder_max: " + to_string(encoder_max_drv) + " " + to_string(encoder_max_value) + '\n');
+	}
+	else
+	{
+		output_module->Output("Exp: error, getting encoder max failed because an error occurred reading the register\n");
+		output_module->Output("encoder_max: " + to_string(encoder_max_drv) + " " + to_string(-1) + '\n');
+		return;		
+	}
+}

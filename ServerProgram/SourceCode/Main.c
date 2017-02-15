@@ -1155,6 +1155,124 @@ int main(int argc, char *argv[])
 				}
 			}					
 						
+			//set_home_done drvnum home_done
+			//This command set to home_done the variable home_done of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Hh][Oo][Mm][Ee]_[Dd][Oo][Nn][Ee][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Hh][Oo][Mm][Ee]_[Dd][Oo][Nn][Ee][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
+			{
+				char* buffer_home_done;
+				
+				uint16_t home_done_drv = 0;
+				
+				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Hh][Oo][Mm][Ee]_[Dd][Oo][Nn][Ee][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
+				{
+					home_done_drv = FindIntegerValue(buffer);
+					buffer_home_done = buffer;
+				}
+				else
+				{
+					home_done_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					buffer_home_done = command_received_by_user.command_sent_by_user;
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					SetHomeDoneVariable(ctx, home_done_drv, buffer_home_done);
+				}
+				else
+				{
+					output_module->Output("home_done: " + to_string(home_done_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}
+
+			//get_home_done drvnum
+			//This command set to home_done the variable home_done of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Hh][Oo][Mm][Ee]_[Dd][Oo][Nn][Ee][ \t]+[0-9]{1,2}[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Hh][Oo][Mm][Ee]_[Dd][Oo][Nn][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
+			{
+				
+				uint16_t home_done_drv = 0;
+				
+				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Hh][Oo][Mm][Ee]_[Dd][Oo][Nn][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
+				{
+					home_done_drv = FindIntegerValue(buffer);
+				}
+				else
+				{
+					home_done_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					GetHomeDoneVariable(ctx, home_done_drv);
+				}
+				else
+				{
+					output_module->Output("home_done: " + to_string(home_done_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}						
+			
+			//set_encoder_max drvnum encoder_max
+			//This command set to encoder_max the variable encoder_max of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Aa][Xx][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Aa][Xx][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
+			{
+				char* buffer_encoder_max;
+				
+				uint16_t encoder_max_drv = 0;
+				
+				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Aa][Xx][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
+				{
+					encoder_max_drv = FindIntegerValue(buffer);
+					buffer_encoder_max = buffer;
+				}
+				else
+				{
+					encoder_max_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					buffer_encoder_max = command_received_by_user.command_sent_by_user;
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					SetEncoderMaxVariable(ctx, encoder_max_drv, buffer_encoder_max);
+				}
+				else
+				{
+					output_module->Output("encoder_max: " + to_string(encoder_max_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}
+
+			//get_encoder_max drvnum
+			//This command set to home_done the variable home_done of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Aa][Xx][ \t]+[0-9]{1,2}[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Aa][Xx][ \t]+[0-9]{1,2}[ \t]*$"))
+			{
+				
+				uint16_t encoder_max_drv = 0;
+				
+				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Aa][Xx][ \t]+[0-9]{1,2}[ \t]*$"))
+				{
+					encoder_max_drv = FindIntegerValue(buffer);
+				}
+				else
+				{
+					encoder_max_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					GetEncoderMaxVariable(ctx, encoder_max_drv);
+				}
+				else
+				{
+					output_module->Output("encoder_max: " + to_string(encoder_max_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}													
+						
 			//Unrecognized comand.
 			else
 			{
