@@ -1331,6 +1331,65 @@ int main(int argc, char *argv[])
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}								
+
+			//set_delta_analog_pos drvnum delta_analog_pos
+			//This command set to encoder_min the variable encoder_min of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Pp][Oo][Ss][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Pp][Oo][Ss][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
+			{
+				char* buffer_delta_analog_pos;
+				
+				uint16_t delta_analog_pos_drv = 0;
+				
+				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Pp][Oo][Ss][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
+				{
+					delta_analog_pos_drv = FindIntegerValue(buffer);
+					buffer_delta_analog_pos = buffer;
+				}
+				else
+				{
+					delta_analog_pos_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					buffer_delta_analog_pos = command_received_by_user.command_sent_by_user;
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					SetDeltaAnalogPosVariable(ctx, delta_analog_pos_drv, buffer_delta_analog_pos);
+				}
+				else
+				{
+					output_module->Output("delta_analog_pos: " + to_string(delta_analog_pos_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}
+
+			//get_encoder_min drvnum
+			//This command set to encoder_min the variable home_done of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Pp][Oo][Ss][ \t]+[0-9]{1,2}[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Pp][Oo][Ss][ \t]+[0-9]{1,2}[ \t]*$"))
+			{
+				
+				uint16_t delta_analog_pos_drv = 0;
+				
+				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Pp][Oo][Ss][ \t]+[0-9]{1,2}[ \t]*$"))
+				{
+					delta_analog_pos_drv = FindIntegerValue(buffer);
+				}
+				else
+				{
+					delta_analog_pos_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					GetDeltaAnalogPosVariable(ctx, delta_analog_pos_drv);
+				}
+				else
+				{
+					output_module->Output("delta_analog_pos: " + to_string(delta_analog_pos_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}				
 						
 			//Unrecognized comand.
 			else

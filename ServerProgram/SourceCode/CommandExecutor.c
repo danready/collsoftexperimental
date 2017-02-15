@@ -3207,3 +3207,94 @@ void GetEncoderMinVariable(modbus_t* ctx, int encoder_min_drv)
 		return;		
 	}
 }
+
+void SetDeltaAnalogPosVariable(modbus_t* ctx, int delta_analog_pos_drv, char* buffer)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	//This variable is used to stored the TargetPosition obtained by buffer.	
+	uint16_t delta_analog_pos_value = 0;
+	
+	//This variable is useful to browse the buffer in order to find the TargetPosition val.
+	char* mypunt;
+
+	//Skipping words
+	mypunt = FindPointer(buffer);
+	
+	//Retrieving "val" that is the status_state value and storing it in status_state_value.
+	delta_analog_pos_value = FindIntegerValue(mypunt);	
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, delta_analog_pos_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("Exp: error, set delta analog pos not done: set slave failed\n");
+		return;
+	}
+	
+	error_status = SetDeltaAnalogPos(ctx, delta_analog_pos_value, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: SetDeltaAnalogPos done\n");
+	}
+	else
+	{
+		output_module->Output("Exp: error, setting delta analog pos failed because request state is blocked to an invalid state\n");
+		return;		
+	}
+}
+
+
+void GetDeltaAnalogPosVariable(modbus_t* ctx, int delta_analog_pos_drv)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	uint16_t delta_analog_pos_value = 0;
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, delta_analog_pos_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("delta_analog_pos: " + to_string(delta_analog_pos_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("Exp: error, getting delta_analog_pos failed: set slave failed\n");
+		return;
+	}
+	
+	error_status = 0;
+	delta_analog_pos_value = ReadDeltaAnalogPos(ctx, &error_status, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: reading delta analog pos success\n");
+		output_module->Output("delta_analog_pos: " + to_string(delta_analog_pos_drv) + " " + to_string(delta_analog_pos_value) + '\n');
+	}
+	else
+	{
+		output_module->Output("Exp: error, getting delta analog pos failed because an error occurred reading the register\n");
+		output_module->Output("delta_analog_pos: " + to_string(delta_analog_pos_drv) + " " + to_string(-1) + '\n');
+		return;		
+	}
+}
