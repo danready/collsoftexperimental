@@ -1980,7 +1980,7 @@ uint16_t ReadFault(modbus_t *ctx, int* rc_arg, string header)
 	bzero(data, STANDARDBUFFERLIMIT);
 	data[0] = 0;
 	
-	//reading delay_check_rot register and put the data read in "data" array.		
+	//reading Fault register and put the data read in "data" array.		
 	rc = modbus_read_registers(ctx, FAULT, 1, &data[0]);
 	
 	//collecting the status.		
