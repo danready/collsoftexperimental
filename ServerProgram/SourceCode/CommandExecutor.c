@@ -136,7 +136,26 @@ void HelpCommand()
 	output_module->Output("-device_list:\nthis command prints the device contained in /dev\n\n");
 	output_module->Output("-set_status_state drvnum status_state:\nthis command set to status_state the variable status_state of the driver indicated by drvnum\n\n");
 	output_module->Output("-get_status_state drvnum:\nthis command get the variable status_state of the driver indicated by drvnum\n\n");
-	
+	output_module->Output("-set_request_state drvnum status_state:\nthis command set to request_state the variable request_state of the driver indicated by drvnum\n\n");
+	output_module->Output("-get_request_state drvnum:\nthis command get the variable request_state of the driver indicated by drvnum\n\n");
+	output_module->Output("-save_eprom drvnum:\nthis command begins the save_eprom procedure of the driver indicated by drvnum\n\n");
+	output_module->Output("-check_fault drvnum:\nthis get the value of the Fault register of the driver indicated by drvnum\n\n");
+	output_module->Output("-set_home_done drvnum home_done:\nthis command set to home_done the variable home_done of the driver indicated by drvnum\n\n");
+	output_module->Output("-get_home_done drvnum:\nthis command get the variable home_done of the driver indicated by drvnum\n\n");
+	output_module->Output("-set_encoder_max drvnum encoder_max:\nthis command set to encoder_max the variable Encoder_Max of the driver indicated by drvnum\n\n");
+	output_module->Output("-get_encoder_max drvnum:\nthis command get the variable Encoder_Max of the driver indicated by drvnum\n\n");
+	output_module->Output("-set_encoder_min drvnum encoder_min:\nthis command set to encoder_min the variable encoder_min of the driver indicated by drvnum\n\n");
+	output_module->Output("-get_encoder_min drvnum:\nthis command get the variable Encoder_Min of the driver indicated by drvnum\n\n");
+	output_module->Output("-set_delta_analog_pos drvnum delta_analog_pos:\nthis command set to delta_analog_pos the variable Delta_Analog_Pos of the driver indicated by drvnum\n\n");
+	output_module->Output("-set_delta_analog_neg drvnum delta_analog_neg:\nthis command set to delta_analog_neg the variable Delta_Analog_Neg of the driver indicated by drvnum\n\n");
+	output_module->Output("-get_delta_analog_neg drvnum:\nthis command get the variable Delta_Analog_Neg of the driver indicated by drvnum\n\n");	
+	output_module->Output("-get_delta_analog_pos drvnum:\nthis command get the variable Delta_Analog_Pos of the driver indicated by drvnum\n\n");
+	output_module->Output("-set_phase_current_user drvnum phase_current_user:\nthis command set to phase_current_user the variable PhaseCurr_User of the driver indicated by drvnum\n\n");
+	output_module->Output("-get_phase_current_user drvnum:\nthis command get the variable PhaseCurr_User of the driver indicated by drvnum\n\n");
+	output_module->Output("-set_delay_check_rot drvnum delay_check_rot:\nthis command set to delay_check_rot the variable Delay_CheckRot of the driver indicated by drvnum\n\n");
+	output_module->Output("-get_delay_check_rot drvnum:\nthis command get the variable Delay_CheckRot of the driver indicated by drvnum\n\n");
+	output_module->Output("-set_max_target_position drvnum max_target_position:\nthis command set to max_target_position the variable Max_TargetPos of the driver indicated by drvnum\n\n");
+	output_module->Output("-get_max_target_position drvnum:\nthis command get the variable Max_TargetPos of the driver indicated by drvnum\n\n");
 	output_module->Output("-help:\nPrint this command list\n\n");
 	output_module->Output("-exit:\nExit from the program: this command is enabled only in stdin mode.\n\n");
 	
