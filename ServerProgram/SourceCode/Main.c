@@ -1390,6 +1390,242 @@ int main(int argc, char *argv[])
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}				
+			
+			//set_phase_current_user drvnum phase_current_user
+			//This command set to phase_current_user the variable phase_current_user of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Pp][Hh][Aa][Ss][Ee]_[Cc][Uu][Rr][Rr][Ee][Nn][Tt]_[Uu][Ss][Ee][Rr][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Pp][Hh][Aa][Ss][Ee]_[Cc][Uu][Rr][Rr][Ee][Nn][Tt]_[Uu][Ss][Ee][Rr][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
+			{
+				char* buffer_phase_current_user;
+				
+				uint16_t phase_current_user_drv = 0;
+				
+				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Pp][Hh][Aa][Ss][Ee]_[Cc][Uu][Rr][Rr][Ee][Nn][Tt]_[Uu][Ss][Ee][Rr][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
+				{
+					phase_current_user_drv = FindIntegerValue(buffer);
+					buffer_phase_current_user = buffer;
+				}
+				else
+				{
+					phase_current_user_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					buffer_phase_current_user = command_received_by_user.command_sent_by_user;
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					SetPhaseCurrentUserVariable(ctx, phase_current_user_drv, buffer_phase_current_user);
+				}
+				else
+				{
+					output_module->Output("phase_current_user: " + to_string(phase_current_user_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}
+
+			//get_phase_current_user drvnum
+			//This command set to phase_current_user the variable phase_current_user of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Pp][Hh][Aa][Ss][Ee]_[Cc][Uu][Rr][Rr][Ee][Nn][Tt]_[Uu][Ss][Ee][Rr][ \t]+[0-9]{1,2}[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Pp][Hh][Aa][Ss][Ee]_[Cc][Uu][Rr][Rr][Ee][Nn][Tt]_[Uu][Ss][Ee][Rr][ \t]+[0-9]{1,2}[ \t]*$"))
+			{
+				
+				uint16_t phase_current_user_drv = 0;
+				
+				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Pp][Hh][Aa][Ss][Ee]_[Cc][Uu][Rr][Rr][Ee][Nn][Tt]_[Uu][Ss][Ee][Rr][ \t]+[0-9]{1,2}[ \t]*$"))
+				{
+					phase_current_user_drv = FindIntegerValue(buffer);
+				}
+				else
+				{
+					phase_current_user_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					GetPhaseCurrentUserVariable(ctx, phase_current_user_drv);
+				}
+				else
+				{
+					output_module->Output("phase_current_user: " + to_string(phase_current_user_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}							
+						
+			//set_delay_check_rot drvnum phase_current_user
+			//This command set to delay_check_rot the variable delay_check_rot of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Aa][Yy]_[Cc][Hh][Ee][Cc][Kk]_[Rr][Oo][Tt][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Aa][Yy]_[Cc][Hh][Ee][Cc][Kk]_[Rr][Oo][Tt][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
+			{
+				char* buffer_delay_check_rot;
+				
+				uint16_t delay_check_rot_drv = 0;
+				
+				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Aa][Yy]_[Cc][Hh][Ee][Cc][Kk]_[Rr][Oo][Tt][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
+				{
+					delay_check_rot_drv = FindIntegerValue(buffer);
+					buffer_delay_check_rot = buffer;
+				}
+				else
+				{
+					delay_check_rot_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					buffer_delay_check_rot = command_received_by_user.command_sent_by_user;
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					SetDelayCheckRotVariable(ctx, delay_check_rot_drv, buffer_delay_check_rot);
+				}
+				else
+				{
+					output_module->Output("delay_check_rot: " + to_string(delay_check_rot_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}
+
+			//get_delay_check_rot drvnum
+			//This command set to phase_current_user the variable phase_current_user of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Aa][Yy]_[Cc][Hh][Ee][Cc][Kk]_[Rr][Oo][Tt][ \t]+[0-9]{1,2}[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Aa][Yy]_[Cc][Hh][Ee][Cc][Kk]_[Rr][Oo][Tt][ \t]+[0-9]{1,2}[ \t]*$"))
+			{
+				
+				uint16_t delay_check_rot_drv = 0;
+				
+				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Aa][Yy]_[Cc][Hh][Ee][Cc][Kk]_[Rr][Oo][Tt][ \t]+[0-9]{1,2}[ \t]*$"))
+				{
+					delay_check_rot_drv = FindIntegerValue(buffer);
+				}
+				else
+				{
+					delay_check_rot_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					GetDelayCheckRotVariable(ctx, delay_check_rot_drv);
+				}
+				else
+				{
+					output_module->Output("delay_check_rot: " + to_string(delay_check_rot_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}
+			
+			//set_delta_analog_pos drvnum delta_analog_pos
+			//This command set to encoder_min the variable encoder_min of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Nn][Ee][Gg][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Nn][Ee][Gg][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$"))
+			{
+				char* buffer_delta_analog_neg;
+				
+				uint16_t delta_analog_neg_drv = 0;
+				
+				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Nn][Ee][Gg][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$"))
+				{
+					delta_analog_neg_drv = FindIntegerValue(buffer);
+					buffer_delta_analog_neg = buffer;
+				}
+				else
+				{
+					delta_analog_neg_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					buffer_delta_analog_neg = command_received_by_user.command_sent_by_user;
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					SetDeltaAnalogNegVariable(ctx, delta_analog_neg_drv, buffer_delta_analog_neg);
+				}
+				else
+				{
+					output_module->Output("delta_analog_neg: " + to_string(delta_analog_neg_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}
+
+			//get_encoder_min drvnum
+			//This command set to encoder_min the variable home_done of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Nn][Ee][Gg][ \t]+[0-9]{1,2}[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Nn][Ee][Gg][ \t]+[0-9]{1,2}[ \t]*$"))
+			{
+				
+				uint16_t delta_analog_neg_drv = 0;
+				
+				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Nn][Ee][Gg][ \t]+[0-9]{1,2}[ \t]*$"))
+				{
+					delta_analog_neg_drv = FindIntegerValue(buffer);
+				}
+				else
+				{
+					delta_analog_neg_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					GetDeltaAnalogNegVariable(ctx, delta_analog_neg_drv);
+				}
+				else
+				{
+					output_module->Output("delta_analog_neg: " + to_string(delta_analog_neg_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}					
+			
+			//set_delta_analog_pos drvnum delta_analog_pos
+			//This command set to encoder_min the variable encoder_min of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Mm][Aa][Xx]_[Tt][Aa][Rr][Gg][Ee][Tt]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Mm][Aa][Xx]_[Tt][Aa][Rr][Gg][Ee][Tt]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$"))
+			{
+				char* buffer_max_target_position;
+				
+				uint16_t max_target_position_drv = 0;
+				
+				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Mm][Aa][Xx]_[Tt][Aa][Rr][Gg][Ee][Tt]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$"))
+				{
+					max_target_position_drv = FindIntegerValue(buffer);
+					buffer_max_target_position = buffer;
+				}
+				else
+				{
+					max_target_position_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					buffer_max_target_position = command_received_by_user.command_sent_by_user;
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					SetMaxTargetPositionVariable(ctx, max_target_position_drv, buffer_max_target_position);
+				}
+				else
+				{
+					output_module->Output("max_target_position: " + to_string(max_target_position_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}
+
+			//get_encoder_min drvnum
+			//This command set to encoder_min the variable home_done of the driver indicated by drvnum.
+			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Mm][Aa][Xx]_[Tt][Aa][Rr][Gg][Ee][Tt]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t]+[0-9]{1,2}[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Mm][Aa][Xx]_[Tt][Aa][Rr][Gg][Ee][Tt]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t]+[0-9]{1,2}[ \t]*$"))
+			{
+				
+				uint16_t max_target_position_drv = 0;
+				
+				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Mm][Aa][Xx]_[Tt][Aa][Rr][Gg][Ee][Tt]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t]+[0-9]{1,2}[ \t]*$"))
+				{
+					max_target_position_drv = FindIntegerValue(buffer);
+				}
+				else
+				{
+					max_target_position_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					GetMaxTargetPositionVariable(ctx, max_target_position_drv);
+				}
+				else
+				{
+					output_module->Output("max_target_position: " + to_string(max_target_position_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}																	
 						
 			//Unrecognized comand.
 			else

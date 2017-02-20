@@ -3298,3 +3298,370 @@ void GetDeltaAnalogPosVariable(modbus_t* ctx, int delta_analog_pos_drv)
 		return;		
 	}
 }
+
+
+void SetPhaseCurrentUserVariable(modbus_t* ctx, int phase_current_user_drv, char* buffer)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	//This variable is used to stored the TargetPosition obtained by buffer.	
+	uint16_t phase_current_user_value = 0;
+	
+	//This variable is useful to browse the buffer in order to find the TargetPosition val.
+	char* mypunt;
+
+	//Skipping words
+	mypunt = FindPointer(buffer);
+	
+	//Retrieving "val" that is the status_state value and storing it in status_state_value.
+	phase_current_user_value = FindIntegerValue(mypunt);	
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, phase_current_user_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("Exp: error, set phase current user not done: set slave failed\n");
+		return;
+	}
+	
+	error_status = SetPhaseCurrentUser(ctx, phase_current_user_value, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: SetPhaseCurrentUser done\n");
+	}
+	else
+	{
+		output_module->Output("Exp: error, setting delta analog pos failed because request state is blocked to an invalid state\n");
+		return;		
+	}
+}
+
+
+void GetPhaseCurrentUserVariable(modbus_t* ctx, int phase_current_user_drv)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	uint16_t phase_current_user_value = 0;
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, phase_current_user_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("phase_current_user: " + to_string(phase_current_user_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("Exp: error, getting phase_current_user failed: set slave failed\n");
+		return;
+	}
+	
+	error_status = 0;
+	phase_current_user_value = ReadPhaseCurrentUser(ctx, &error_status, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: reading delta analog pos success\n");
+		output_module->Output("phase_current_user: " + to_string(phase_current_user_drv) + " " + to_string(phase_current_user_value) + '\n');
+	}
+	else
+	{
+		output_module->Output("Exp: error, getting phase_current_user failed because an error occurred reading the register\n");
+		output_module->Output("phase_current_user: " + to_string(phase_current_user_drv) + " " + to_string(-1) + '\n');
+		return;		
+	}
+}
+
+void SetDelayCheckRotVariable(modbus_t* ctx, int delay_check_rot_drv, char* buffer)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	//This variable is used to stored the TargetPosition obtained by buffer.	
+	uint16_t delay_check_rot_value = 0;
+	
+	//This variable is useful to browse the buffer in order to find the TargetPosition val.
+	char* mypunt;
+
+	//Skipping words
+	mypunt = FindPointer(buffer);
+	
+	//Retrieving "val" that is the status_state value and storing it in status_state_value.
+	delay_check_rot_value = FindIntegerValue(mypunt);	
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, delay_check_rot_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("Exp: error, set delay check rot not done: set slave failed\n");
+		return;
+	}
+	
+	error_status = SetDelayCheckRot(ctx, delay_check_rot_value, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: SetDelayCheckRot done\n");
+	}
+	else
+	{
+		output_module->Output("Exp: error, setting delay check rot failed because request state is blocked to an invalid state\n");
+		return;		
+	}
+}
+
+
+void GetDelayCheckRotVariable(modbus_t* ctx, int delay_check_rot_drv)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	uint16_t delay_check_rot_value = 0;
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, delay_check_rot_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("delay_check_rot: " + to_string(delay_check_rot_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("Exp: error, getting delay_check_rot failed: set slave failed\n");
+		return;
+	}
+	
+	error_status = 0;
+	delay_check_rot_value = ReadDelayCheckRot(ctx, &error_status, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: reading delay check rot success\n");
+		output_module->Output("delay_check_rot: " + to_string(delay_check_rot_drv) + " " + to_string(delay_check_rot_value) + '\n');
+	}
+	else
+	{
+		output_module->Output("Exp: error, getting phase_current_user failed because an error occurred reading the register\n");
+		output_module->Output("delay_check_rot: " + to_string(delay_check_rot_drv) + " " + to_string(-1) + '\n');
+		return;		
+	}
+}
+
+
+void SetDeltaAnalogNegVariable(modbus_t* ctx, int delta_analog_neg_drv, char* buffer)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	//This variable is used to stored the TargetPosition obtained by buffer.	
+	int16_t delta_analog_neg_value = 0;
+	
+	//This variable is useful to browse the buffer in order to find the TargetPosition val.
+	char* mypunt;
+
+	//Skipping words
+	mypunt = FindPointer(buffer);
+	
+	//Retrieving "val" that is the status_state value and storing it in status_state_value.
+	delta_analog_neg_value = FindIntegerValue(mypunt);	
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, delta_analog_neg_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("Exp: error, set delta analog neg not done: set slave failed\n");
+		return;
+	}
+	
+	error_status = SetDeltaAnalogNeg(ctx, delta_analog_neg_value, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: SetDeltaAnalogNeg done\n");
+	}
+	else
+	{
+		output_module->Output("Exp: error, setting delay check rot failed because request state is blocked to an invalid state\n");
+		return;		
+	}
+}
+
+
+void GetDeltaAnalogNegVariable(modbus_t* ctx, int delta_analog_neg_drv)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	int16_t delta_analog_neg_value = 0;
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the delta_analog_neg as the active one.
+	error_status = modbus_set_slave(ctx, delta_analog_neg_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("delta_analog_neg: " + to_string(delta_analog_neg_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("Exp: error, getting delta_analog_neg failed: set slave failed\n");
+		return;
+	}
+	
+	error_status = 0;
+	delta_analog_neg_value = ReadDeltaAnalogNeg(ctx, &error_status, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: reading delta analog neg success\n");
+		output_module->Output("delta_analog_neg: " + to_string(delta_analog_neg_drv) + " " + to_string(delta_analog_neg_value) + '\n');
+	}
+	else
+	{
+		output_module->Output("Exp: error, getting delta_analog_neg failed because an error occurred reading the register\n");
+		output_module->Output("delta_analog_neg: " + to_string(delta_analog_neg_drv) + " " + to_string(-1) + '\n');
+		return;		
+	}
+}
+
+void SetMaxTargetPositionVariable(modbus_t* ctx, int max_target_position_drv, char* buffer)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	//This variable is used to stored the TargetPosition obtained by buffer.	
+	int max_target_position_value = 0;
+	
+	//This variable is useful to browse the buffer in order to find the TargetPosition val.
+	char* mypunt;
+
+	//Skipping words
+	mypunt = FindPointer(buffer);
+	
+	//Retrieving "val" that is the status_state value and storing it in status_state_value.
+	max_target_position_value = FindIntegerValue(mypunt);	
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, max_target_position_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("Exp: error, set max target position not done: set slave failed\n");
+		return;
+	}
+	
+	error_status = SetMaxTargetPosition(ctx, max_target_position_value, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: SetMaxTargetPosition done\n");
+	}
+	else
+	{
+		output_module->Output("Exp: error, setting max target position failed because request state is blocked to an invalid state\n");
+		return;		
+	}
+}
+
+
+void GetMaxTargetPositionVariable(modbus_t* ctx, int max_target_position_drv)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	int max_target_position_value = 0;
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, max_target_position_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("max_target_position: " + to_string(max_target_position_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("Exp: error, getting max_target_position failed: set slave failed\n");
+		return;
+	}
+	
+	error_status = 0;
+	max_target_position_value = ReadMaxTargetPosition(ctx, &error_status, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status != -1)
+	{
+		output_module->Output("Exp: reading max target position success\n");
+		output_module->Output("max_target_position: " + to_string(max_target_position_drv) + " " + to_string(max_target_position_value) + '\n');
+	}
+	else
+	{
+		output_module->Output("Exp: error, getting max_target_position failed because an error occurred reading the register\n");
+		output_module->Output("max_target_position: " + to_string(max_target_position_drv) + " " + to_string(-1) + '\n');
+		return;		
+	}
+}
+
