@@ -1,6 +1,3 @@
-# collsoftexperimental v.0.0
-See CollSoftProgrammersGuide.pdf for detailed information.
-
 20/02/2017
 
 Rispetto alla versione base del server contenuta nel repository collsoft,
@@ -72,3 +69,4 @@ this command set to max_target_position the variable Max_TargetPos of the driver
 
 -get_max_target_position drvnum:
 this command get the variable Max_TargetPos of the driver indicated by drvnum
+
