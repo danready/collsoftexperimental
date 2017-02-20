@@ -1013,7 +1013,7 @@ int main(int argc, char *argv[])
 			}
 
 			//get_status_state drvnum
-			//This command set to status_state the variable status_state of the driver indicated by drvnum.
+			//This command get the variable status_state of the driver indicated by drvnum.
 			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Ss][Tt][Aa][Tt][Uu][Ss]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Ss][Tt][Aa][Tt][Uu][Ss]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
 			{
@@ -1041,7 +1041,7 @@ int main(int argc, char *argv[])
 			}		
 			
 			//set_request_state drvnum status_state
-			//This command set to status_state the variable status_state of the driver indicated by drvnum.
+			//This command set to request_state the variable request_state of the driver indicated by drvnum.
 			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Rr][Ee][Qq][Uu][Ee][Ss][Tt]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Rr][Ee][Qq][Uu][Ee][Ss][Tt]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 			{
@@ -1072,7 +1072,7 @@ int main(int argc, char *argv[])
 			}
 
 			//get_request_state drvnum
-			//This command set to status_state the variable status_state of the driver indicated by drvnum.
+			//This command get the variable request_state of the driver indicated by drvnum.
 			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Rr][Ee][Qq][Uu][Ee][Ss][Tt]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Rr][Ee][Qq][Uu][Ee][Ss][Tt]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
 			{
@@ -1128,7 +1128,7 @@ int main(int argc, char *argv[])
 			}		
 			
 			//check_fault drvnum
-			//This command set to status_state the variable status_state of the driver indicated by drvnum.
+			//This get the value of the Fault register of the driver indicated by drvnum.
 			else if (reg_matches (buffer, "^[Cc][Hh][Ee][Cc][Kk]_[Ff][Aa][Uu][Ll][Tt][ \t]+[0-9]{1,2}[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Cc][Hh][Ee][Cc][Kk]_[Ff][Aa][Uu][Ll][Tt][ \t]+[0-9]{1,2}[ \t]*$"))
 			{
@@ -1187,7 +1187,7 @@ int main(int argc, char *argv[])
 			}
 
 			//get_home_done drvnum
-			//This command set to home_done the variable home_done of the driver indicated by drvnum.
+			//This command get the variable home_done of the driver indicated by drvnum.
 			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Hh][Oo][Mm][Ee]_[Dd][Oo][Nn][Ee][ \t]+[0-9]{1,2}[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Hh][Oo][Mm][Ee]_[Dd][Oo][Nn][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
 			{
@@ -1215,7 +1215,7 @@ int main(int argc, char *argv[])
 			}						
 			
 			//set_encoder_max drvnum encoder_max
-			//This command set to encoder_max the variable encoder_max of the driver indicated by drvnum.
+			//This command set to encoder_max the variable Encoder_Max of the driver indicated by drvnum.
 			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Aa][Xx][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Aa][Xx][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 			{
@@ -1246,7 +1246,7 @@ int main(int argc, char *argv[])
 			}
 
 			//get_encoder_max drvnum
-			//This command set to home_done the variable home_done of the driver indicated by drvnum.
+			//This command get the variable Encoder_Max of the driver indicated by drvnum.
 			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Aa][Xx][ \t]+[0-9]{1,2}[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Aa][Xx][ \t]+[0-9]{1,2}[ \t]*$"))
 			{
@@ -1273,7 +1273,7 @@ int main(int argc, char *argv[])
 				}
 			}													
 						
-			//set_encoder_min drvnum encoder_max
+			//set_encoder_min drvnum encoder_min
 			//This command set to encoder_min the variable encoder_min of the driver indicated by drvnum.
 			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Ii][Nn][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Ii][Nn][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
@@ -1305,7 +1305,7 @@ int main(int argc, char *argv[])
 			}
 
 			//get_encoder_min drvnum
-			//This command set to encoder_min the variable home_done of the driver indicated by drvnum.
+			//This command get the variable Encoder_Min of the driver indicated by drvnum.
 			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Ii][Nn][ \t]+[0-9]{1,2}[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Ii][Nn][ \t]+[0-9]{1,2}[ \t]*$"))
 			{
@@ -1333,7 +1333,8 @@ int main(int argc, char *argv[])
 			}								
 
 			//set_delta_analog_pos drvnum delta_analog_pos
-			//This command set to encoder_min the variable encoder_min of the driver indicated by drvnum.
+			//This command set to delta_analog_pos the variable Delta_Analog_Pos of the driver indicated by drvnum.
+			//delta_analog_pos MUST be positive
 			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Pp][Oo][Ss][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Pp][Oo][Ss][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 			{
@@ -1363,8 +1364,8 @@ int main(int argc, char *argv[])
 				}
 			}
 
-			//get_encoder_min drvnum
-			//This command set to encoder_min the variable home_done of the driver indicated by drvnum.
+			//get_delta_analog_pos drvnum
+			//This command get the variable Delta_Analog_Pos of the driver indicated by drvnum.
 			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Pp][Oo][Ss][ \t]+[0-9]{1,2}[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Pp][Oo][Ss][ \t]+[0-9]{1,2}[ \t]*$"))
 			{
@@ -1392,7 +1393,7 @@ int main(int argc, char *argv[])
 			}				
 			
 			//set_phase_current_user drvnum phase_current_user
-			//This command set to phase_current_user the variable phase_current_user of the driver indicated by drvnum.
+			//This command set to phase_current_user the variable PhaseCurr_User of the driver indicated by drvnum.
 			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Pp][Hh][Aa][Ss][Ee]_[Cc][Uu][Rr][Rr][Ee][Nn][Tt]_[Uu][Ss][Ee][Rr][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Pp][Hh][Aa][Ss][Ee]_[Cc][Uu][Rr][Rr][Ee][Nn][Tt]_[Uu][Ss][Ee][Rr][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 			{
@@ -1423,7 +1424,7 @@ int main(int argc, char *argv[])
 			}
 
 			//get_phase_current_user drvnum
-			//This command set to phase_current_user the variable phase_current_user of the driver indicated by drvnum.
+			//This command get the variable PhaseCurr_User of the driver indicated by drvnum.
 			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Pp][Hh][Aa][Ss][Ee]_[Cc][Uu][Rr][Rr][Ee][Nn][Tt]_[Uu][Ss][Ee][Rr][ \t]+[0-9]{1,2}[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Pp][Hh][Aa][Ss][Ee]_[Cc][Uu][Rr][Rr][Ee][Nn][Tt]_[Uu][Ss][Ee][Rr][ \t]+[0-9]{1,2}[ \t]*$"))
 			{
@@ -1450,8 +1451,8 @@ int main(int argc, char *argv[])
 				}
 			}							
 						
-			//set_delay_check_rot drvnum phase_current_user
-			//This command set to delay_check_rot the variable delay_check_rot of the driver indicated by drvnum.
+			//set_delay_check_rot drvnum delay_check_rot
+			//This command set to delay_check_rot the variable Delay_CheckRot of the driver indicated by drvnum.
 			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Aa][Yy]_[Cc][Hh][Ee][Cc][Kk]_[Rr][Oo][Tt][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Aa][Yy]_[Cc][Hh][Ee][Cc][Kk]_[Rr][Oo][Tt][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 			{
@@ -1482,7 +1483,7 @@ int main(int argc, char *argv[])
 			}
 
 			//get_delay_check_rot drvnum
-			//This command set to phase_current_user the variable phase_current_user of the driver indicated by drvnum.
+			//This command get the variable Delay_CheckRot of the driver indicated by drvnum.
 			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Aa][Yy]_[Cc][Hh][Ee][Cc][Kk]_[Rr][Oo][Tt][ \t]+[0-9]{1,2}[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Aa][Yy]_[Cc][Hh][Ee][Cc][Kk]_[Rr][Oo][Tt][ \t]+[0-9]{1,2}[ \t]*$"))
 			{
@@ -1509,8 +1510,9 @@ int main(int argc, char *argv[])
 				}
 			}
 			
-			//set_delta_analog_pos drvnum delta_analog_pos
-			//This command set to encoder_min the variable encoder_min of the driver indicated by drvnum.
+			//set_delta_analog_neg drvnum delta_analog_neg
+			//This command set to delta_analog_neg the variable Delta_Analog_Neg of the driver indicated by drvnum.
+			//delta_analog_neg MUST be negative.
 			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Nn][Ee][Gg][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Nn][Ee][Gg][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$"))
 			{
@@ -1540,8 +1542,8 @@ int main(int argc, char *argv[])
 				}
 			}
 
-			//get_encoder_min drvnum
-			//This command set to encoder_min the variable home_done of the driver indicated by drvnum.
+			//get_delta_analog_neg drvnum
+			//This command get the variable Delta_Analog_Neg of the driver indicated by drvnum.
 			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Nn][Ee][Gg][ \t]+[0-9]{1,2}[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Nn][Ee][Gg][ \t]+[0-9]{1,2}[ \t]*$"))
 			{
@@ -1568,8 +1570,9 @@ int main(int argc, char *argv[])
 				}
 			}					
 			
-			//set_delta_analog_pos drvnum delta_analog_pos
-			//This command set to encoder_min the variable encoder_min of the driver indicated by drvnum.
+			//set_max_target_position drvnum max_target_position
+			//This command set to max_target_position the variable Max_TargetPos of the driver indicated by drvnum.
+			//max_target_position could be negative or positive
 			else if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Mm][Aa][Xx]_[Tt][Aa][Rr][Gg][Ee][Tt]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Mm][Aa][Xx]_[Tt][Aa][Rr][Gg][Ee][Tt]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$"))
 			{
@@ -1599,8 +1602,8 @@ int main(int argc, char *argv[])
 				}
 			}
 
-			//get_encoder_min drvnum
-			//This command set to encoder_min the variable home_done of the driver indicated by drvnum.
+			//get_max_target_position drvnum
+			//This command get the variable Max_TargetPos of the driver indicated by drvnum.
 			else if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Mm][Aa][Xx]_[Tt][Aa][Rr][Gg][Ee][Tt]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t]+[0-9]{1,2}[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Mm][Aa][Xx]_[Tt][Aa][Rr][Gg][Ee][Tt]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t]+[0-9]{1,2}[ \t]*$"))
 			{

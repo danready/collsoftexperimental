@@ -133,7 +133,10 @@ void HelpCommand()
 	output_module->Output("-check_internal_status:\nthis command retrieves the content of the GeneralStatus struct\n\n");
 	output_module->Output("-load_encoder_from_file:\nthis command gets the encoding parameters for each drivers from the EncoderLog.txt file and use it to accomplished the check_position command\n\n");
 	output_module->Output("-read_actual_encoder_values:\nthis command prints the actual encoding parameters that will be used to accomplished the check_position command\n\n");
-	output_module->Output("-device_list:\nthis command prints the device contained in /dev\n\n");		
+	output_module->Output("-device_list:\nthis command prints the device contained in /dev\n\n");
+	output_module->Output("-set_status_state drvnum status_state:\nthis command set to status_state the variable status_state of the driver indicated by drvnum\n\n");
+	output_module->Output("-get_status_state drvnum:\nthis command get the variable status_state of the driver indicated by drvnum\n\n");
+	
 	output_module->Output("-help:\nPrint this command list\n\n");
 	output_module->Output("-exit:\nExit from the program: this command is enabled only in stdin mode.\n\n");
 	
