@@ -299,14 +299,44 @@ int main(int argc, char *argv[])
 			//Exit: this command can be sent only via stdin.
 			if(reg_matches (buffer, "^[Ee][Xx][iI][tT][ \t]*$")) 			
 			{
-				string tmp_string = __func__;
-				output_module->Output("###############\n" + tmp_string + ": Exiting to CollSoft program....\n");
+				output_module->Output("Exiting to CollSoft program....\n");
 				
 				if (main_application_setup->input_mode != ONLYTCP) {
 					fflush(stdout);
 				}
 				
 				return 0;
+			}
+
+			//connect absoluteprogrammerpath
+			//This command tries to connect the server with the programmer indicated by "absoluteprogrammerpath"
+			else if(reg_matches (buffer, "^[Cc][Oo][Nn][Nn][Ee][Cc][Tt][ \t][A-z0-9/\\]{1,100}[ \t]*$") || reg_matches (command_received_by_user.command_sent_by_user, "^[Cc][Oo][Nn][Nn][Ee][Cc][Tt][ \t][A-z0-9/\\]{1,100}[ \t]*$") )
+			{
+				//Pointer to store the absoluteprogrammerpath
+				char* tmp_pointer;
+				
+				//if the command was sent via TCP/IP
+				if (reg_matches (command_received_by_user.command_sent_by_user, "^[Cc][Oo][Nn][Nn][Ee][Cc][Tt][ \t][A-z0-9/\\]{1,100}[ \t]*$")) 
+				{
+					tmp_pointer = FindPointer(command_received_by_user.command_sent_by_user);
+				}
+				//if the command was sent via stdin
+				else 
+				{
+					tmp_pointer = FindPointer(buffer);
+				}
+				
+				//STATE_CONNECT will record the connection status.
+				ctx = Connect(ctx, &STATE_CONNECT, tmp_pointer);
+				
+			}
+
+			//help
+			//This command prints the list of the commands that the server can execute. 
+			else if(reg_matches (buffer, "^[Hh][Ee][Ll][Pp][ \t]*$") || reg_matches (command_received_by_user.command_sent_by_user, "^[Hh][Ee][Ll][Pp][ \t]*$"))
+			{
+				//Printing the commands list.
+				HelpCommand();
 			}
 
 			//read_serial_log
@@ -364,8 +394,12 @@ int main(int argc, char *argv[])
 			{
 				if (STATE_CONNECT == 1)
 				{
+					//The following function CheckDrvAssoc needs to communicate with the client. So, it is created a reference to the
+					//CommunicationObject mioTCP called mioTCP_reference.
 					CommunicationObject& mioTCP_reference = mioTCP;
 
+					//Launching the routine to check the association between the drivers serial number found in the SerialDrvLog.txt
+					//file and the real situation.
 					CheckDrvAssoc(mioTCP_reference, mioinput, ctx);
 				}
 				else
@@ -381,8 +415,12 @@ int main(int argc, char *argv[])
 			{
 				if (STATE_CONNECT == 1)
 				{
+					//The following function CheckParAssoc needs to communicate with the client. So, it is created a reference to the
+					//CommunicationObject mioTCP called mioTCP_reference.				
 					CommunicationObject& mioTCP_reference = mioTCP;
 
+					//Launching the routine to check the association between the drivers parameters found in the FileParLog.txt file 
+					//and the real situation.
 					CheckParAssoc(mioTCP_reference, mioinput, ctx);
 				}
 				else
@@ -398,39 +436,18 @@ int main(int argc, char *argv[])
 			{
 				if (STATE_CONNECT == 1)
 				{
+					//The following function CheckEncodeAssoc needs to communicate with the client. So, it is created a reference to the
+					//CommunicationObject mioTCP called mioTCP_reference.					
 					CommunicationObject& mioTCP_reference = mioTCP;
 
+					//Launching the routine to check the association between the encoder values contained in the EncoderLog.txt file
+					//and the real situation.
 					CheckEncodeAssoc(mioTCP_reference, mioinput, ctx);
 				}
 				else
 				{
 					output_module->Output("Check Par Assoc: Error: driver not connected. Digit 'connect programmerpath'.\n");				
 				}
-			}
-
-			//connect absoluteprogrammerpath
-			//This command tries to connect the server with the programmer indicated by "absoluteprogrammerpath"
-			else if(reg_matches (buffer, "^[Cc][Oo][Nn][Nn][Ee][Cc][Tt][ \t][A-z0-9/\\]{1,100}[ \t]*$") || reg_matches (command_received_by_user.command_sent_by_user, "^[Cc][Oo][Nn][Nn][Ee][Cc][Tt][ \t][A-z0-9/\\]{1,100}[ \t]*$") )
-			{
-				
-				char* tmp_pointer;
-				
-				if (reg_matches (command_received_by_user.command_sent_by_user, "^[Cc][Oo][Nn][Nn][Ee][Cc][Tt][ \t][A-z0-9/\\]{1,100}[ \t]*$")) {
-					tmp_pointer = FindPointer(command_received_by_user.command_sent_by_user);
-				} else {
-					tmp_pointer = FindPointer(buffer);
-				}
-				
-				//N.B. In tmp_pointer is stored the programmerpath (in fact, the command is connect programmerpath)
-				ctx = Connect(ctx, &STATE_CONNECT, tmp_pointer);
-				
-			}
-
-			//help
-			//This command prints the list of the commands that the server can execute. 
-			else if(reg_matches (buffer, "^[Hh][Ee][Ll][Pp][ \t]*$") || reg_matches (command_received_by_user.command_sent_by_user, "^[Hh][Ee][Ll][Pp][ \t]*$"))
-			{
-				HelpCommand();
 			}
 			
 			//get_par drvnum
@@ -440,10 +457,12 @@ int main(int argc, char *argv[])
 			{
 				int get_par_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Pp][Aa][Rr][ \t][0-9]{1,2}[ \t]*$"))
 				{
 					get_par_drv = FindIntegerValue(buffer);
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					get_par_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -467,10 +486,12 @@ int main(int argc, char *argv[])
 			{
 				int get_pos_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Cc][Hh][Ee][Cc][Kk]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t][0-9]{1,2}[ \t]*$"))
 				{
 					get_pos_drv = FindIntegerValue(buffer);
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					get_pos_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -499,11 +520,13 @@ int main(int argc, char *argv[])
 				
 				int set_par_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Pp][Aa][Rr]([ \t]+[0-9]{1,5})([ \t]+[0-9]{1,5})([ \t]+-{0,1}[0-9]{1,5})([ \t]+[0-9]{1,5})([ \t]+[0-9]{1,5})([ \t]+[0-9]{1,5})([ \t]+[0-9]{1,5})[ \t]*$"))
 				{
 					set_par_drv = FindIntegerValue(buffer);
 					set_par_contents = buffer;
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					set_par_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -528,10 +551,12 @@ int main(int argc, char *argv[])
 				
 				int homing_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer,"^[Hh][Oo][Mm][Ii][Nn][Gg][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
 					homing_drv = FindIntegerValue(buffer);
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					homing_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -556,10 +581,12 @@ int main(int argc, char *argv[])
 				
 				int get_mov_par_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer,"^[Gg][Ee][Tt]_[Mm][Oo][Vv]_[Pp][Aa][Rr][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
 					get_mov_par_drv = FindIntegerValue(buffer);
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					get_mov_par_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -588,10 +615,12 @@ int main(int argc, char *argv[])
 				
 				int encoder_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer,"^[Ee][Nn][Cc][Oo][Dd][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
 					encoder_drv = FindIntegerValue(buffer);
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					encoder_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -620,11 +649,13 @@ int main(int argc, char *argv[])
 				
 				int move_to_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer,"^[Mm][Oo][Vv][Ee]_[Tt][Oo][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$"))
 				{
 					move_to_drv = FindIntegerValue(buffer);
 					move_to_contents = buffer;
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					move_to_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -691,6 +722,7 @@ int main(int argc, char *argv[])
 				{
 					homing_mult_contents = buffer;
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					homing_mult_contents = command_received_by_user.command_sent_by_user;
@@ -766,6 +798,8 @@ int main(int argc, char *argv[])
 					buffer_moveto_value = buffer;
 					buffer_arg = buffer;
 				}
+				
+				//if the command was sent via TCP/IP
 				else
 				{
 					moveto_value = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -846,6 +880,7 @@ int main(int argc, char *argv[])
 					buffer_setpar_mult_value = buffer;
 					buffer_arg = buffer;
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					buffer_setpar_mult_value = command_received_by_user.command_sent_by_user;
@@ -980,11 +1015,13 @@ int main(int argc, char *argv[])
 				
 				uint16_t status_state_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Ss][Tt][Aa][Tt][Uu][Ss]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 				{
 					status_state_drv = FindIntegerValue(buffer);
 					buffer_status_state = buffer;
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					status_state_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1010,10 +1047,12 @@ int main(int argc, char *argv[])
 				
 				uint16_t status_state_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Ss][Tt][Aa][Tt][Uu][Ss]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
 					status_state_drv = FindIntegerValue(buffer);
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					status_state_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1039,11 +1078,13 @@ int main(int argc, char *argv[])
 				
 				uint16_t request_state_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Rr][Ee][Qq][Uu][Ee][Ss][Tt]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 				{
 					request_state_drv = FindIntegerValue(buffer);
 					buffer_request_state = buffer;
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					request_state_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1069,10 +1110,12 @@ int main(int argc, char *argv[])
 				
 				uint16_t request_state_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Rr][Ee][Qq][Uu][Ee][Ss][Tt]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
 					request_state_drv = FindIntegerValue(buffer);
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					request_state_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1097,10 +1140,12 @@ int main(int argc, char *argv[])
 				
 				uint16_t save_eprom_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Aa][Vv][Ee]_[Ee][Pp][Rr][Oo][Mm][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
 					save_eprom_drv = FindIntegerValue(buffer);
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					save_eprom_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1125,10 +1170,12 @@ int main(int argc, char *argv[])
 				
 				uint16_t check_fault_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Cc][Hh][Ee][Cc][Kk]_[Ff][Aa][Uu][Ll][Tt][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
 					check_fault_drv = FindIntegerValue(buffer);
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					check_fault_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1154,11 +1201,13 @@ int main(int argc, char *argv[])
 				
 				uint16_t home_done_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Hh][Oo][Mm][Ee]_[Dd][Oo][Nn][Ee][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 				{
 					home_done_drv = FindIntegerValue(buffer);
 					buffer_home_done = buffer;
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					home_done_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1184,10 +1233,12 @@ int main(int argc, char *argv[])
 				
 				uint16_t home_done_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Hh][Oo][Mm][Ee]_[Dd][Oo][Nn][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
 					home_done_drv = FindIntegerValue(buffer);
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					home_done_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1213,11 +1264,13 @@ int main(int argc, char *argv[])
 				
 				uint16_t encoder_max_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Aa][Xx][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 				{
 					encoder_max_drv = FindIntegerValue(buffer);
 					buffer_encoder_max = buffer;
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					encoder_max_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1243,10 +1296,12 @@ int main(int argc, char *argv[])
 				
 				uint16_t encoder_max_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Aa][Xx][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
 					encoder_max_drv = FindIntegerValue(buffer);
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					encoder_max_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1272,11 +1327,13 @@ int main(int argc, char *argv[])
 				
 				uint16_t encoder_min_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Ii][Nn][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 				{
 					encoder_min_drv = FindIntegerValue(buffer);
 					buffer_encoder_min = buffer;
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					encoder_min_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1302,10 +1359,12 @@ int main(int argc, char *argv[])
 				
 				uint16_t encoder_min_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Ii][Nn][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
 					encoder_min_drv = FindIntegerValue(buffer);
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					encoder_min_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1332,11 +1391,13 @@ int main(int argc, char *argv[])
 				
 				uint16_t delta_analog_pos_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Pp][Oo][Ss][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 				{
 					delta_analog_pos_drv = FindIntegerValue(buffer);
 					buffer_delta_analog_pos = buffer;
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					delta_analog_pos_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1362,10 +1423,12 @@ int main(int argc, char *argv[])
 				
 				uint16_t delta_analog_pos_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Pp][Oo][Ss][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
 					delta_analog_pos_drv = FindIntegerValue(buffer);
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					delta_analog_pos_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1391,11 +1454,13 @@ int main(int argc, char *argv[])
 				
 				uint16_t phase_current_user_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Pp][Hh][Aa][Ss][Ee]_[Cc][Uu][Rr][Rr][Ee][Nn][Tt]_[Uu][Ss][Ee][Rr][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 				{
 					phase_current_user_drv = FindIntegerValue(buffer);
 					buffer_phase_current_user = buffer;
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					phase_current_user_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1421,10 +1486,12 @@ int main(int argc, char *argv[])
 				
 				uint16_t phase_current_user_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Pp][Hh][Aa][Ss][Ee]_[Cc][Uu][Rr][Rr][Ee][Nn][Tt]_[Uu][Ss][Ee][Rr][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
 					phase_current_user_drv = FindIntegerValue(buffer);
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					phase_current_user_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1450,11 +1517,13 @@ int main(int argc, char *argv[])
 				
 				uint16_t delay_check_rot_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Aa][Yy]_[Cc][Hh][Ee][Cc][Kk]_[Rr][Oo][Tt][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 				{
 					delay_check_rot_drv = FindIntegerValue(buffer);
 					buffer_delay_check_rot = buffer;
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					delay_check_rot_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1480,10 +1549,12 @@ int main(int argc, char *argv[])
 				
 				uint16_t delay_check_rot_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Aa][Yy]_[Cc][Hh][Ee][Cc][Kk]_[Rr][Oo][Tt][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
 					delay_check_rot_drv = FindIntegerValue(buffer);
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					delay_check_rot_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1510,11 +1581,13 @@ int main(int argc, char *argv[])
 				
 				uint16_t delta_analog_neg_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Nn][Ee][Gg][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$"))
 				{
 					delta_analog_neg_drv = FindIntegerValue(buffer);
 					buffer_delta_analog_neg = buffer;
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					delta_analog_neg_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1540,10 +1613,12 @@ int main(int argc, char *argv[])
 				
 				uint16_t delta_analog_neg_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Nn][Ee][Gg][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
 					delta_analog_neg_drv = FindIntegerValue(buffer);
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					delta_analog_neg_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1570,11 +1645,13 @@ int main(int argc, char *argv[])
 				
 				uint16_t max_target_position_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Mm][Aa][Xx]_[Tt][Aa][Rr][Gg][Ee][Tt]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$"))
 				{
 					max_target_position_drv = FindIntegerValue(buffer);
 					buffer_max_target_position = buffer;
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					max_target_position_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1600,10 +1677,12 @@ int main(int argc, char *argv[])
 				
 				uint16_t max_target_position_drv = 0;
 				
+				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Mm][Aa][Xx]_[Tt][Aa][Rr][Gg][Ee][Tt]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
 					max_target_position_drv = FindIntegerValue(buffer);
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					max_target_position_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
@@ -1627,11 +1706,13 @@ int main(int argc, char *argv[])
 				if (main_application_setup->input_mode != ONLYTCP) {
 					fflush(stdout);
 				}
+				//if the command was sent via stdin
 				if (buffer[0] != 0)
 				{
 					string tmp(buffer);
 					output_module->Output(tmp + "\n");
 				}
+				//if the command was sent via TCP/IP
 				else
 				{
 					string tmp(command_received_by_user.command_sent_by_user);
