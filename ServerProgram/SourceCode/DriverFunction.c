@@ -140,8 +140,8 @@ modbus_t* Connect(modbus_t *ctx, bool* STATE_CONNECT, char* path)
 }
 
 //Function used to read the serial number of the driver.
-//rc_arg will contain the status of the operation. 
-unsigned int ReadSerialNumber(modbus_t *ctx, int* rc_arg)
+//error_code will contain the status of the operation. 
+unsigned int ReadSerialNumber(modbus_t *ctx, int* error_code)
 {	
 	
 	unsigned int SerialNumber = 0;
@@ -172,7 +172,7 @@ unsigned int ReadSerialNumber(modbus_t *ctx, int* rc_arg)
 	rc = modbus_read_registers(ctx, SERIAL_NUMBER, 2, &data[0]);
 	
 	//collecting the status.
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.
 	usleep(SLEEPMODBUS);
@@ -1020,8 +1020,8 @@ int SetDelayCheckRot (modbus_t *ctx, uint16_t delay_check_rot, string header)
 }
 
 //Function used to read the max_vel of the driver.
-//rc_arg will contain the status of the operation. 
-uint16_t ReadMaxVel(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+uint16_t ReadMaxVel(modbus_t *ctx, int* error_code, string header)
 {
 	//Singleton to manage the output of the program.	
 	OutputModule *output_module;
@@ -1052,7 +1052,7 @@ uint16_t ReadMaxVel(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, MAX_VEL, 1, &data[0]);
 	
 	//collecting the status.	
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.	
 	usleep(SLEEPMODBUS);
@@ -1077,8 +1077,8 @@ uint16_t ReadMaxVel(modbus_t *ctx, int* rc_arg, string header)
 }
 
 //Function used to read the vel_home of the driver.
-//rc_arg will contain the status of the operation. 
-int16_t ReadVelHome(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+int16_t ReadVelHome(modbus_t *ctx, int* error_code, string header)
 {
 	//Singleton to manage the output of the program.	
 	OutputModule *output_module;
@@ -1108,7 +1108,7 @@ int16_t ReadVelHome(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, VEL_HOME, 1, &data[0]);
 	
 	//collecting the status.	
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);
@@ -1133,8 +1133,8 @@ int16_t ReadVelHome(modbus_t *ctx, int* rc_arg, string header)
 }
 
 //Function used to read the acceleration of the driver.
-//rc_arg will contain the status of the operation. 
-uint16_t ReadAcceleration(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+uint16_t ReadAcceleration(modbus_t *ctx, int* error_code, string header)
 {
 	//Singleton to manage the output of the program.		
 	OutputModule *output_module;
@@ -1162,7 +1162,7 @@ uint16_t ReadAcceleration(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, ACCELERATION, 1, &data[0]);
 	
 	//collecting the status.	
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);
@@ -1186,8 +1186,8 @@ uint16_t ReadAcceleration(modbus_t *ctx, int* rc_arg, string header)
 }
 
 //Function used to read the deceleration of the driver.
-//rc_arg will contain the status of the operation. 
-uint16_t ReadDeceleration(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+uint16_t ReadDeceleration(modbus_t *ctx, int* error_code, string header)
 {
 	
 	//Singleton to manage the output of the program.		
@@ -1216,7 +1216,7 @@ uint16_t ReadDeceleration(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, DECELERATION, 1, &data[0]);
 	
 	//collecting the status.		
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);
@@ -1240,8 +1240,8 @@ uint16_t ReadDeceleration(modbus_t *ctx, int* rc_arg, string header)
 }
 
 //Function used to read the phase_current of the driver.
-//rc_arg will contain the status of the operation. 
-uint16_t ReadPhaseCurrent(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+uint16_t ReadPhaseCurrent(modbus_t *ctx, int* error_code, string header)
 {
 	
 	//Singleton to manage the output of the program.		
@@ -1270,7 +1270,7 @@ uint16_t ReadPhaseCurrent(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, PHASE_CURRENT, 1, &data[0]);
 	
 	//collecting the status.		
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);
@@ -1294,8 +1294,8 @@ uint16_t ReadPhaseCurrent(modbus_t *ctx, int* rc_arg, string header)
 }
 
 //Function used to read the analog_output0 of the driver.
-//rc_arg will contain the status of the operation. 
-uint16_t ReadAnalogOutput0(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+uint16_t ReadAnalogOutput0(modbus_t *ctx, int* error_code, string header)
 {
 
 	//Singleton to manage the output of the program.		
@@ -1324,7 +1324,7 @@ uint16_t ReadAnalogOutput0(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, ANALOG_OUTPUT_0, 1, &data[0]);
 	
 	//collecting the status.		
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);
@@ -1348,8 +1348,8 @@ uint16_t ReadAnalogOutput0(modbus_t *ctx, int* rc_arg, string header)
 }
 
 //Function used to read the status_state register of the driver.
-//rc_arg will contain the status of the operation. 
-uint16_t ReadStatusState(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+uint16_t ReadStatusState(modbus_t *ctx, int* error_code, string header)
 {
 	//Singleton to manage the output of the program.		
 	OutputModule *output_module;
@@ -1377,7 +1377,7 @@ uint16_t ReadStatusState(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, STATUS_STATE, 1, &data[0]);
 	
 	//collecting the status.		
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);
@@ -1401,8 +1401,8 @@ uint16_t ReadStatusState(modbus_t *ctx, int* rc_arg, string header)
 }
 
 //Function used to read the request_state register of the driver.
-//rc_arg will contain the status of the operation. 
-uint16_t ReadRequestState(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+uint16_t ReadRequestState(modbus_t *ctx, int* error_code, string header)
 {
 	//Singleton to manage the output of the program.		
 	OutputModule *output_module;
@@ -1430,7 +1430,7 @@ uint16_t ReadRequestState(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, REQUEST_STATE, 1, &data[0]);
 	
 	//collecting the status.		
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);
@@ -1454,8 +1454,8 @@ uint16_t ReadRequestState(modbus_t *ctx, int* rc_arg, string header)
 }
 
 //Function used to read the analog_input0 of the driver.
-//rc_arg will contain the status of the operation. 
-uint16_t ReadAnalogInput0(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+uint16_t ReadAnalogInput0(modbus_t *ctx, int* error_code, string header)
 {
 	//This buffer will be used to store the data received by the driver.		
 	uint16_t data[STANDARDBUFFERLIMIT];
@@ -1471,7 +1471,7 @@ uint16_t ReadAnalogInput0(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, ANALOG_INPUT_0, 1, &data[0]);
 	
 	//collecting the status.		
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);
@@ -1490,8 +1490,8 @@ uint16_t ReadAnalogInput0(modbus_t *ctx, int* rc_arg, string header)
 }
 
 //Function used to read the current_position of the driver.
-//rc_arg will contain the status of the operation. 
-int ReadCurrentPosition(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+int ReadCurrentPosition(modbus_t *ctx, int* error_code, string header)
 {
 	int CurrentPosition = 0;
 	
@@ -1508,7 +1508,7 @@ int ReadCurrentPosition(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, CURRENT_POSITION, 2, &data[0]);
 	
 	//collecting the status.		
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);
@@ -1532,8 +1532,8 @@ int ReadCurrentPosition(modbus_t *ctx, int* rc_arg, string header)
 
 
 //Function used to read the phase_current variable of the driver.
-//rc_arg will contain the status of the operation. 
-uint16_t ReadHomeDone(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+uint16_t ReadHomeDone(modbus_t *ctx, int* error_code, string header)
 {
 	
 	//Singleton to manage the output of the program.		
@@ -1562,7 +1562,7 @@ uint16_t ReadHomeDone(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, HOME_DONE, 1, &data[0]);
 	
 	//collecting the status.		
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);
@@ -1586,8 +1586,8 @@ uint16_t ReadHomeDone(modbus_t *ctx, int* rc_arg, string header)
 }
 
 //Function used to read the Max_TargetPos variable of the driver.
-//rc_arg will contain the status of the operation. 
-int ReadMaxTargetPosition(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+int ReadMaxTargetPosition(modbus_t *ctx, int* error_code, string header)
 {
 	int MaxTargetPosition = 0;
 	
@@ -1604,7 +1604,7 @@ int ReadMaxTargetPosition(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, MAX_TARGET_POS, 2, &data[0]);
 	
 	//collecting the status.		
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);
@@ -1628,8 +1628,8 @@ int ReadMaxTargetPosition(modbus_t *ctx, int* rc_arg, string header)
 
 
 //Function used to read the encoder_min variable of the driver.
-//rc_arg will contain the status of the operation. 
-uint16_t ReadEncoderMin(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+uint16_t ReadEncoderMin(modbus_t *ctx, int* error_code, string header)
 {
 	
 	//Singleton to manage the output of the program.		
@@ -1658,7 +1658,7 @@ uint16_t ReadEncoderMin(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, ENCODER_MIN, 1, &data[0]);
 	
 	//collecting the status.		
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);
@@ -1682,8 +1682,8 @@ uint16_t ReadEncoderMin(modbus_t *ctx, int* rc_arg, string header)
 }
 
 //Function used to read the encoder_max variable of the driver.
-//rc_arg will contain the status of the operation. 
-uint16_t ReadEncoderMax(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+uint16_t ReadEncoderMax(modbus_t *ctx, int* error_code, string header)
 {
 	
 	//Singleton to manage the output of the program.		
@@ -1712,7 +1712,7 @@ uint16_t ReadEncoderMax(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, ENCODER_MAX, 1, &data[0]);
 	
 	//collecting the status.		
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);
@@ -1736,8 +1736,8 @@ uint16_t ReadEncoderMax(modbus_t *ctx, int* rc_arg, string header)
 }
 
 //Function used to read the phase_current_user variable of the driver.
-//rc_arg will contain the status of the operation. 
-uint16_t ReadPhaseCurrentUser(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+uint16_t ReadPhaseCurrentUser(modbus_t *ctx, int* error_code, string header)
 {
 	
 	//Singleton to manage the output of the program.		
@@ -1766,7 +1766,7 @@ uint16_t ReadPhaseCurrentUser(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, PHASE_CURRENT_USER, 1, &data[0]);
 	
 	//collecting the status.		
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);
@@ -1791,8 +1791,8 @@ uint16_t ReadPhaseCurrentUser(modbus_t *ctx, int* rc_arg, string header)
 
 
 //Function used to read the delta_analog_pos variable of the driver.
-//rc_arg will contain the status of the operation. 
-uint16_t ReadDeltaAnalogPos(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+uint16_t ReadDeltaAnalogPos(modbus_t *ctx, int* error_code, string header)
 {
 	
 	//Singleton to manage the output of the program.		
@@ -1821,7 +1821,7 @@ uint16_t ReadDeltaAnalogPos(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, DELTA_ANALOG_POS, 1, &data[0]);
 	
 	//collecting the status.		
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);
@@ -1845,8 +1845,8 @@ uint16_t ReadDeltaAnalogPos(modbus_t *ctx, int* rc_arg, string header)
 }
 
 //Function used to read the delta_analog_neg variable of the driver.
-//rc_arg will contain the status of the operation. 
-int16_t ReadDeltaAnalogNeg(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+int16_t ReadDeltaAnalogNeg(modbus_t *ctx, int* error_code, string header)
 {
 	
 	//Singleton to manage the output of the program.		
@@ -1875,7 +1875,7 @@ int16_t ReadDeltaAnalogNeg(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, DELTA_ANALOG_NEG, 1, &data[0]);
 	
 	//collecting the status.		
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);
@@ -1900,8 +1900,8 @@ int16_t ReadDeltaAnalogNeg(modbus_t *ctx, int* rc_arg, string header)
 
 
 //Function used to read the delay_check_rot variable of the driver.
-//rc_arg will contain the status of the operation. 
-uint16_t ReadDelayCheckRot(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+uint16_t ReadDelayCheckRot(modbus_t *ctx, int* error_code, string header)
 {
 	
 	//Singleton to manage the output of the program.		
@@ -1930,7 +1930,7 @@ uint16_t ReadDelayCheckRot(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, DELAY_CHECKROT, 1, &data[0]);
 	
 	//collecting the status.		
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);
@@ -1954,8 +1954,8 @@ uint16_t ReadDelayCheckRot(modbus_t *ctx, int* rc_arg, string header)
 }
 
 //Function used to read the fault variable of the driver.
-//rc_arg will contain the status of the operation. 
-uint16_t ReadFault(modbus_t *ctx, int* rc_arg, string header)
+//error_code will contain the status of the operation. 
+uint16_t ReadFault(modbus_t *ctx, int* error_code, string header)
 {
 	
 	//Singleton to manage the output of the program.		
@@ -1984,7 +1984,7 @@ uint16_t ReadFault(modbus_t *ctx, int* rc_arg, string header)
 	rc = modbus_read_registers(ctx, FAULT, 1, &data[0]);
 	
 	//collecting the status.		
-	*rc_arg = rc;
+	*error_code = rc;
 	
 	//sleeping a while in order to give the programmer the time to send the data.		
 	usleep(SLEEPMODBUS);

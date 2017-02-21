@@ -158,6 +158,9 @@ int main(int argc, char *argv[])
 	}
 
 	//Saving in the LogFile the beginning of the program recording also the currente date.
+	//Warning: all the following functions like LogFileWriteString will write
+	//on the log file specified by LogFileSet. If you want to write on another file you have
+	//to use again the function LogFileSet.
 	logfile->LogFileSet(main_application_setup->application_setup_general_log_path);
 	
 	logfile->LogFileWriteString("################################################\n");
@@ -195,6 +198,9 @@ int main(int argc, char *argv[])
 				output_module->OutputModuleSockidOff();
 				
 				//Recording the command in the LogFile
+				//Warning: all the following functions like LogFileWriteString will write
+				//on the log file specified by LogFileSet. If you want to write on another file you have
+				//to use again the function LogFileSet.				
 				logfile->LogFileSet(main_application_setup->application_setup_general_log_path);
 				string buffer_tmp = buffer;
 				logfile->LogFileWriteString(GetTime() + ": Command '" + buffer_tmp + "' sent via stdin\n\n");
@@ -212,7 +218,10 @@ int main(int argc, char *argv[])
 				//Enabling the Output to the TCP/IP recording the user_sockid of the user who has sent the command.
 				output_module->OutputModuleSockidOn(command_received_by_user.user_sockid);
 				
-				//Recording the command in the LogFile				
+				//Recording the command in the LogFile
+				//Warning: all the following functions like LogFileWriteString will write
+				//on the log file specified by LogFileSet. If you want to write on another file you have
+				//to use again the function LogFileSet.							
 				logfile->LogFileSet(main_application_setup->application_setup_general_log_path);
 				string buffer_tmp = command_received_by_user.command_sent_by_user;
 				logfile->LogFileWriteString(GetTime() + ": Command '" + buffer_tmp + "' sent via tcp/ip by user " + to_string(command_received_by_user.user_sockid) + "\n\n");				
@@ -240,7 +249,10 @@ int main(int argc, char *argv[])
 				//Disbling the output to the TCP/IP
 				output_module->OutputModuleSockidOff();
 				
-				//Recording the command in the LogFile				
+				//Recording the command in the LogFile
+				//Warning: all the following functions like LogFileWriteString will write
+				//on the log file specified by LogFileSet. If you want to write on another file you have
+				//to use again the function LogFileSet.						
 				logfile->LogFileSet(main_application_setup->application_setup_general_log_path);
 				string buffer_tmp = buffer;
 				logfile->LogFileWriteString(GetTime() + ": Command '" + buffer_tmp + "' sent via stdin in date\n\n");
@@ -267,7 +279,10 @@ int main(int argc, char *argv[])
 				//Enabling the Output to the TCP/IP recording the user_sockid of the user who has sent the command.
 				output_module->OutputModuleSockidOn(command_received_by_user.user_sockid);
 
-				//Recording the command in the LogFile				
+				//Recording the command in the LogFile
+				//Warning: all the following functions like LogFileWriteString will write
+				//on the log file specified by LogFileSet. If you want to write on another file you have
+				//to use again the function LogFileSet.						
 				logfile->LogFileSet(main_application_setup->application_setup_general_log_path);
 				string buffer_tmp = command_received_by_user.command_sent_by_user;
 				logfile->LogFileWriteString(GetTime() + ": Command '" + buffer_tmp + "' sent via tcp/ip by user " + to_string(command_received_by_user.user_sockid) + "\n\n");				
@@ -299,15 +314,11 @@ int main(int argc, char *argv[])
 			else if(reg_matches (buffer, "^[Rr][Ee][Aa][Dd]_[Ss][Ee][Rr][Ii][Aa][Ll]_[Ll][Oo][Gg][ \t]*$") ||
 			reg_matches (command_received_by_user.command_sent_by_user, "^[Rr][Ee][Aa][Dd]_[Ss][Ee][Rr][Ii][Aa][Ll]_[Ll][Oo][Gg][ \t]*$")) 
 			{
-				//~ if (STATE_CONNECT == 1)
-				//~ {
+					//Warning: all the following functions like LogFileWriteString will write
+					//on the log file specified by LogFileSet. If you want to write on another file you have
+					//to use again the function LogFileSet.				
 					logfile->LogFileSet(main_application_setup->application_setup_serial_drv_log_file_path);
 					logfile->LogFileRead();
-				//~ }
-				//~ else
-				//~ {
-					//~ output_module->Output("Reading LogFile... Error: driver not connected. Digit 'connect programmerpath'.\n");
-				//~ }
 			}
 				
 			//read_par_log
@@ -315,15 +326,11 @@ int main(int argc, char *argv[])
 			else if(reg_matches (buffer, "^[Rr][Ee][Aa][Dd]_[Pp][Aa][Rr]_[Ll][Oo][Gg][ \t]*$") ||
 			reg_matches (command_received_by_user.command_sent_by_user, "^[Rr][Ee][Aa][Dd]_[Pp][Aa][Rr]_[Ll][Oo][Gg][ \t]*$")) 
 			{
-				//~ if (STATE_CONNECT == 1)
-				//~ {
+					//Warning: all the following functions like LogFileWriteString will write
+					//on the log file specified by LogFileSet. If you want to write on another file you have
+					//to use again the function LogFileSet.				
 					logfile->LogFileSet(main_application_setup->application_setup_file_par_log_path);
 					logfile->LogFileRead();
-				//~ }
-				//~ else
-				//~ {
-					//~ output_module->Output("Reading LogFile... Error: driver not connected. Digit 'connect programmerpath'.\n");
-				//~ }
 			}
 
 			//read_log
@@ -331,15 +338,11 @@ int main(int argc, char *argv[])
 			else if(reg_matches (buffer, "^[Rr][Ee][Aa][Dd]_[Ll][Oo][Gg][ \t]*$") ||
 			reg_matches (command_received_by_user.command_sent_by_user, "^[Rr][Ee][Aa][Dd]_[Ll][Oo][Gg][ \t]*$")) 
 			{
-				//~ if (STATE_CONNECT == 1)
-				//~ {
+					//Warning: all the following functions like LogFileWriteString will write
+					//on the log file specified by LogFileSet. If you want to write on another file you have
+					//to use again the function LogFileSet.				
 					logfile->LogFileSet(main_application_setup->application_setup_general_log_path);
 					logfile->LogFileRead();
-				//~ }
-				//~ else
-				//~ {
-					//~ output_module->Output("Reading LogFile... Error: driver not connected. Digit 'connect programmerpath'.\n");
-				//~ }
 			}
 			
 			//read_encoder_log
@@ -347,15 +350,11 @@ int main(int argc, char *argv[])
 			else if(reg_matches (buffer, "^[Rr][Ee][Aa][Dd]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Ll][Oo][Gg][ \t]*$") ||
 			reg_matches (command_received_by_user.command_sent_by_user, "^[Rr][Ee][Aa][Dd]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Ll][Oo][Gg][ \t]*$")) 
 			{
-				//~ if (STATE_CONNECT == 1)
-				//~ {
+					//Warning: all the following functions like LogFileWriteString will write
+					//on the log file specified by LogFileSet. If you want to write on another file you have
+					//to use again the function LogFileSet.				
 					logfile->LogFileSet(main_application_setup->application_setup_encoder_log_path);
 					logfile->LogFileRead();
-				//~ }
-				//~ else
-				//~ {
-					//~ output_module->Output("Reading LogFile... Error: driver not connected. Digit 'connect programmerpath'.\n");
-				//~ }
 			}			
 
 			//check_drv_assoc
@@ -439,24 +438,24 @@ int main(int argc, char *argv[])
 			else if(reg_matches (buffer, "^[Gg][Ee][Tt]_[Pp][Aa][Rr][ \t][0-9]{1,2}[ \t]*$") ||
 					reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Pp][Aa][Rr][ \t][0-9]{1,2}[ \t]*$"))
 			{
-				int get_par_value = 0;
+				int get_par_drv = 0;
 				
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Pp][Aa][Rr][ \t][0-9]{1,2}[ \t]*$"))
 				{
-					get_par_value = FindIntegerValue(buffer);
+					get_par_drv = FindIntegerValue(buffer);
 				}
 				else
 				{
-					get_par_value = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					get_par_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
 				}
 					
 				if (STATE_CONNECT == 1)
 				{
-					GetPar(ctx, get_par_value);			
+					GetPar(ctx, get_par_drv);			
 				}
 				else
 				{
-					SendFailedGetPar(get_par_value);
+					SendFailedGetPar(get_par_drv);
 				}
 				
 			}	
@@ -466,25 +465,25 @@ int main(int argc, char *argv[])
 			else if(reg_matches (buffer, "^[Cc][Hh][Ee][Cc][Kk]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t][0-9]{1,2}[ \t]*$") ||
 					reg_matches (command_received_by_user.command_sent_by_user, "^[Cc][Hh][Ee][Cc][Kk]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t][0-9]{1,2}[ \t]*$"))
 			{
-				int get_pos_value = 0;
+				int get_pos_drv = 0;
 				
 				if (reg_matches (buffer, "^[Cc][Hh][Ee][Cc][Kk]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t][0-9]{1,2}[ \t]*$"))
 				{
-					get_pos_value = FindIntegerValue(buffer);
+					get_pos_drv = FindIntegerValue(buffer);
 				}
 				else
 				{
-					get_pos_value = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					get_pos_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
 				}
 					
 				if (STATE_CONNECT == 1)
 				{
-					CheckPositionEncoderSingleWarning(ctx, get_pos_value);			
+					CheckPositionEncoderSingleWarning(ctx, get_pos_drv);			
 				}
 				else
 				{
 					output_module->Output("Exp: error, driver not connected. Digit 'connect programmerpath'.\n");
-					SendFailedGetStatusPos(get_pos_value);
+					SendFailedGetStatusPos(get_pos_drv);
 				}
 				
 			}				
@@ -496,28 +495,28 @@ int main(int argc, char *argv[])
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Ss][Ee][Tt]_[Pp][Aa][Rr]([ \t]+[0-9]{1,5})([ \t]+[0-9]{1,5})([ \t]+-{0,1}[0-9]{1,5})([ \t]+[0-9]{1,5})([ \t]+[0-9]{1,5})([ \t]+[0-9]{1,5})([ \t]+[0-9]{1,5})[ \t]*$"))
 			{
 
-				char* buffer_set_par_value;
+				char* set_par_contents;
 				
-				int set_par_value = 0;
+				int set_par_drv = 0;
 				
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Pp][Aa][Rr]([ \t]+[0-9]{1,5})([ \t]+[0-9]{1,5})([ \t]+-{0,1}[0-9]{1,5})([ \t]+[0-9]{1,5})([ \t]+[0-9]{1,5})([ \t]+[0-9]{1,5})([ \t]+[0-9]{1,5})[ \t]*$"))
 				{
-					set_par_value = FindIntegerValue(buffer);
-					buffer_set_par_value = buffer;
+					set_par_drv = FindIntegerValue(buffer);
+					set_par_contents = buffer;
 				}
 				else
 				{
-					set_par_value = FindIntegerValue(command_received_by_user.command_sent_by_user);
-					buffer_set_par_value = command_received_by_user.command_sent_by_user;
+					set_par_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					set_par_contents = command_received_by_user.command_sent_by_user;
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetPar(ctx, set_par_value, buffer_set_par_value);
+					SetPar(ctx, set_par_drv, set_par_contents);
 				}
 				else
 				{
-					SendFailedGetPar(set_par_value);
+					SendFailedGetPar(set_par_drv);
 				}
 			}				
 			
@@ -526,29 +525,26 @@ int main(int argc, char *argv[])
 			else if (reg_matches (buffer,"^[Hh][Oo][Mm][Ii][Nn][Gg][ \t]+[0-9]{1,2}[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Hh][Oo][Mm][Ii][Nn][Gg][ \t]+[0-9]{1,2}[ \t]*$"))
 			{
-				char* buffer_homing_value;
 				
-				int homing_value = 0;
+				int homing_drv = 0;
 				
 				if (reg_matches (buffer,"^[Hh][Oo][Mm][Ii][Nn][Gg][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					homing_value = FindIntegerValue(buffer);
-					buffer_homing_value = buffer;
+					homing_drv = FindIntegerValue(buffer);
 				}
 				else
 				{
-					homing_value = FindIntegerValue(command_received_by_user.command_sent_by_user);
-					buffer_homing_value = command_received_by_user.command_sent_by_user;
+					homing_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					Homing(ctx, homing_value);
-					GetMovePar(ctx, homing_value);
+					Homing(ctx, homing_drv);
+					GetMovePar(ctx, homing_drv);
 				}
 				else
 				{
-					output_module->Output("homing: " + to_string(homing_value) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
+					output_module->Output("homing: " + to_string(homing_drv) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
 				}
 			}
 			
@@ -557,28 +553,25 @@ int main(int argc, char *argv[])
 			else if (reg_matches (buffer,"^[Gg][Ee][Tt]_[Mm][Oo][Vv]_[Pp][Aa][Rr][ \t]+[0-9]{1,2}[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Mm][Oo][Vv]_[Pp][Aa][Rr][ \t]+[0-9]{1,2}[ \t]*$"))
 			{
-				char* buffer_mov_par_value;
 				
-				int mov_par_value = 0;
+				int get_mov_par_drv = 0;
 				
 				if (reg_matches (buffer,"^[Gg][Ee][Tt]_[Mm][Oo][Vv]_[Pp][Aa][Rr][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					mov_par_value = FindIntegerValue(buffer);
-					buffer_mov_par_value = buffer;
+					get_mov_par_drv = FindIntegerValue(buffer);
 				}
 				else
 				{
-					mov_par_value = FindIntegerValue(command_received_by_user.command_sent_by_user);
-					buffer_mov_par_value = command_received_by_user.command_sent_by_user;
+					get_mov_par_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					GetMovePar(ctx, mov_par_value);
+					GetMovePar(ctx, get_mov_par_drv);
 				}
 				else
 				{
-					output_module->Output("get_move_par: " + to_string(mov_par_value) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
+					output_module->Output("get_move_par: " + to_string(get_mov_par_drv) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
 				}
 			}	
 			
@@ -593,28 +586,28 @@ int main(int argc, char *argv[])
 				
 				//char* buffer_encoder_value;
 				
-				int encoder_value = 0;
+				int encoder_drv = 0;
 				
 				if (reg_matches (buffer,"^[Ee][Nn][Cc][Oo][Dd][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					encoder_value = FindIntegerValue(buffer);
+					encoder_drv = FindIntegerValue(buffer);
 				}
 				else
 				{
-					encoder_value = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					encoder_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
 					if (ENCODINGHOME == 1)
 					{
-						Homing(ctx, encoder_value);
+						Homing(ctx, encoder_drv);
 					}
-					Encode(ctx, encoder_value, drv_enc_parameter);
+					Encode(ctx, encoder_drv, drv_enc_parameter);
 				}
 				else
 				{
-					output_module->Output("get_encoder_par: " + to_string(encoder_value) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
+					output_module->Output("get_encoder_par: " + to_string(encoder_drv) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
 				}				
 			}		
 			
@@ -623,29 +616,29 @@ int main(int argc, char *argv[])
 			else if (reg_matches (buffer,"^[Mm][Oo][Vv][Ee]_[Tt][Oo][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Mm][Oo][Vv][Ee]_[Tt][Oo][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$"))
 			{
-				char* buffer_mov_par_value;
+				char* move_to_contents;
 				
-				int mov_par_value = 0;
+				int move_to_drv = 0;
 				
 				if (reg_matches (buffer,"^[Mm][Oo][Vv][Ee]_[Tt][Oo][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$"))
 				{
-					mov_par_value = FindIntegerValue(buffer);
-					buffer_mov_par_value = buffer;
+					move_to_drv = FindIntegerValue(buffer);
+					move_to_contents = buffer;
 				}
 				else
 				{
-					mov_par_value = FindIntegerValue(command_received_by_user.command_sent_by_user);
-					buffer_mov_par_value = command_received_by_user.command_sent_by_user;
+					move_to_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					move_to_contents = command_received_by_user.command_sent_by_user;
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					MoveTo(ctx, mov_par_value, buffer_mov_par_value);
-					GetMovePar(ctx, mov_par_value);
+					MoveTo(ctx, move_to_drv, move_to_contents);
+					GetMovePar(ctx, move_to_drv);
 				}
 				else
 				{
-					output_module->Output("get_move_par: " + to_string(mov_par_value) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
+					output_module->Output("get_move_par: " + to_string(move_to_drv) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
 				}
 			}				
 			
@@ -654,24 +647,24 @@ int main(int argc, char *argv[])
 			else if(reg_matches (buffer, "^[Gg][Ee][Tt]_[Aa][Ll][Ll]_[Pp][Aa][Rr][Aa][Mm][Ee][Tt][Ee][Rr][ \t]*$") ||
 					reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Aa][Ll][Ll]_[Pp][Aa][Rr][Aa][Mm][Ee][Tt][Ee][Rr][ \t]*$"))
 			{
-				int get_par_value = 0;
+				int get_par_drv = 0;
 					
 				if (STATE_CONNECT == 1)
 				{
-					for ( get_par_value = 1; get_par_value <= MAXIMUM_DRIVER ; get_par_value++)
+					for ( get_par_drv = 1; get_par_drv <= MAXIMUM_DRIVER ; get_par_drv++)
 					{
-						GetMovePar(ctx, get_par_value);
-						GetPar(ctx, get_par_value);
-						CheckPositionEncoderSingle(ctx, get_par_value);
+						GetMovePar(ctx, get_par_drv);
+						GetPar(ctx, get_par_drv);
+						CheckPositionEncoderSingle(ctx, get_par_drv);
 					}
 				}
 				else
 				{
-					for ( get_par_value = 1; get_par_value <= MAXIMUM_DRIVER ; get_par_value++)
+					for ( get_par_drv = 1; get_par_drv <= MAXIMUM_DRIVER ; get_par_drv++)
 					{	
-						SendFailedGetPar(get_par_value);
-						SendFailedGetMovPar(get_par_value);
-						SendFailedGetStatusPos(get_par_value);
+						SendFailedGetPar(get_par_drv);
+						SendFailedGetMovPar(get_par_drv);
+						SendFailedGetStatusPos(get_par_drv);
 					}	
 				}
 				
@@ -685,65 +678,62 @@ int main(int argc, char *argv[])
 				
 				int num_arg_homing = 0;
 				
-				int* homing_val = NULL;
+				int* homing_drv_array = NULL;
 				
 				char* homing_mult_punt = NULL; 
 				
 				int i = 0;
 				
-				char* buffer_homing_value;
+				char* homing_mult_contents;
 				
-				int homing_value = 0;
 				
 				if (reg_matches (buffer, "^[Hh][Oo][Mm][Ii][Nn][Gg]_[Mm][Uu][Ll][Tt]([ \t]+[0-9]{1,2}){1,14}[ \t]*$"))
 				{
-					homing_value = FindIntegerValue(buffer);
-					buffer_homing_value = buffer;
+					homing_mult_contents = buffer;
 				}
 				else
 				{
-					homing_value = FindIntegerValue(command_received_by_user.command_sent_by_user);
-					buffer_homing_value = command_received_by_user.command_sent_by_user;
+					homing_mult_contents = command_received_by_user.command_sent_by_user;
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
 					
-					num_arg_homing = FindNumArg(buffer_homing_value);
+					num_arg_homing = FindNumArg(homing_mult_contents);
 					
-					homing_val = (int*)malloc(num_arg_homing*sizeof(int));
+					homing_drv_array = (int*)malloc(num_arg_homing*sizeof(int));
 					
-					homing_mult_punt = buffer_homing_value;
+					homing_mult_punt = homing_mult_contents;
 					
 					for (i=0; i<num_arg_homing; i++)
 					{
 						homing_mult_punt = FindPointer(homing_mult_punt);
-						homing_val[i] = atoi(homing_mult_punt);
+						homing_drv_array[i] = atoi(homing_mult_punt);
 						
-						Homing(ctx, homing_val[i]);
-						GetMovePar(ctx, homing_val[i]);
+						Homing(ctx, homing_drv_array[i]);
+						GetMovePar(ctx, homing_drv_array[i]);
 					}
 					
-					free(homing_val);
+					free(homing_drv_array);
 
 				}
 				else
 				{
 					
-					num_arg_homing = FindNumArg(buffer_homing_value);
+					num_arg_homing = FindNumArg(homing_mult_contents);
 					
-					homing_val = (int*)malloc(num_arg_homing*sizeof(int));
+					homing_drv_array = (int*)malloc(num_arg_homing*sizeof(int));
 					
-					homing_mult_punt = buffer_homing_value;
+					homing_mult_punt = homing_mult_contents;
 					
 					for (i=0; i<num_arg_homing; i++)
 					{
 						homing_mult_punt = FindPointer(homing_mult_punt);
-						homing_val[i] = atoi(homing_mult_punt);
-						output_module->Output("homing: " + to_string(homing_val[i]) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
+						homing_drv_array[i] = atoi(homing_mult_punt);
+						output_module->Output("homing: " + to_string(homing_drv_array[i]) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
 					}
 					
-					free(homing_val);					
+					free(homing_drv_array);					
 					
 				}
 			}
@@ -756,7 +746,7 @@ int main(int argc, char *argv[])
 				
 				int num_arg_moveto = 0;
 				
-				int* moveto_val = NULL;
+				int* moveto_drv_array = NULL;
 				
 				char* moveto_mult_punt = NULL; 
 				
@@ -790,20 +780,20 @@ int main(int argc, char *argv[])
 					
 					num_arg_moveto = FindNumArg(buffer_moveto_value) - 1; //be careful to this hard coded value!
 					
-					moveto_val = (int*)malloc(num_arg_moveto*sizeof(int));
+					moveto_drv_array = (int*)malloc(num_arg_moveto*sizeof(int));
 					
 					moveto_mult_punt = FindPointer(buffer_moveto_value);
 					
 					for (i=0; i<num_arg_moveto; i++)
 					{
 						moveto_mult_punt = FindPointer(moveto_mult_punt);
-						moveto_val[i] = atoi(moveto_mult_punt);
+						moveto_drv_array[i] = atoi(moveto_mult_punt);
 						
-						MoveToMult(ctx, moveto_val[i], buffer_arg);
-						GetMovePar(ctx, moveto_val[i]);
+						MoveToMult(ctx, moveto_drv_array[i], buffer_arg);
+						GetMovePar(ctx, moveto_drv_array[i]);
 					}
 					
-					free(moveto_val);
+					free(moveto_drv_array);
 
 				}
 				else
@@ -811,18 +801,18 @@ int main(int argc, char *argv[])
 					
 					num_arg_moveto = FindNumArg(buffer_moveto_value) - 1; //be careful to this hard coded value!
 					
-					moveto_val = (int*)malloc(num_arg_moveto*sizeof(int));
+					moveto_drv_array = (int*)malloc(num_arg_moveto*sizeof(int));
 					
 					moveto_mult_punt = FindPointer(buffer_moveto_value);
 					
 					for (i=0; i<num_arg_moveto; i++)
 					{
 						moveto_mult_punt = FindPointer(moveto_mult_punt);
-						moveto_val[i] = atoi(moveto_mult_punt);
-						output_module->Output("get_move_par: " + to_string(moveto_val[i]) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
+						moveto_drv_array[i] = atoi(moveto_mult_punt);
+						output_module->Output("get_move_par: " + to_string(moveto_drv_array[i]) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
 					}
 					
-					free(moveto_val);					
+					free(moveto_drv_array);					
 					
 				}
 			}

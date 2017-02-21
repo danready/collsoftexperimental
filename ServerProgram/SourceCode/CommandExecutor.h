@@ -94,13 +94,13 @@ void CheckParAssoc (CommunicationObject& mioTCP, Input* mioinput, modbus_t* ctx)
 //check_encode_assoc
 void CheckEncodeAssoc (CommunicationObject& mioTCP, Input* mioinput, modbus_t* ctx);
 //get_par drvnum
-void GetPar (modbus_t* ctx, int get_par_value);
+void GetPar (modbus_t* ctx, int get_par_drv);
 //set_par drvnum max_vel acceleration deceleration PhaseCurrent AnalogOutput0
-void SetPar (modbus_t* ctx, int set_par_value, char* buffer);
+void SetPar (modbus_t* ctx, int set_par_drv, char* buffer);
 //homing drvnum
-void Homing(modbus_t* ctx, int homing_value);
+void Homing(modbus_t* ctx, int homing_drv);
 //get_mov_par drvnum
-void GetMovePar(modbus_t* ctx, int mov_par_value);
+void GetMovePar(modbus_t* ctx, int mov_par_drv);
 //move_to drvnum targetposition
 void MoveTo(modbus_t* ctx, int moveto_drv_num, char* buffer);
 //moveto_mult targetposition drvnum1 drvnum2 drvnum3 drvnum....
@@ -108,7 +108,7 @@ void MoveToMult(modbus_t* ctx, int moveto_drv_num, char* buffer);
 //encode drvnum
 void Encode(modbus_t* ctx, int encode_drv_num, EncoderStruct& drv_parameters);
 //setmult_par max_vel acceleration deceleration PhaseCurrent AnalogOutput0 drvnum1 drvnum2 drvnum3 drvnum....
-void SetParMult (modbus_t* ctx, int set_par_value, char* buffer);
+void SetParMult (modbus_t* ctx, int set_par_drv, char* buffer);
 //set_status_state drvnum status_state
 void SetStatusStateVariable (modbus_t* ctx, int set_status_state_drv, char* buffer);
 //get_status_state drvnum

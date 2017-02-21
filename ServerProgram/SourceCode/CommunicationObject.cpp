@@ -125,6 +125,9 @@ CommunicationObject::Main ()
 	  output_module->TcpUserArrayInsert (client_sock);
 	  output_module->Output("Welcome: Comunicazione col server stabilita\n");
 	  
+      //Warning: all the following functions like LogFileWriteString will write
+      //on the log file specified by LogFileSet. If you want to write on another file you have
+      //to use again the function LogFileSet.	  
 	  logfile->LogFileSet(comm_object_application_setup->application_setup_general_log_path);
 	  string tmp_address = inet_ntoa(client.sin_addr);
 	  logfile->LogFileWriteString(GetTime() + ": Assigned socket id " + to_string(client_sock) + " to client with ip " + tmp_address + "\n\n");
@@ -163,6 +166,9 @@ CommunicationObject::Worker (void *socket_desc)
       bzero (buffer, STANDARDBUFFERLIMIT);
       if ((read_size = recv (sock, buffer, STANDARDBUFFERLIMIT, MSG_NOSIGNAL)) <= 0)
 		{
+	      //Warning: all the following functions like LogFileWriteString will write
+	      //on the log file specified by LogFileSet. If you want to write on another file you have
+	      //to use again the function LogFileSet.			
 		  logfile->LogFileSet(comm_object_application_setup->application_setup_general_log_path);
 		  logfile->LogFileWriteString(GetTime() + ": User with socket id " + to_string(sock) + " disconnected\n\n");
 		  

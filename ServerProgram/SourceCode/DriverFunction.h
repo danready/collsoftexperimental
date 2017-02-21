@@ -71,8 +71,8 @@ int FindNumArg (char *yytext);
 modbus_t* Connect(modbus_t *ctx, bool* STATE_CONNECT, char* path);
 
 //Function used to read the serial number of the driver.
-//rc_arg will contain the status of the operation. 
-unsigned int ReadSerialNumber(modbus_t *ctx, int* rc_arg);
+//error_code will contain the status of the operation. 
+unsigned int ReadSerialNumber(modbus_t *ctx, int* error_code);
 
 //Function used to set the deceleration parameter.
 //header is the prefix of every output printed by the function.
@@ -144,78 +144,78 @@ int SetDelayCheckRot (modbus_t *ctx, uint16_t check_rot, string header);
 
 //Function used to read the max_vel parameter.
 //header is the prefix of every output printed by the function.
-uint16_t ReadMaxVel(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadMaxVel(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the vel_home parameter.
 //header is the prefix of every output printed by the function.
-int16_t ReadVelHome(modbus_t *ctx, int* rc_arg, string header);
+int16_t ReadVelHome(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the acceleration parameter.
 //header is the prefix of every output printed by the function.
-uint16_t ReadAcceleration(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadAcceleration(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the deceleration parameter.
 //header is the prefix of every output printed by the function.
-uint16_t ReadDeceleration(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadDeceleration(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the analog_output0 parameter.
 //header is the prefix of every output printed by the function.
-uint16_t ReadAnalogOutput0(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadAnalogOutput0(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the StatusState register.
 //header is the prefix of every output printed by the function.
-uint16_t ReadStatusState(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadStatusState(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the RequestState register.
 //header is the prefix of every output printed by the function.
-uint16_t ReadRequestState(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadRequestState(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the analog_input0 parameter.
 //header is the prefix of every output printed by the function.
-uint16_t ReadAnalogInput0(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadAnalogInput0(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the current position parameter.
 //header is the prefix of every output printed by the function.
-int ReadCurrentPosition(modbus_t *ctx, int* rc_arg, string header);
+int ReadCurrentPosition(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the phase_current parameter.
 //header is the prefix of every output printed by the function.
-uint16_t ReadPhaseCurrent(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadPhaseCurrent(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the home_done variable.
 //header is the prefix of every output printed by the function.
-uint16_t ReadHomeDone(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadHomeDone(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the Max_TargetPos variable.
 //header is the prefix of every output printed by the function.
-int ReadMaxTargetPosition(modbus_t *ctx, int* rc_arg, string header);
+int ReadMaxTargetPosition(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the encoder_min variable.
 //header is the prefix of every output printed by the function.
-uint16_t ReadEncoderMin(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadEncoderMin(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the encoder_max variable.
 //header is the prefix of every output printed by the function.
-uint16_t ReadEncoderMax(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadEncoderMax(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the PhaseCurrent_User variable.
 //header is the prefix of every output printed by the function.
-uint16_t ReadPhaseCurrentUser(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadPhaseCurrentUser(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the delta_analog_pos variable.
 //header is the prefix of every output printed by the function.
-uint16_t ReadDeltaAnalogPos(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadDeltaAnalogPos(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the delta_analog_neg variable.
 //header is the prefix of every output printed by the function.
-int16_t ReadDeltaAnalogNeg(modbus_t *ctx, int* rc_arg, string header);
+int16_t ReadDeltaAnalogNeg(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the delay_check_rot variable.
 //header is the prefix of every output printed by the function.
-uint16_t ReadDelayCheckRot(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadDelayCheckRot(modbus_t *ctx, int* error_code, string header);
 
 //Function used to read the fault register.
 //header is the prefix of every output printed by the function.
-uint16_t ReadFault(modbus_t *ctx, int* rc_arg, string header);
+uint16_t ReadFault(modbus_t *ctx, int* error_code, string header);
 
 #endif

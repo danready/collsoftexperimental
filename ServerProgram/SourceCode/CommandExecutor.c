@@ -212,6 +212,9 @@ void CheckDrvAssoc (CommunicationObject& mioTCP, Input* mioinput, modbus_t* ctx)
 		//It's well because it exists. If I can't open it, logfile attribute can_write is set to 0 so no segmentation fault will happened!
 		//N.B. Also the functions contained in DriverFunction.c used the LogFile singleton so the programmer has
 		//to set the path of the correct log file before writing to the log file.
+		//Warning: all the following functions like LogFileWriteString will write
+		//on the log file specified by LogFileSet. If you want to write on another file you have
+		//to use again the function LogFileSet.		
 		logfile->LogFileSet(command_executor_application_setup->application_setup_serial_drv_log_file_path);
 		
 		//This string will contained the buffered output that will be sent to the server.
@@ -321,8 +324,11 @@ void CheckDrvAssoc (CommunicationObject& mioTCP, Input* mioinput, modbus_t* ctx)
 			
 			int i = 0;
 			max_log = max_log + 1;
-			
-			//It's well because it exists. If I can't open it, logfile attribute can_write is set to 0 so no segmentation fault will happened!
+						
+			//It's fine because it exists. If I can't open it, logfile attribute can_write is set to 0 so no segmentation fault will happened!
+			//Warning: all the following functions like LogFileWriteString will write
+			//on the log file specified by LogFileSet. If you want to write on another file you have
+			//to use again the function LogFileSet.			
 			logfile->LogFileSet(command_executor_application_setup->application_setup_serial_drv_log_file_path);
 			
 			logfile->LogFileWriteString("\nLog " + to_string(max_log) + " \n");
@@ -396,6 +402,9 @@ void CheckDrvAssoc (CommunicationObject& mioTCP, Input* mioinput, modbus_t* ctx)
 		//actual serial numbers to the log file. 		
 		if (buffer[0] == 'y' || command_received_by_user.command_sent_by_user[0] == 'y')
 		{
+			//Warning: all the following functions like LogFileWriteString will write
+			//on the log file specified by LogFileSet. If you want to write on another file you have
+			//to use again the function LogFileSet.			
 			logfile->LogFileSet(command_executor_application_setup->application_setup_serial_drv_log_file_path);
 			GeneralStatus.assoc_file_status = 1;
 			output_module->Output("InternalStatusSerial: " + to_string(GeneralStatus.assoc_file_status)  + "\n");
@@ -636,6 +645,9 @@ void CheckParAssoc (CommunicationObject& mioTCP, Input* mioinput, modbus_t* ctx)
 			max_log = max_log + 1;
 			
 			//file exists
+			//Warning: all the following functions like LogFileWriteString will write
+			//on the log file specified by LogFileSet. If you want to write on another file you have
+			//to use again the function LogFileSet.			
 			logfile->LogFileSet(command_executor_application_setup->application_setup_file_par_log_path);
 			
 			logfile->LogFileWriteString("\nLog " + to_string(max_log) + " \n");
@@ -747,6 +759,9 @@ void CheckParAssoc (CommunicationObject& mioTCP, Input* mioinput, modbus_t* ctx)
 		//actual parameters to the log file FileParLog.txt.		
 		if (buffer[0] == 'y' || command_received_by_user.command_sent_by_user[0] == 'y')
 		{
+			//Warning: all the following functions like LogFileWriteString will write
+			//on the log file specified by LogFileSet. If you want to write on another file you have
+			//to use again the function LogFileSet.			
 			logfile->LogFileSet(command_executor_application_setup->application_setup_file_par_log_path);
 			
 			GeneralStatus.par_file_status = 1;
@@ -917,6 +932,9 @@ void CheckEncodeAssoc (CommunicationObject& mioTCP, Input* mioinput, modbus_t* c
 			max_log = max_log + 1;
 			
 			//file exists
+			//Warning: all the following functions like LogFileWriteString will write
+			//on the log file specified by LogFileSet. If you want to write on another file you have
+			//to use again the function LogFileSet.			
 			logfile->LogFileSet(command_executor_application_setup->application_setup_encoder_log_path);
 			
 			logfile->LogFileWriteString("\nLog " + to_string(max_log) + " \n");
@@ -1012,6 +1030,9 @@ void CheckEncodeAssoc (CommunicationObject& mioTCP, Input* mioinput, modbus_t* c
 		//actual parameters to the log file EncoderLog.txt.			
 		if (buffer[0] == 'y' || command_received_by_user.command_sent_by_user[0] == 'y')
 		{
+			//Warning: all the following functions like LogFileWriteString will write
+			//on the log file specified by LogFileSet. If you want to write on another file you have
+			//to use again the function LogFileSet.			
 			logfile->LogFileSet(command_executor_application_setup->application_setup_file_par_log_path);
 			
 			GeneralStatus.encoder_file_status = 1;
@@ -1051,7 +1072,7 @@ void CheckEncodeAssoc (CommunicationObject& mioTCP, Input* mioinput, modbus_t* c
 //This function collects the parameters from the driver indicated by get_par_value.
 //The parameters collected are: max_vel, vel_home, acceleration, deceleration, phase_current,
 //AnalogOutput0.
-void GetPar (modbus_t* ctx, int get_par_value)
+void GetPar (modbus_t* ctx, int get_par_drv)
 {
 	//This function flushes the pending datagrams to the drivers.
 	modbus_flush(ctx);
@@ -1071,8 +1092,8 @@ void GetPar (modbus_t* ctx, int get_par_value)
 	//This struct collects the parameters obtained from the driver.
 	ParameterStruct tmp_parameter_struct;
 	
-	//Try to set the get_par_value as the active driver.
-	function_status = modbus_set_slave(ctx, get_par_value);
+	//Try to set the get_par_drv as the active driver.
+	function_status = modbus_set_slave(ctx, get_par_drv);
 	if (function_status == -1) 
 		error = -1;	
 	//If success	
@@ -1108,22 +1129,22 @@ void GetPar (modbus_t* ctx, int get_par_value)
 	//If all communications are okay.
 	if (error != -1)
 	{
-		output_module->Output("getpar " + to_string(get_par_value) + " MaxVel " + to_string(tmp_parameter_struct.max_vel) + "\n");
+		output_module->Output("getpar " + to_string(get_par_drv) + " MaxVel " + to_string(tmp_parameter_struct.max_vel) + "\n");
 		//sleep(1);
-		output_module->Output("getpar " + to_string(get_par_value) + " VelHome " + to_string(tmp_parameter_struct.vel_home) + "\n");
+		output_module->Output("getpar " + to_string(get_par_drv) + " VelHome " + to_string(tmp_parameter_struct.vel_home) + "\n");
 		//sleep(1);		
-		output_module->Output("getpar " + to_string(get_par_value) + " Acceleration " + to_string(tmp_parameter_struct.acceleration) + "\n");
+		output_module->Output("getpar " + to_string(get_par_drv) + " Acceleration " + to_string(tmp_parameter_struct.acceleration) + "\n");
 		//sleep(1);
-		output_module->Output("getpar " + to_string(get_par_value) + " Deceleration " + to_string(tmp_parameter_struct.deceleration) + "\n");
+		output_module->Output("getpar " + to_string(get_par_drv) + " Deceleration " + to_string(tmp_parameter_struct.deceleration) + "\n");
 		//sleep(1);
-		output_module->Output("getpar " + to_string(get_par_value) + " PhaseCurrent " + to_string(tmp_parameter_struct.phase_current) + "\n");
+		output_module->Output("getpar " + to_string(get_par_drv) + " PhaseCurrent " + to_string(tmp_parameter_struct.phase_current) + "\n");
 		//sleep(1);
-		output_module->Output("getpar " + to_string(get_par_value) + " AnalogOutput0 " + to_string(tmp_parameter_struct.analog_output0) + "\n");		
+		output_module->Output("getpar " + to_string(get_par_drv) + " AnalogOutput0 " + to_string(tmp_parameter_struct.analog_output0) + "\n");		
 	}
 	//If at least one communication is failed.
 	else
 	{
-		SendFailedGetPar(get_par_value);
+		SendFailedGetPar(get_par_drv);
 	}
 	
 }
@@ -1135,7 +1156,7 @@ void GetPar (modbus_t* ctx, int get_par_value)
 //stored a consistent set_par command. This is guaranteed by the check
 //of the command in Main.c . The correct syntax of the command is:
 //set_par drvnum max_vel acceleration deceleration PhaseCurrent AnalogOutput0.
-void SetPar (modbus_t* ctx, int set_par_value, char* buffer)
+void SetPar (modbus_t* ctx, int set_par_drv, char* buffer)
 {
 
 	//This function flushes the pending datagrams to the drivers.
@@ -1292,7 +1313,7 @@ void SetPar (modbus_t* ctx, int set_par_value, char* buffer)
 	error_status = 0;
 
 	//Try to set the set_par_value as the active driver.
-	function_status = modbus_set_slave(ctx, set_par_value);
+	function_status = modbus_set_slave(ctx, set_par_drv);
 	if (function_status == -1) 
 		error_status = -1;	
 	//If success
@@ -1322,12 +1343,12 @@ void SetPar (modbus_t* ctx, int set_par_value, char* buffer)
 	//If no error occurred.
 	if (error_status != -1)
 	{
-		GetPar(ctx, set_par_value);
+		GetPar(ctx, set_par_drv);
 	}
 	//If at least one error occurred.
 	else
 	{
-		SendFailedGetPar(set_par_value);
+		SendFailedGetPar(set_par_drv);
 	}
 	
 }
@@ -1341,7 +1362,7 @@ void SetPar (modbus_t* ctx, int set_par_value, char* buffer)
 //stored a consistent set_par command. This is guaranteed by the check
 //of the command in Main.c . The correct syntax of the command is:
 //set_par drvnum max_vel acceleration deceleration PhaseCurrent AnalogOutput0.
-void SetParMult (modbus_t* ctx, int set_par_value, char* buffer)
+void SetParMult (modbus_t* ctx, int set_par_drv, char* buffer)
 {
 
 	//This function flushes the pending datagrams to the drivers.
@@ -1498,7 +1519,7 @@ void SetParMult (modbus_t* ctx, int set_par_value, char* buffer)
 	error_status = 0;
 
 	//Try to set the set_par_value as the active driver.
-	function_status = modbus_set_slave(ctx, set_par_value);
+	function_status = modbus_set_slave(ctx, set_par_drv);
 	if (function_status == -1) 
 		error_status = -1;
 	//If success	
@@ -1528,12 +1549,12 @@ void SetParMult (modbus_t* ctx, int set_par_value, char* buffer)
 	//If no error occurred.	
 	if (error_status != -1)
 	{
-		GetPar(ctx, set_par_value);
+		GetPar(ctx, set_par_drv);
 	}
 	//If at least one error occurred.	
 	else
 	{
-		SendFailedGetPar(set_par_value);
+		SendFailedGetPar(set_par_drv);
 	}
 	
 }
@@ -1541,7 +1562,7 @@ void SetParMult (modbus_t* ctx, int set_par_value, char* buffer)
 //This function orders the driver indicated by homing_value to execute
 //the homing procedure.
 //See firmware documentation for more information about the procedure.  
-void Homing(modbus_t* ctx, int homing_value)
+void Homing(modbus_t* ctx, int homing_drv)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -1560,7 +1581,7 @@ void Homing(modbus_t* ctx, int homing_value)
 	output_module = OutputModule::Instance();	
 	
 	//Try to set the set_par_value as the active driver.	
-	function_status = modbus_set_slave(ctx, homing_value);
+	function_status = modbus_set_slave(ctx, homing_drv);
 	
 	//If success
 	if (function_status == -1) 
@@ -1637,7 +1658,7 @@ void Homing(modbus_t* ctx, int homing_value)
 //for checking the position of the engine mastered by the driver.
 //Since the operation requires the driver to have already accomplished the
 //previous operation, a check to the status of the driver is performed.
-void GetMovePar(modbus_t* ctx, int mov_par_value)
+void GetMovePar(modbus_t* ctx, int mov_par_drv)
 {
 
 	//This function flushes the pending datagrams to the drivers.	
@@ -1661,7 +1682,7 @@ void GetMovePar(modbus_t* ctx, int mov_par_value)
 	int analog_input0 = -1;
 	
 	//Try to set the driver indicated by the mov_par_value as the active one.
-	function_status = modbus_set_slave(ctx, mov_par_value);
+	function_status = modbus_set_slave(ctx, mov_par_drv);
 	
 	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
 	//a neutral value to initialized the variable.
@@ -1691,7 +1712,7 @@ void GetMovePar(modbus_t* ctx, int mov_par_value)
 	
 	if (count == LIMITSTATUS_STATE)
 	{
-		SendFailedGetMovPar(mov_par_value);
+		SendFailedGetMovPar(mov_par_drv);
 		return;
 	}
 	
@@ -1716,15 +1737,15 @@ void GetMovePar(modbus_t* ctx, int mov_par_value)
 	//If success.
 	if (error != -1)
 	{   
-		output_module->Output("get_mov_par " + to_string(mov_par_value) + " CurrentPosition " + to_string(current_position) + "\n");
+		output_module->Output("get_mov_par " + to_string(mov_par_drv) + " CurrentPosition " + to_string(current_position) + "\n");
 		//sleep(1);
-		output_module->Output("get_mov_par " + to_string(mov_par_value) + " AnalogInput0 " + to_string(analog_input0) + "\n");
+		output_module->Output("get_mov_par " + to_string(mov_par_drv) + " AnalogInput0 " + to_string(analog_input0) + "\n");
 		//sleep(1);		
 	}
 	//If an error occurred, a negative response is sent to the client.
 	else
 	{
-		SendFailedGetMovPar(mov_par_value);
+		SendFailedGetMovPar(mov_par_drv);
 	}
 
 }
@@ -2575,6 +2596,9 @@ void LoadEncoderFromFile()
 	if( access( command_executor_application_setup->application_setup_encoder_log_path, F_OK ) != -1 ) {
 		
 		//~ //file exists
+		//~ Warning: all the following functions like LogFileWriteString will write
+		//~ on the log file specified by LogFileSet. If you want to write on another file you have
+		//~ to use again the function LogFileSet.		
 		//~ logfile->LogFileSet(command_executor_application_setup->application_setup_encoder_log_path);
 		
 		//Finding the last values from the EncoderLog.txt file
