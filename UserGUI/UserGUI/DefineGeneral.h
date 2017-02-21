@@ -13,6 +13,8 @@
 #ifndef DEFINEGENERAL_H
 #define DEFINEGENERAL_H
 
+#define EXPERT_GUI_PATH "../../ExpertGUI/bin/ExpertGUI"
+
 //Ip of the CollSoft server.
 //#define COLLSOFT_IP "192.84.144.245"
 #define COLLSOFT_IP "127.0.0.1"

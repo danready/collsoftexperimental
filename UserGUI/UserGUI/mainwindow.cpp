@@ -562,7 +562,9 @@ void MainWindow::on_ExpertModeButton_1_clicked()
     {
         main_window_log_file->LogFileUserGui_WriteOnLogFile("Attempt to access the expert mode from octagonal movimentation tab completed!");
         QProcess* process = new QProcess();
-        QString file = "../../ExpertGUI/bin/ExpertGUI " + enable_1->GetAuthenticationUserName();
+        //Avoiding cast problems
+        QString tmp(EXPERT_GUI_PATH);
+        QString file = tmp + ' ' + enable_1->GetAuthenticationUserName();
         process->start(file);
     }
     else if (accepted == true && enable_1->GetAuthenticationValue() == 0)
@@ -592,7 +594,9 @@ void MainWindow::on_ExpertModeButton_2_clicked()
     {
         main_window_log_file->LogFileUserGui_WriteOnLogFile("Attempt to access the expert mode from asymmetric movimentation tab completed!");
         QProcess* process = new QProcess();
-        QString file = "../../ExpertGUI/bin/ExpertGUI " + enable_1->GetAuthenticationUserName();
+        //Avoiding cast problems
+        QString tmp(EXPERT_GUI_PATH);
+        QString file = tmp + ' ' + enable_1->GetAuthenticationUserName();
         process->start(file);
     }
     else if (accepted == true && enable_1->GetAuthenticationValue() == 0)
@@ -622,7 +626,9 @@ void MainWindow::on_ExpertModeButton_3_clicked()
     {
         main_window_log_file->LogFileUserGui_WriteOnLogFile("Attempt to access the expert mode from singular movimentation tab completed!");
         QProcess* process = new QProcess();
-        QString file = "../../ExpertGUI/bin/ExpertGUI " + enable_1->GetAuthenticationUserName();
+        //Avoiding cast problems
+        QString tmp(EXPERT_GUI_PATH);
+        QString file = tmp + ' ' + enable_1->GetAuthenticationUserName();
         process->start(file);
     }
     else if (accepted == true && enable_1->GetAuthenticationValue() == 0)
