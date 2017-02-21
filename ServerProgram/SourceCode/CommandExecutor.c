@@ -1757,7 +1757,7 @@ void GetMovePar(modbus_t* ctx, int mov_par_drv)
 //The correct syntax of the command is: move_to drvnum val .
 //In order to accomplished the movimentation is performed a check to the status of the
 //driver: it has to have already terminated the previous operation.
-void MoveTo(modbus_t* ctx, int moveto_drv_num, char* buffer)
+void MoveTo(modbus_t* ctx, int moveto_drv_num, int moveto_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -1771,17 +1771,8 @@ void MoveTo(modbus_t* ctx, int moveto_drv_num, char* buffer)
 	//with the driver.	
 	int error_status = 0;
 	
-	//This variable is used to stored the TargetPosition obtained by buffer.	
-	int moveto_value = 0;
-	
 	//This variable is useful to browse the buffer in order to find the TargetPosition val.
 	char* mypunt;
-	
-	//Skipping "move_to" and "drvnum".
-	mypunt = FindPointer(buffer);
-	
-	//Retrieving "val" that is the CountTargetPosition and storing it in moveto_value.
-	moveto_value = FindIntegerValue(mypunt);	
 	
 	//Singleton to manage the output of the program.	
 	OutputModule* output_module;
@@ -1840,122 +1831,6 @@ void MoveTo(modbus_t* ctx, int moveto_drv_num, char* buffer)
 		if (function_status != -1)
 		{
 			//Requesting a relative movimentation.
-			function_status = SetRequestState(ctx, STATEMOVEREL, "Exp :");
-			if (function_status != -1)
-			{
-				output_module->Output("Exp: Movimentation done\n");
-			}
-			else
-			{	
-				error_status = -1;
-				output_module->Output("Exp: error, movimentation not done: set request state failed\n");
-				return;	
-			}
-		}
-		else
-		{
-			output_module->Output("Exp: error, movimentation not done because status state is blocked to an invalid state\n");
-			return;	
-		}
-	}
-	else
-	{
-		output_module->Output("Exp: error, movimentation not done because status state is blocked to an invalid state\n");
-		return;		
-	}
-}
-
-
-//N.B. This function is the of the MoveTo one in except of the syntax of the command stored
-//in buffer.
-
-//This function set the CountTargetPosition of the driver indicated by moveto_drv_num
-//to the values found in buffer.
-//N.B. The precondition to execute the function is that in buffer is stored a valid
-//move_to command. This is guaranteed by the check performed in Main.c.
-//The correct syntax of the command is: move_to drvnum val .
-//In order to accomplished the movimentation is performed a check to the status of the
-//driver: it has to have already terminated the previous operation.
-void MoveToMult(modbus_t* ctx, int moveto_drv_num, char* buffer)
-{
-
-	//This function flushes the pending datagrams to the drivers.		
-	modbus_flush(ctx);
-	
-	//This variable will be used to record the success status of the
-	//the functions interacting with the drivers.	
-	int function_status = 0;
-	
-	//This variable records the presence of an error in the communication
-	//with the driver.	
-	int error_status = 0;
-		
-	//Retrieving "val" that is the CountTargetPosition and storing it in moveto_value.		
-	int moveto_value = 0;
-	
-	//This variable is useful to browse the buffer in order to find the TargetPosition val.
-	char* mypunt;
-	
-	//Retrieving "val" that is the CountTargetPosition and storing it in moveto_value.	
-	moveto_value = FindIntegerValue(buffer);
-	
-	//Singleton to manage the output of the program.	
-	OutputModule* output_module;
-	output_module = OutputModule::Instance();	
-	
-	//Try to set the driver indicated by the moveto_drv_num as the active one.	
-	function_status = modbus_set_slave(ctx, moveto_drv_num);
-	if (function_status == -1) 
-	{	
-		error_status = -1;	
-		output_module->Output("Exp: error, movimentation not done: set slave failed\n");
-		return;
-	}
-	
-	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
-	//a neutral value to initialized the variable.		
-	uint16_t status_state = FAILED_STATUS_STATE_RC;
-	
-	//This variable records the success following functions.	
-	int rc;
-	
-	//Try to read the actual state.		
-	status_state = ReadStatusState(ctx, &rc, "Exp: "); //Questo rc non va messo qui!!!!
-
-	//status_state = 4 or status_state = 5 means that the previous operation is terminated.
-	//Obviously these information are hard coded!	
-	//count is a timeout: if the operation is not ultimated in the times specified by LIMITSTATUS_STATE,
-	//the homing function is aborted.
-	int count = 0;
-	while (status_state != 4 && status_state != 5 && status_state != 0 && count < LIMITSTATUS_STATE)
-	{
-		usleep(SLEEPSTATUS_STATE);
-		count ++;
-		status_state = ReadStatusState(ctx, &rc, "Exp: ");
-		
-		if (rc == -1)
-			status_state = FAILED_STATUS_STATE_RC;
-	}
-	
-	if (count == LIMITSTATUS_STATE)
-	{
-		output_module->Output("Exp: error, movimentation not done because status state is blocked to an invalid state\n");
-		return;
-	}
-	
-	//The firmware requires the software to set to 0 the status state before executing other operations.	
-	function_status = SetStatusState(ctx, 0, "Exp: ");
-	if (function_status == -1) error_status = -1;
-	
-	//If no error occurred.	
-	if (error_status != -1)
-	{
-		//Setting CountTargetPosition.		
-		//function_status = SetCountTargetPosition(ctx, moveto_value, "Exp :");
-		function_status = SetTargetPosition(ctx, moveto_value, "Exp :");
-		if (function_status != -1)
-		{
-			//Requesting a relative movimentation.		
 			function_status = SetRequestState(ctx, STATEMOVEREL, "Exp :");
 			if (function_status != -1)
 			{
@@ -2072,17 +1947,12 @@ void Encode(modbus_t* ctx, int encode_drv_num, EncoderStruct& drv_parameters)
 	//to check the driver polarity before calling this procedure.
 	int encode_position = 0;
 	
-	//String to compose a move_to command in order to use the MoveTo function.
-	string tmp_buffer;
-	
 	//Starting the encoding procedure.
 	for (encode_position = 0; encode_position >= MAXEXTENSION; encode_position -= ENCODINGSTEP )	
 	{
-		//Composing a valid move_to command to use MoveTo function.
-		tmp_buffer = "move_to " + to_string(encode_drv_num) + " " + to_string(encode_position);
 		
 		//Moving the engine.
-		MoveTo(ctx, encode_drv_num, (char*) tmp_buffer.c_str());
+		MoveTo(ctx, encode_drv_num, encode_position);
 
 		//status_state = 4 or status_state = 5 means that the previous operation is terminated.
 		//Obviously these information are hard coded!	
@@ -2290,145 +2160,6 @@ int CheckPositionEncoderSingle (modbus_t* ctx, int position_encoder_drv_num)
 		output_module->Output("get_pos_status " + to_string(position_encoder_drv_num) + " " + to_string(-2)  + "\n");
 		
 		//Unable to accomplished the operation due to a communication error.
-		return -2; 
-	}
-
-}
-
-//This function is the same of CheckPositionEncoderSingle but CheckPositionEncoderSingleWarning
-//sends a warning message to the client when loading_encoder_from_file_okay is equal to 0 
-//(it means that the user has not already loaded the encoding values in EncoderArrayValue 
-//using the command load_encoder_from_file).
-//This function performs the comparison between the position declared by 
-//the driver (the value of the register Position) and the position 
-//retrieved by the encoder (the value of the register AnalogInput0).
-//The driver is indicated by position_encoder_drv_num.
-//
-//Return values:
-//0 all okay
-//-1 real position mismatch with estimated position
-//-2 problem communicating with the driver
-//everything > 0 the driver is blocked in an invalid state
-int CheckPositionEncoderSingleWarning (modbus_t* ctx, int position_encoder_drv_num)
-{
-
-	//Singleton to manage the output of the program.	
-	OutputModule* output_module;
-	output_module = OutputModule::Instance();
-
-	//If the user has not loaded the encoding values from EncoderLog.txt.
-	if (loading_encoder_from_file_okay == 0)
-		output_module->Output("Check position warning! You have to press the button Load Encoder From File in General tab or you have to digit load_encoder_from_file command in order to accomplished the check position procedure in a consistent way!\n");
-	
-	//This function flushes the pending datagrams to the drivers.			
-	modbus_flush(ctx);
-	
-	//This variable will be used to record the success status of the
-	//the functions interacting with the drivers.	
-	int function_status = 0;
-	
-	//This variable records the presence of an error in the communication
-	//with the driver.	
-	int error_status = 0;
-	
-	//Variables used to stored the current position and the AnalogInput0.	
-	int current_position = 0;
-	int analog_input0 = 0;
-	
-	//Try to set the driver indicated by the moveto_drv_num as the active one.			
-	function_status = modbus_set_slave(ctx, position_encoder_drv_num);
-	if (function_status == -1) 
-	{	
-		error_status = -1;	
-		//output_module->Output("Exp: error, movimentation not done: set slave failed\n");
-		output_module->Output("get_pos_status " + to_string(position_encoder_drv_num) + " " + to_string(-2)  + "\n");
-		return -2;
-	}
-	
-	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
-	//a neutral value to initialized the variable.	
-	uint16_t status_state = FAILED_STATUS_STATE_RC;
-	
-	//This variable records the success following functions.		
-	int rc;
-	
-	//Try to read the actual state.			
-	status_state = ReadStatusState(ctx, &rc, "Exp: "); //Questo rc non va messo qui!!!!
-
-	//status_state = 4 or status_state = 5 means that the previous operation is terminated.
-	//Obviously these information are hard coded!	
-	//count is a timeout: if the operation is not ultimated in the times specified by LIMITSTATUS_STATE,
-	//the homing function is aborted.
-	int count = 0;
-	while (status_state != 4 && status_state != 5 && status_state != 0 && count < LIMITSTATUS_STATE)
-	{
-		usleep(SLEEPSTATUS_STATE);
-		count ++;
-		status_state = ReadStatusState(ctx, &rc, "Exp: ");
-		
-		if (rc == -1)
-			status_state = FAILED_STATUS_STATE_RC;		
-	}
-	
-	if (count == LIMITSTATUS_STATE)
-	{
-		//output_module->Output("Exp: error, movimentation not done because status state is blocked to an invalid state\n");
-		output_module->Output("get_pos_status " + to_string(position_encoder_drv_num) + " " + to_string(status_state)  + "\n");
-		return status_state;
-	}
-	
-	//Retrieving current position
-	current_position = ReadCurrentPosition(ctx, &function_status, "Exp: ");
-	if (function_status == -1) 
-		error_status = -1;
-		
-	//Retrieving AnalogInput0			
-	analog_input0 = ReadAnalogInput0(ctx, &function_status, "Exp: ");
-	if (function_status == -1) 
-		error_status = -1;
-	
-	//If no error occurred, try to estimate the value of analog_input0
-	//starting from the current position of the driver	
-	if (error_status != -1)
-	{
-		double tmp_estimated_value = 0;
-		double tmp_current_position_value = (double) current_position;
-		int paragon = 0;
-		tmp_estimated_value = EncoderArrayValue[position_encoder_drv_num - 1].slope*tmp_current_position_value + 
-		EncoderArrayValue[position_encoder_drv_num - 1].intercept;
-		paragon = (int)round(tmp_estimated_value);
-		
-		//output_module->Output("Il valore di AnalogInput(0) e': " + to_string(analog_input0) + "\n");
-		//output_module->Output("Quello stimato e': " + to_string(paragon) + "\n");
-		
-		//Compare the value of analog_input0 retrieved from the driver
-		//and the estimated one.
-		
-		//Position mismath		
-		if ( abs(paragon - analog_input0) > POSITION_TOLERATED_ERROR )
-		{
-			//output_module->Output("I due valori non coincidono\n");
-			output_module->Output("get_pos_status " + to_string(position_encoder_drv_num) + " " + to_string(-1)  + "\n");
-			
-			//Position mismath	
-			return -1;
-		}
-		else
-		{
-			//Position match
-			//output_module->Output("I due valori coincidono!!!!\n");
-			output_module->Output("get_pos_status " + to_string(position_encoder_drv_num) + " " + to_string(0)  + "\n");
-			
-			//Position match
-			return 0;
-		}
-
-	}
-	else
-	{
-		output_module->Output("get_pos_status " + to_string(position_encoder_drv_num) + " " + to_string(-2)  + "\n");
-		
-		//Unable to accomplished the operation due to a communication error.		
 		return -2; 
 	}
 
@@ -2665,7 +2396,7 @@ void ReadActualEncoderValue()
 	output_module->Output(output_tmp);
 }
 
-void SetStatusStateVariable(modbus_t* ctx, int status_state_drv, char* buffer)
+void SetStatusStateVariable(modbus_t* ctx, int status_state_drv, uint16_t status_state_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -2674,18 +2405,6 @@ void SetStatusStateVariable(modbus_t* ctx, int status_state_drv, char* buffer)
 	//This variable records the presence of an error in the communication
 	//with the driver.	
 	int error_status = 0;
-	
-	//This variable is used to stored the TargetPosition obtained by buffer.	
-	uint16_t status_state_value = 0;
-	
-	//This variable is useful to browse the buffer in order to find the TargetPosition val.
-	char* mypunt;
-	
-	//Skipping "move_to" and "drvnum".
-	mypunt = FindPointer(buffer);
-	
-	//Retrieving "val" that is the status_state value and storing it in status_state_value.
-	status_state_value = FindIntegerValue(mypunt);	
 	
 	//Singleton to manage the output of the program.	
 	OutputModule* output_module;
@@ -2756,7 +2475,7 @@ void GetStatusStateVariable(modbus_t* ctx, int status_state_drv)
 	}
 }
 
-void SetRequestStateVariable(modbus_t* ctx, int request_state_drv, char* buffer)
+void SetRequestStateVariable(modbus_t* ctx, int request_state_drv, uint16_t request_state_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -2765,18 +2484,6 @@ void SetRequestStateVariable(modbus_t* ctx, int request_state_drv, char* buffer)
 	//This variable records the presence of an error in the communication
 	//with the driver.	
 	int error_status = 0;
-	
-	//This variable is used to stored the TargetPosition obtained by buffer.	
-	uint16_t request_state_value = 0;
-	
-	//This variable is useful to browse the buffer in order to find the TargetPosition val.
-	char* mypunt;
-	
-	//Skipping "move_to" and "drvnum".
-	mypunt = FindPointer(buffer);
-	
-	//Retrieving "val" that is the status_state value and storing it in status_state_value.
-	request_state_value = FindIntegerValue(mypunt);	
 	
 	//Singleton to manage the output of the program.	
 	OutputModule* output_module;
@@ -2981,7 +2688,7 @@ void CheckFault(modbus_t* ctx, int check_fault_drv)
 }
 
 
-void SetHomeDoneVariable(modbus_t* ctx, int home_done_drv, char* buffer)
+void SetHomeDoneVariable(modbus_t* ctx, int home_done_drv, uint16_t home_done_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -2990,18 +2697,6 @@ void SetHomeDoneVariable(modbus_t* ctx, int home_done_drv, char* buffer)
 	//This variable records the presence of an error in the communication
 	//with the driver.	
 	int error_status = 0;
-	
-	//This variable is used to stored the TargetPosition obtained by buffer.	
-	uint16_t home_done_value = 0;
-	
-	//This variable is useful to browse the buffer in order to find the TargetPosition val.
-	char* mypunt;
-	
-	//Skipping "move_to" and "drvnum".
-	mypunt = FindPointer(buffer);
-	
-	//Retrieving "val" that is the status_state value and storing it in status_state_value.
-	home_done_value = FindIntegerValue(mypunt);	
 	
 	//Singleton to manage the output of the program.	
 	OutputModule* output_module;
@@ -3072,7 +2767,7 @@ void GetHomeDoneVariable(modbus_t* ctx, int home_done_drv)
 	}
 }
 
-void SetEncoderMaxVariable(modbus_t* ctx, int encoder_max_drv, char* buffer)
+void SetEncoderMaxVariable(modbus_t* ctx, int encoder_max_drv, uint16_t encoder_max_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -3081,18 +2776,6 @@ void SetEncoderMaxVariable(modbus_t* ctx, int encoder_max_drv, char* buffer)
 	//This variable records the presence of an error in the communication
 	//with the driver.	
 	int error_status = 0;
-	
-	//This variable is used to stored the TargetPosition obtained by buffer.	
-	uint16_t encoder_max_value = 0;
-	
-	//This variable is useful to browse the buffer in order to find the TargetPosition val.
-	char* mypunt;
-
-	//Skipping words
-	mypunt = FindPointer(buffer);
-	
-	//Retrieving "val" that is the status_state value and storing it in status_state_value.
-	encoder_max_value = FindIntegerValue(mypunt);	
 	
 	//Singleton to manage the output of the program.	
 	OutputModule* output_module;
@@ -3163,7 +2846,7 @@ void GetEncoderMaxVariable(modbus_t* ctx, int encoder_max_drv)
 	}
 }
 
-void SetEncoderMinVariable(modbus_t* ctx, int encoder_min_drv, char* buffer)
+void SetEncoderMinVariable(modbus_t* ctx, int encoder_min_drv, uint16_t encoder_min_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -3172,18 +2855,6 @@ void SetEncoderMinVariable(modbus_t* ctx, int encoder_min_drv, char* buffer)
 	//This variable records the presence of an error in the communication
 	//with the driver.	
 	int error_status = 0;
-	
-	//This variable is used to stored the TargetPosition obtained by buffer.	
-	uint16_t encoder_min_value = 0;
-	
-	//This variable is useful to browse the buffer in order to find the TargetPosition val.
-	char* mypunt;
-
-	//Skipping words
-	mypunt = FindPointer(buffer);
-	
-	//Retrieving "val" that is the status_state value and storing it in status_state_value.
-	encoder_min_value = FindIntegerValue(mypunt);	
 	
 	//Singleton to manage the output of the program.	
 	OutputModule* output_module;
@@ -3254,7 +2925,7 @@ void GetEncoderMinVariable(modbus_t* ctx, int encoder_min_drv)
 	}
 }
 
-void SetDeltaAnalogPosVariable(modbus_t* ctx, int delta_analog_pos_drv, char* buffer)
+void SetDeltaAnalogPosVariable(modbus_t* ctx, int delta_analog_pos_drv, uint16_t delta_analog_pos_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -3263,18 +2934,6 @@ void SetDeltaAnalogPosVariable(modbus_t* ctx, int delta_analog_pos_drv, char* bu
 	//This variable records the presence of an error in the communication
 	//with the driver.	
 	int error_status = 0;
-	
-	//This variable is used to stored the TargetPosition obtained by buffer.	
-	uint16_t delta_analog_pos_value = 0;
-	
-	//This variable is useful to browse the buffer in order to find the TargetPosition val.
-	char* mypunt;
-
-	//Skipping words
-	mypunt = FindPointer(buffer);
-	
-	//Retrieving "val" that is the status_state value and storing it in status_state_value.
-	delta_analog_pos_value = FindIntegerValue(mypunt);	
 	
 	//Singleton to manage the output of the program.	
 	OutputModule* output_module;
@@ -3346,7 +3005,7 @@ void GetDeltaAnalogPosVariable(modbus_t* ctx, int delta_analog_pos_drv)
 }
 
 
-void SetPhaseCurrentUserVariable(modbus_t* ctx, int phase_current_user_drv, char* buffer)
+void SetPhaseCurrentUserVariable(modbus_t* ctx, int phase_current_user_drv, uint16_t phase_current_user_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -3355,18 +3014,6 @@ void SetPhaseCurrentUserVariable(modbus_t* ctx, int phase_current_user_drv, char
 	//This variable records the presence of an error in the communication
 	//with the driver.	
 	int error_status = 0;
-	
-	//This variable is used to stored the TargetPosition obtained by buffer.	
-	uint16_t phase_current_user_value = 0;
-	
-	//This variable is useful to browse the buffer in order to find the TargetPosition val.
-	char* mypunt;
-
-	//Skipping words
-	mypunt = FindPointer(buffer);
-	
-	//Retrieving "val" that is the status_state value and storing it in status_state_value.
-	phase_current_user_value = FindIntegerValue(mypunt);	
 	
 	//Singleton to manage the output of the program.	
 	OutputModule* output_module;
@@ -3437,7 +3084,7 @@ void GetPhaseCurrentUserVariable(modbus_t* ctx, int phase_current_user_drv)
 	}
 }
 
-void SetDelayCheckRotVariable(modbus_t* ctx, int delay_check_rot_drv, char* buffer)
+void SetDelayCheckRotVariable(modbus_t* ctx, int delay_check_rot_drv, uint16_t delay_check_rot_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -3446,18 +3093,6 @@ void SetDelayCheckRotVariable(modbus_t* ctx, int delay_check_rot_drv, char* buff
 	//This variable records the presence of an error in the communication
 	//with the driver.	
 	int error_status = 0;
-	
-	//This variable is used to stored the TargetPosition obtained by buffer.	
-	uint16_t delay_check_rot_value = 0;
-	
-	//This variable is useful to browse the buffer in order to find the TargetPosition val.
-	char* mypunt;
-
-	//Skipping words
-	mypunt = FindPointer(buffer);
-	
-	//Retrieving "val" that is the status_state value and storing it in status_state_value.
-	delay_check_rot_value = FindIntegerValue(mypunt);	
 	
 	//Singleton to manage the output of the program.	
 	OutputModule* output_module;
@@ -3529,7 +3164,7 @@ void GetDelayCheckRotVariable(modbus_t* ctx, int delay_check_rot_drv)
 }
 
 
-void SetDeltaAnalogNegVariable(modbus_t* ctx, int delta_analog_neg_drv, char* buffer)
+void SetDeltaAnalogNegVariable(modbus_t* ctx, int delta_analog_neg_drv, int16_t delta_analog_neg_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -3538,18 +3173,6 @@ void SetDeltaAnalogNegVariable(modbus_t* ctx, int delta_analog_neg_drv, char* bu
 	//This variable records the presence of an error in the communication
 	//with the driver.	
 	int error_status = 0;
-	
-	//This variable is used to stored the TargetPosition obtained by buffer.	
-	int16_t delta_analog_neg_value = 0;
-	
-	//This variable is useful to browse the buffer in order to find the TargetPosition val.
-	char* mypunt;
-
-	//Skipping words
-	mypunt = FindPointer(buffer);
-	
-	//Retrieving "val" that is the status_state value and storing it in status_state_value.
-	delta_analog_neg_value = FindIntegerValue(mypunt);	
 	
 	//Singleton to manage the output of the program.	
 	OutputModule* output_module;
@@ -3620,7 +3243,7 @@ void GetDeltaAnalogNegVariable(modbus_t* ctx, int delta_analog_neg_drv)
 	}
 }
 
-void SetMaxTargetPositionVariable(modbus_t* ctx, int max_target_position_drv, char* buffer)
+void SetMaxTargetPositionVariable(modbus_t* ctx, int max_target_position_drv, int max_target_position_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -3629,18 +3252,6 @@ void SetMaxTargetPositionVariable(modbus_t* ctx, int max_target_position_drv, ch
 	//This variable records the presence of an error in the communication
 	//with the driver.	
 	int error_status = 0;
-	
-	//This variable is used to stored the TargetPosition obtained by buffer.	
-	int max_target_position_value = 0;
-	
-	//This variable is useful to browse the buffer in order to find the TargetPosition val.
-	char* mypunt;
-
-	//Skipping words
-	mypunt = FindPointer(buffer);
-	
-	//Retrieving "val" that is the status_state value and storing it in status_state_value.
-	max_target_position_value = FindIntegerValue(mypunt);	
 	
 	//Singleton to manage the output of the program.	
 	OutputModule* output_module;

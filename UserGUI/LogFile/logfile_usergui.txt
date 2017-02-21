@@ -1476,3 +1476,5 @@ Tue Feb 21 13:08:03 2017 : Attempt to access the expert mode from asymmetric mov
 Tue Feb 21 13:08:05 2017 : Attempt to access the expert mode from asymmetric movimentation tab completed!
 Tue Feb 21 13:08:09 2017 : Attempt to access the expert mode from singular movimentation tab...
 Tue Feb 21 13:08:12 2017 : Attempt to access the expert mode from singular movimentation tab completed!
+
+#### User gui starting: Tue Feb 21 13:20:36 2017 ####

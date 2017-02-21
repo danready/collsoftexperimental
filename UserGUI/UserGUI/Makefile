@@ -334,34 +334,34 @@ compiler_rcc_make_all: ../bin/.rcc/qrc_Resource.cpp
 compiler_rcc_clean:
 	-$(DEL_FILE) ../bin/.rcc/qrc_Resource.cpp
 ../bin/.rcc/qrc_Resource.cpp: Resource.qrc \
-		Resource/Square.png \
-		Resource/home.png \
-		Resource/octagon_orange.png \
-		Resource/led_orange.png \
-		Resource/octagon.png \
-		Resource/Gears.png \
-		Resource/led_green.png \
-		Resource/octagon_red.png \
-		Resource/play_icon.png \
-		Resource/OperatorGUI_Icon.png \
-		Resource/led_red.png \
-		Resource/lock_red.png \
-		Resource/Square_red.png \
-		Resource/Square_yellow.png \
-		Resource/Collimator.png \
-		Resource/LockIcon.jpeg \
-		Resource/Disable.png \
-		Resource/danger-hi.png \
-		Resource/Enable.png \
-		Resource/Square_orange.png \
-		Resource/lock_green.png \
-		Resource/angle.png \
-		Resource/LockIcon.jpg \
 		Resource/octagon_yellow.png \
+		Resource/Square_orange.png \
+		Resource/led_green.png \
+		Resource/Square_red.png \
+		Resource/octagon.png \
+		Resource/Enable.png \
 		Resource/octagon_green.png \
-		Resource/Update_icon.jpeg \
+		Resource/angle.png \
+		Resource/lock_red.png \
+		Resource/octagon_red.png \
+		Resource/Square.png \
+		Resource/danger-hi.png \
+		Resource/octagon_orange.png \
+		Resource/Collimator.png \
 		Resource/led_yellow.png \
-		Resource/Square_green.png
+		Resource/LockIcon.jpeg \
+		Resource/Gears.png \
+		Resource/lock_green.png \
+		Resource/led_red.png \
+		Resource/LockIcon.jpg \
+		Resource/Update_icon.jpeg \
+		Resource/Square_green.png \
+		Resource/OperatorGUI_Icon.png \
+		Resource/led_orange.png \
+		Resource/home.png \
+		Resource/Disable.png \
+		Resource/Square_yellow.png \
+		Resource/play_icon.png
 	/usr/lib/x86_64-linux-gnu/qt5/bin/rcc -name Resource Resource.qrc -o ../bin/.rcc/qrc_Resource.cpp
 
 compiler_moc_header_make_all: ../bin/.moc/moc_mainwindow.cpp ../bin/.moc/moc_enablepasswordusergui.cpp ../bin/.moc/moc_enablepasswordexpertmode.cpp ../bin/.moc/moc_generaldialog.cpp ../bin/.moc/moc_doublechecking.cpp ../bin/.moc/moc_about.cpp

@@ -499,7 +499,11 @@ int main(int argc, char *argv[])
 					
 				if (STATE_CONNECT == 1)
 				{
-					CheckPositionEncoderSingleWarning(ctx, get_pos_drv);			
+					//If the user has not loaded the encoding values from EncoderLog.txt.
+					if (loading_encoder_from_file_okay == 0)
+						output_module->Output("Check position warning! You have to press the button Load Encoder From File in General tab or you have to digit load_encoder_from_file command in order to accomplished the check position procedure in a consistent way!\n");
+
+					CheckPositionEncoderSingle(ctx, get_pos_drv);			
 				}
 				else
 				{
@@ -645,7 +649,7 @@ int main(int argc, char *argv[])
 			else if (reg_matches (buffer,"^[Mm][Oo][Vv][Ee]_[Tt][Oo][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Mm][Oo][Vv][Ee]_[Tt][Oo][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$"))
 			{
-				char* move_to_contents;
+				int move_to_value;
 				
 				int move_to_drv = 0;
 				
@@ -653,18 +657,18 @@ int main(int argc, char *argv[])
 				if (reg_matches (buffer,"^[Mm][Oo][Vv][Ee]_[Tt][Oo][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$"))
 				{
 					move_to_drv = FindIntegerValue(buffer);
-					move_to_contents = buffer;
+					move_to_value = FindIntegerValue(FindPointer(buffer));
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
 					move_to_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
-					move_to_contents = command_received_by_user.command_sent_by_user;
+					move_to_value = FindIntegerValue(FindPointer(command_received_by_user.command_sent_by_user));
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					MoveTo(ctx, move_to_drv, move_to_contents);
+					MoveTo(ctx, move_to_drv, move_to_value);
 					GetMovePar(ctx, move_to_drv);
 				}
 				else
@@ -823,7 +827,7 @@ int main(int argc, char *argv[])
 						moveto_mult_punt = FindPointer(moveto_mult_punt);
 						moveto_drv_array[i] = atoi(moveto_mult_punt);
 						
-						MoveToMult(ctx, moveto_drv_array[i], buffer_arg);
+						MoveTo(ctx, moveto_drv_array[i], moveto_value);
 						GetMovePar(ctx, moveto_drv_array[i]);
 					}
 					
@@ -1030,7 +1034,7 @@ int main(int argc, char *argv[])
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetStatusStateVariable(ctx, status_state_drv, buffer_status_state);
+					SetStatusStateVariable(ctx, status_state_drv, (uint16_t)FindIntegerValue(FindPointer(buffer_status_state)));
 				}
 				else
 				{
@@ -1093,7 +1097,7 @@ int main(int argc, char *argv[])
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetRequestStateVariable(ctx, request_state_drv, buffer_request_state);
+					SetRequestStateVariable(ctx, request_state_drv, (uint16_t)FindIntegerValue(FindPointer(buffer_request_state)));
 				}
 				else
 				{
@@ -1216,7 +1220,7 @@ int main(int argc, char *argv[])
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetHomeDoneVariable(ctx, home_done_drv, buffer_home_done);
+					SetHomeDoneVariable(ctx, home_done_drv, (uint16_t)FindIntegerValue(FindPointer(buffer_home_done)));
 				}
 				else
 				{
@@ -1279,7 +1283,7 @@ int main(int argc, char *argv[])
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetEncoderMaxVariable(ctx, encoder_max_drv, buffer_encoder_max);
+					SetEncoderMaxVariable(ctx, encoder_max_drv, (uint16_t)FindIntegerValue(FindPointer(buffer_encoder_max)));
 				}
 				else
 				{
@@ -1342,7 +1346,7 @@ int main(int argc, char *argv[])
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetEncoderMinVariable(ctx, encoder_min_drv, buffer_encoder_min);
+					SetEncoderMinVariable(ctx, encoder_min_drv, (uint16_t)FindIntegerValue(FindPointer(buffer_encoder_min)));
 				}
 				else
 				{
@@ -1406,7 +1410,7 @@ int main(int argc, char *argv[])
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetDeltaAnalogPosVariable(ctx, delta_analog_pos_drv, buffer_delta_analog_pos);
+					SetDeltaAnalogPosVariable(ctx, delta_analog_pos_drv, (uint16_t)FindIntegerValue(FindPointer(buffer_delta_analog_pos)));
 				}
 				else
 				{
@@ -1469,7 +1473,7 @@ int main(int argc, char *argv[])
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetPhaseCurrentUserVariable(ctx, phase_current_user_drv, buffer_phase_current_user);
+					SetPhaseCurrentUserVariable(ctx, phase_current_user_drv, (uint16_t)FindIntegerValue(FindPointer(buffer_phase_current_user)));
 				}
 				else
 				{
@@ -1532,7 +1536,7 @@ int main(int argc, char *argv[])
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetDelayCheckRotVariable(ctx, delay_check_rot_drv, buffer_delay_check_rot);
+					SetDelayCheckRotVariable(ctx, delay_check_rot_drv, (uint16_t)FindIntegerValue(FindPointer(buffer_delay_check_rot)));
 				}
 				else
 				{
@@ -1596,7 +1600,7 @@ int main(int argc, char *argv[])
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetDeltaAnalogNegVariable(ctx, delta_analog_neg_drv, buffer_delta_analog_neg);
+					SetDeltaAnalogNegVariable(ctx, delta_analog_neg_drv, (int16_t)FindIntegerValue(FindPointer(buffer_delta_analog_neg)));
 				}
 				else
 				{
@@ -1660,7 +1664,7 @@ int main(int argc, char *argv[])
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetMaxTargetPositionVariable(ctx, max_target_position_drv, buffer_max_target_position);
+					SetMaxTargetPositionVariable(ctx, max_target_position_drv, (int)FindIntegerValue(FindPointer(buffer_max_target_position)));
 				}
 				else
 				{
