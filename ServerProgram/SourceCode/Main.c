@@ -569,7 +569,6 @@ int main(int argc, char *argv[])
 				if (STATE_CONNECT == 1)
 				{
 					Homing(ctx, homing_drv);
-					GetMovePar(ctx, homing_drv);
 				}
 				else
 				{
@@ -669,7 +668,6 @@ int main(int argc, char *argv[])
 				if (STATE_CONNECT == 1)
 				{
 					MoveTo(ctx, move_to_drv, move_to_value);
-					GetMovePar(ctx, move_to_drv);
 				}
 				else
 				{
@@ -747,7 +745,6 @@ int main(int argc, char *argv[])
 						homing_drv_array[i] = atoi(homing_mult_punt);
 						
 						Homing(ctx, homing_drv_array[i]);
-						GetMovePar(ctx, homing_drv_array[i]);
 					}
 					
 					free(homing_drv_array);
@@ -828,7 +825,6 @@ int main(int argc, char *argv[])
 						moveto_drv_array[i] = atoi(moveto_mult_punt);
 						
 						MoveTo(ctx, moveto_drv_array[i], moveto_value);
-						GetMovePar(ctx, moveto_drv_array[i]);
 					}
 					
 					free(moveto_drv_array);
@@ -1701,7 +1697,36 @@ int main(int argc, char *argv[])
 					output_module->Output("max_target_position: " + to_string(max_target_position_drv) + " " + to_string(-1) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
-			}																	
+			}
+			
+			//check_driver_status drvnum
+			else if (reg_matches (buffer, "^[Cc][Hh][Ee][Cc][Kk]_[Dd][Rr][Ii][Vv][Ee][Rr]_[Ss][Tt][Aa][Tt][Uu][Ss][ \t]+[0-9]{1,2}[ \t]*$") || 
+					 reg_matches (command_received_by_user.command_sent_by_user, "^[Cc][Hh][Ee][Cc][Kk]_[Dd][Rr][Ii][Vv][Ee][Rr]_[Ss][Tt][Aa][Tt][Uu][Ss][ \t]+[0-9]{1,2}[ \t]*$"))
+			{
+				
+				uint16_t check_driver_status_drv = 0;
+				
+				//if the command was sent via stdin
+				if (reg_matches (buffer, "^[Cc][Hh][Ee][Cc][Kk]_[Dd][Rr][Ii][Vv][Ee][Rr]_[Ss][Tt][Aa][Tt][Uu][Ss][ \t]+[0-9]{1,2}[ \t]*$"))
+				{
+					check_driver_status_drv = SkipWordAndAtoi(buffer);
+				}
+				//if the command was sent via TCP/IP
+				else
+				{
+					check_driver_status_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
+				}				
+			  
+				if (STATE_CONNECT == 1)
+				{
+					CheckDriverStatus(ctx, check_driver_status_drv);
+				}
+				else
+				{
+					output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
+				}
+			}																			
 						
 			//Unrecognized comand.
 			else

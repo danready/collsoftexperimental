@@ -182,6 +182,8 @@ void LoadEncoderFromFile();
 //Prints the values of the EncoderArrayValue array. 
 void ReadActualEncoderValue();
 
+void CheckDriverStatus(modbus_t* ctx, int check_driver_status_drv);
+
 //This function return true if the status_state variable of the driver is: 0,6,4,5.
 //Return false otherwise.
 bool VerifyStatusState(uint16_t status_state);

@@ -161,4 +161,7 @@
 #define ONLYUSER 0
 #define ONLYTCP 1
 
+#define POSITION_MATCH 100
+#define POSITION_MISMATCH 101
+
 #endif

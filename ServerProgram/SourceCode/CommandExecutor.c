@@ -3349,3 +3349,96 @@ void GetMaxTargetPositionSoftwareCmd(modbus_t* ctx, int max_target_position_drv)
 	}
 }
 
+void CheckDriverStatus(modbus_t* ctx, int check_driver_status_drv)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	int status_state = 0;
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, check_driver_status_drv);
+	if (error_status == -1) 
+	{	
+		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("Exp: error, check driver status failed: set slave failed\n");
+		return;
+	}
+	
+	error_status = 0;
+	status_state = ReadStatusState(ctx, &error_status, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status == -1)
+	{
+		output_module->Output("Exp: error, check_driver_status failed because an error occurred reading the register\n");
+		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(-1) + '\n');
+		return;		
+	}
+	
+	
+	if (status_state == 1)
+	{
+		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
+		output_module->Output("Exp: driver " + to_string(check_driver_status_drv) + " is beginning a new operation\n");
+	}
+	else if (status_state == 2)
+	{
+		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
+		output_module->Output("Exp: driver " + to_string(check_driver_status_drv) +" is executing a procedure\n");
+	}
+	else if (status_state == 3)
+	{
+		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
+		output_module->Output("Exp: driver " + to_string(check_driver_status_drv) +" is ending a procedure\n");
+	}
+	else if (status_state == 4)
+	{
+		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
+		output_module->Output("Exp: driver " + to_string(check_driver_status_drv) + " has failed to accomplish an operation\n");
+	}
+	else if (status_state == 6)
+	{
+		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
+		output_module->Output("Exp: driver " + to_string(check_driver_status_drv) + " has failed to load data from eeprom failed\n");
+	}
+	else if (status_state == 0 || status_state == 5)
+	{
+		int position_status = 0;
+
+		if (loading_encoder_from_file_okay == 0)
+			output_module->Output("Check position warning! You have to press the button Load Encoder From File in General tab or you have to digit load_encoder_from_file command in order to accomplished the check position procedure in a consistent way!\n");
+		
+		position_status = CheckPositionEncoderSingle (ctx, check_driver_status_drv);
+		if (position_status == 0)
+		{
+			output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(POSITION_MATCH) + '\n');
+			output_module->Output("Exp: driver " + to_string(check_driver_status_drv) + " has failed to load data from eeprom failed\n");
+		}
+		else if (position_status == -1)
+		{
+			output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(POSITION_MISMATCH) + '\n');
+			output_module->Output("Exp: driver " + to_string(check_driver_status_drv) + " has failed to load data from eeprom failed\n");
+		}
+		else
+		{
+			output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(-1) + '\n');
+			output_module->Output("Exp: checking position of driver " + to_string(check_driver_status_drv) + "failed\n");
+		}
+		
+	}
+	else
+	{
+		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
+		output_module->Output("Exp: check driver status has returned an unknown state");
+	}
+}
