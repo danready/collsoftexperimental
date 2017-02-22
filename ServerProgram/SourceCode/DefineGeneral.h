@@ -78,6 +78,9 @@
 #define			STATESAVING				2
 #define			STATEHOMING				4
 #define			STATEMOVEREL			17
+#define			RESET_DRIVER			7
+#define			FREEZE_ENCODER_MIN		8
+#define			FREEZE_ENCODER_MAX		9
 
 //Number of the default slave driver.
 #define			DEFAULT_SLAVE			1
@@ -163,5 +166,16 @@
 
 #define POSITION_MATCH 100
 #define POSITION_MISMATCH 101
+
+#define NEGATIVE_RESPONSE_TO_CLIENT -1
+#define NEGATIVE_RESPONSE_CHECKPOSITIONFUNCTION	-2
+
+#define READY_TO_START	0
+#define OPERATION_BEGIN	1
+#define OPERATION_ONGOING	2
+#define OPERATION_ENDING	3
+#define OPERATION_FAILED	4
+#define OPERATION_SUCCESS	5
+#define EEPROM_LOADING_FAILED	6
 
 #endif

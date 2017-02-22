@@ -70,12 +70,12 @@ void SendFailedGetPar(int drv_num)
 	OutputModule* output_module;
 	output_module = OutputModule::Instance();
 	
-	output_module->Output("getpar " + to_string(drv_num) + " MaxVel " + to_string(-1) + "\n");
-	output_module->Output("getpar " + to_string(drv_num) + " VelHome " + to_string(-1) + "\n");
-	output_module->Output("getpar " + to_string(drv_num) + " Acceleration " + to_string(-1) + "\n");
-	output_module->Output("getpar " + to_string(drv_num) + " Deceleration " + to_string(-1) + "\n");
-	output_module->Output("getpar " + to_string(drv_num) + " PhaseCurrent " + to_string(-1) + "\n");
-	output_module->Output("getpar " + to_string(drv_num) + " AnalogOutput0 " + to_string(-1) + "\n");			
+	output_module->Output("getpar " + to_string(drv_num) + " MaxVel " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + "\n");
+	output_module->Output("getpar " + to_string(drv_num) + " VelHome " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + "\n");
+	output_module->Output("getpar " + to_string(drv_num) + " Acceleration " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + "\n");
+	output_module->Output("getpar " + to_string(drv_num) + " Deceleration " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + "\n");
+	output_module->Output("getpar " + to_string(drv_num) + " PhaseCurrent " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + "\n");
+	output_module->Output("getpar " + to_string(drv_num) + " AnalogOutput0 " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + "\n");			
 }
 
 //This function sends -1 to the client who has sent "get_mov_par drvnum" command
@@ -85,8 +85,8 @@ void SendFailedGetMovPar(int drv_num)
 	OutputModule* output_module;
 	output_module = OutputModule::Instance();
 	
-	output_module->Output("get_mov_par " + to_string(drv_num) + " CurrentPosition " + to_string(-1) + "\n");
-	output_module->Output("get_mov_par " + to_string(drv_num) + " AnalogInput0 " + to_string(-1) + "\n");
+	output_module->Output("get_mov_par " + to_string(drv_num) + " CurrentPosition " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + "\n");
+	output_module->Output("get_mov_par " + to_string(drv_num) + " AnalogInput0 " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + "\n");
 }
 
 //This function sends -2 to the client who has sent "check_position drvnum" command
@@ -97,7 +97,7 @@ void SendFailedGetStatusPos(int drv_num)
 	OutputModule* output_module;
 	output_module = OutputModule::Instance();
 	
-	output_module->OutputAll("get_pos_status " + to_string(drv_num) + " " + to_string(-2) + "\n");
+	output_module->OutputAll("get_pos_status " + to_string(drv_num) + " " + to_string(NEGATIVE_RESPONSE_CHECKPOSITIONFUNCTION) + "\n");
 	
 }
 
@@ -105,19 +105,19 @@ void SendFailedGetStatusPos(int drv_num)
 //Return false otherwise.
 bool VerifyStatusState (uint16_t status_state)
 {
-	if (status_state == 0)
+	if (status_state == READY_TO_START)
 	{
 		return true;
 	}
-	else if (status_state == 6)
+	else if (status_state == EEPROM_LOADING_FAILED)
 	{
 		return true;
 	}
-	else if (status_state == 4)
+	else if (status_state == OPERATION_FAILED)
 	{
 		return true;
 	}
-	else if (status_state == 5)
+	else if (status_state == OPERATION_SUCCESS)
 	{
 		return true;
 	}
@@ -182,6 +182,7 @@ void HelpCommand()
 	output_module->Output("-get_delay_check_rot drvnum:\nthis command get the variable Delay_CheckRot of the driver indicated by drvnum\n\n");
 	output_module->Output("-set_max_target_position drvnum max_target_position:\nthis command set to max_target_position the variable Max_TargetPos of the driver indicated by drvnum\n\n");
 	output_module->Output("-get_max_target_position drvnum:\nthis command get the variable Max_TargetPos of the driver indicated by drvnum\n\n");
+	output_module->Output("-check_driver_status drvnum:\nthis command sends to the client the status of the driver reading the status_state variable\n\n");
 	output_module->Output("-help:\nPrint this command list\n\n");
 	output_module->Output("-exit:\nExit from the program: this command is enabled only in stdin mode.\n\n");
 	
@@ -2098,7 +2099,7 @@ int CheckPositionEncoderSingle (modbus_t* ctx, int position_encoder_drv_num)
 	{	
 		error_status = -1;	
 		//output_module->Output("Exp: error, movimentation not done: set slave failed\n");
-		output_module->Output("get_pos_status " + to_string(position_encoder_drv_num) + " " + to_string(-2)  + "\n");
+		output_module->Output("get_pos_status " + to_string(position_encoder_drv_num) + " " + to_string(NEGATIVE_RESPONSE_CHECKPOSITIONFUNCTION)  + "\n");
 		return -2;
 	}
 	
@@ -2184,7 +2185,7 @@ int CheckPositionEncoderSingle (modbus_t* ctx, int position_encoder_drv_num)
 	}
 	else
 	{
-		output_module->Output("get_pos_status " + to_string(position_encoder_drv_num) + " " + to_string(-2)  + "\n");
+		output_module->Output("get_pos_status " + to_string(position_encoder_drv_num) + " " + to_string(NEGATIVE_RESPONSE_CHECKPOSITIONFUNCTION)  + "\n");
 		
 		//Unable to accomplished the operation due to a communication error.
 		return -2; 
@@ -2233,7 +2234,7 @@ int CheckPositionEncoderToAll (modbus_t* ctx, int position_encoder_drv_num)
 	{	
 		error_status = -1;	
 		//output_module->Output("Exp: error, movimentation not done: set slave failed\n");
-		output_module->OutputAll("get_pos_status " + to_string(position_encoder_drv_num) + " " + to_string(-2) + "\n");
+		output_module->OutputAll("get_pos_status " + to_string(position_encoder_drv_num) + " " + to_string(NEGATIVE_RESPONSE_CHECKPOSITIONFUNCTION) + "\n");
 		return -2;
 	}
 	
@@ -2317,7 +2318,7 @@ int CheckPositionEncoderToAll (modbus_t* ctx, int position_encoder_drv_num)
 	}
 	else
 	{
-		output_module->OutputAll("get_pos_status " + to_string(position_encoder_drv_num) + " " + to_string(-2)  + "\n");
+		output_module->OutputAll("get_pos_status " + to_string(position_encoder_drv_num) + " " + to_string(NEGATIVE_RESPONSE_CHECKPOSITIONFUNCTION)  + "\n");
 		
 		//Unable to accomplished the operation due to a communication error.		
 		return -2; 
@@ -2480,7 +2481,7 @@ void GetStatusStateSoftwareCmd(modbus_t* ctx, int status_state_drv)
 	error_status = modbus_set_slave(ctx, status_state_drv);
 	if (error_status == -1) 
 	{	
-		output_module->Output("get_status_state: " + to_string(status_state_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("get_status_state: " + to_string(status_state_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		output_module->Output("Exp: error, get status state not done: set slave failed\n");
 		return;
 	}
@@ -2497,7 +2498,7 @@ void GetStatusStateSoftwareCmd(modbus_t* ctx, int status_state_drv)
 	else
 	{
 		output_module->Output("Exp: error, get status state not done because an error occurred reading the register\n");
-		output_module->Output("get_status_state: " + to_string(status_state_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("get_status_state: " + to_string(status_state_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		return;		
 	}
 }
@@ -2559,7 +2560,7 @@ void GetRequestStateSoftwareCmd(modbus_t* ctx, int request_state_drv)
 	error_status = modbus_set_slave(ctx, request_state_drv);
 	if (error_status == -1) 
 	{	
-		output_module->Output("get_status_state: " + to_string(request_state_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("get_status_state: " + to_string(request_state_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		output_module->Output("Exp: error, get status state not done: set slave failed\n");
 		return;
 	}
@@ -2576,7 +2577,7 @@ void GetRequestStateSoftwareCmd(modbus_t* ctx, int request_state_drv)
 	else
 	{
 		output_module->Output("Exp: error, get status state not done because an error occurred reading the register\n");
-		output_module->Output("get_status_state: " + to_string(request_state_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("get_status_state: " + to_string(request_state_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		return;		
 	}
 }
@@ -2692,7 +2693,7 @@ void CheckFault(modbus_t* ctx, int check_fault_drv)
 	error_status = modbus_set_slave(ctx, check_fault_drv);
 	if (error_status == -1) 
 	{	
-		output_module->Output("check_fault: " + to_string(check_fault_value) + " " + to_string(-1) + '\n');
+		output_module->Output("check_fault: " + to_string(check_fault_value) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		output_module->Output("Exp: error, check_fault not done: set slave failed\n");
 		return;
 	}
@@ -2709,7 +2710,7 @@ void CheckFault(modbus_t* ctx, int check_fault_drv)
 	else
 	{
 		output_module->Output("Exp: error, check fault not done because an error occurred reading the register\n");
-		output_module->Output("check_fault: " + to_string(check_fault_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("check_fault: " + to_string(check_fault_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		return;		
 	}
 }
@@ -2772,7 +2773,7 @@ void GetHomeDoneSoftwareCmd(modbus_t* ctx, int home_done_drv)
 	error_status = modbus_set_slave(ctx, home_done_drv);
 	if (error_status == -1) 
 	{	
-		output_module->Output("home_done: " + to_string(home_done_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("home_done: " + to_string(home_done_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		output_module->Output("Exp: error, home done failed: set slave failed\n");
 		return;
 	}
@@ -2789,7 +2790,7 @@ void GetHomeDoneSoftwareCmd(modbus_t* ctx, int home_done_drv)
 	else
 	{
 		output_module->Output("Exp: error, getting home done failed because an error occurred reading the register\n");
-		output_module->Output("home_done: " + to_string(home_done_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("home_done: " + to_string(home_done_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		return;		
 	}
 }
@@ -2851,7 +2852,7 @@ void GetEncoderMaxSoftwareCmd(modbus_t* ctx, int encoder_max_drv)
 	error_status = modbus_set_slave(ctx, encoder_max_drv);
 	if (error_status == -1) 
 	{	
-		output_module->Output("encoder_max: " + to_string(encoder_max_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("encoder_max: " + to_string(encoder_max_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		output_module->Output("Exp: error, encoder max failed: set slave failed\n");
 		return;
 	}
@@ -2868,7 +2869,7 @@ void GetEncoderMaxSoftwareCmd(modbus_t* ctx, int encoder_max_drv)
 	else
 	{
 		output_module->Output("Exp: error, getting encoder max failed because an error occurred reading the register\n");
-		output_module->Output("encoder_max: " + to_string(encoder_max_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("encoder_max: " + to_string(encoder_max_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		return;		
 	}
 }
@@ -2930,7 +2931,7 @@ void GetEncoderMinSoftwareCmd(modbus_t* ctx, int encoder_min_drv)
 	error_status = modbus_set_slave(ctx, encoder_min_drv);
 	if (error_status == -1) 
 	{	
-		output_module->Output("encoder_min: " + to_string(encoder_min_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("encoder_min: " + to_string(encoder_min_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		output_module->Output("Exp: error, encoder min failed: set slave failed\n");
 		return;
 	}
@@ -2947,7 +2948,7 @@ void GetEncoderMinSoftwareCmd(modbus_t* ctx, int encoder_min_drv)
 	else
 	{
 		output_module->Output("Exp: error, getting encoder min failed because an error occurred reading the register\n");
-		output_module->Output("encoder_min: " + to_string(encoder_min_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("encoder_min: " + to_string(encoder_min_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		return;		
 	}
 }
@@ -3009,7 +3010,7 @@ void GetDeltaAnalogPosSoftwareCmd(modbus_t* ctx, int delta_analog_pos_drv)
 	error_status = modbus_set_slave(ctx, delta_analog_pos_drv);
 	if (error_status == -1) 
 	{	
-		output_module->Output("delta_analog_pos: " + to_string(delta_analog_pos_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("delta_analog_pos: " + to_string(delta_analog_pos_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		output_module->Output("Exp: error, getting delta_analog_pos failed: set slave failed\n");
 		return;
 	}
@@ -3026,7 +3027,7 @@ void GetDeltaAnalogPosSoftwareCmd(modbus_t* ctx, int delta_analog_pos_drv)
 	else
 	{
 		output_module->Output("Exp: error, getting delta analog pos failed because an error occurred reading the register\n");
-		output_module->Output("delta_analog_pos: " + to_string(delta_analog_pos_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("delta_analog_pos: " + to_string(delta_analog_pos_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		return;		
 	}
 }
@@ -3089,7 +3090,7 @@ void GetPhaseCurrentUserSoftwareCmd(modbus_t* ctx, int phase_current_user_drv)
 	error_status = modbus_set_slave(ctx, phase_current_user_drv);
 	if (error_status == -1) 
 	{	
-		output_module->Output("phase_current_user: " + to_string(phase_current_user_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("phase_current_user: " + to_string(phase_current_user_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		output_module->Output("Exp: error, getting phase_current_user failed: set slave failed\n");
 		return;
 	}
@@ -3106,7 +3107,7 @@ void GetPhaseCurrentUserSoftwareCmd(modbus_t* ctx, int phase_current_user_drv)
 	else
 	{
 		output_module->Output("Exp: error, getting phase_current_user failed because an error occurred reading the register\n");
-		output_module->Output("phase_current_user: " + to_string(phase_current_user_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("phase_current_user: " + to_string(phase_current_user_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		return;		
 	}
 }
@@ -3168,7 +3169,7 @@ void GetDelayCheckRotSoftwareCmd(modbus_t* ctx, int delay_check_rot_drv)
 	error_status = modbus_set_slave(ctx, delay_check_rot_drv);
 	if (error_status == -1) 
 	{	
-		output_module->Output("delay_check_rot: " + to_string(delay_check_rot_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("delay_check_rot: " + to_string(delay_check_rot_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		output_module->Output("Exp: error, getting delay_check_rot failed: set slave failed\n");
 		return;
 	}
@@ -3185,7 +3186,7 @@ void GetDelayCheckRotSoftwareCmd(modbus_t* ctx, int delay_check_rot_drv)
 	else
 	{
 		output_module->Output("Exp: error, getting phase_current_user failed because an error occurred reading the register\n");
-		output_module->Output("delay_check_rot: " + to_string(delay_check_rot_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("delay_check_rot: " + to_string(delay_check_rot_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		return;		
 	}
 }
@@ -3248,7 +3249,7 @@ void GetDeltaAnalogNegSoftwareCmd(modbus_t* ctx, int delta_analog_neg_drv)
 	error_status = modbus_set_slave(ctx, delta_analog_neg_drv);
 	if (error_status == -1) 
 	{	
-		output_module->Output("delta_analog_neg: " + to_string(delta_analog_neg_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("delta_analog_neg: " + to_string(delta_analog_neg_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		output_module->Output("Exp: error, getting delta_analog_neg failed: set slave failed\n");
 		return;
 	}
@@ -3265,7 +3266,7 @@ void GetDeltaAnalogNegSoftwareCmd(modbus_t* ctx, int delta_analog_neg_drv)
 	else
 	{
 		output_module->Output("Exp: error, getting delta_analog_neg failed because an error occurred reading the register\n");
-		output_module->Output("delta_analog_neg: " + to_string(delta_analog_neg_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("delta_analog_neg: " + to_string(delta_analog_neg_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		return;		
 	}
 }
@@ -3327,7 +3328,7 @@ void GetMaxTargetPositionSoftwareCmd(modbus_t* ctx, int max_target_position_drv)
 	error_status = modbus_set_slave(ctx, max_target_position_drv);
 	if (error_status == -1) 
 	{	
-		output_module->Output("max_target_position: " + to_string(max_target_position_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("max_target_position: " + to_string(max_target_position_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		output_module->Output("Exp: error, getting max_target_position failed: set slave failed\n");
 		return;
 	}
@@ -3344,11 +3345,25 @@ void GetMaxTargetPositionSoftwareCmd(modbus_t* ctx, int max_target_position_drv)
 	else
 	{
 		output_module->Output("Exp: error, getting max_target_position failed because an error occurred reading the register\n");
-		output_module->Output("max_target_position: " + to_string(max_target_position_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("max_target_position: " + to_string(max_target_position_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		return;		
 	}
 }
 
+//This function sends to the client the status of the driver reading the status_state variable.
+//This values are defined in DefineGeneral.h and they reflect the firmware conventions
+//#define READY_TO_START	0
+//#define OPERATION_BEGIN	1
+//#define OPERATION_ONGOING	2
+//#define OPERATION_ENDING	3
+//#define OPERATION_FAILED	4
+//#define OPERATION_SUCCESS	5
+//#define EEPROM_LOADING_FAILED	6
+//N.B. In case of OPERATION_SUCCESS and READY_TO_START is performed a position check with the function CheckEncoderPositionSingle.
+//After that, this codes are sent to the client:
+//#define POSITION_MATCH 100
+//#define POSITION_MISMATCH 101
+//If the status_state of the driver is different from the values above, it is sent as it is.
 void CheckDriverStatus(modbus_t* ctx, int check_driver_status_drv)
 {
 	
@@ -3369,7 +3384,7 @@ void CheckDriverStatus(modbus_t* ctx, int check_driver_status_drv)
 	error_status = modbus_set_slave(ctx, check_driver_status_drv);
 	if (error_status == -1) 
 	{	
-		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		output_module->Output("Exp: error, check driver status failed: set slave failed\n");
 		return;
 	}
@@ -3381,37 +3396,37 @@ void CheckDriverStatus(modbus_t* ctx, int check_driver_status_drv)
 	if (error_status == -1)
 	{
 		output_module->Output("Exp: error, check_driver_status failed because an error occurred reading the register\n");
-		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(-1) + '\n');
+		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 		return;		
 	}
 	
 	
-	if (status_state == 1)
+	if (status_state == OPERATION_BEGIN)
 	{
 		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
 		output_module->Output("Exp: driver " + to_string(check_driver_status_drv) + " is beginning a new operation\n");
 	}
-	else if (status_state == 2)
+	else if (status_state == OPERATION_ONGOING)
 	{
 		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
 		output_module->Output("Exp: driver " + to_string(check_driver_status_drv) +" is executing a procedure\n");
 	}
-	else if (status_state == 3)
+	else if (status_state == OPERATION_ENDING)
 	{
 		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
 		output_module->Output("Exp: driver " + to_string(check_driver_status_drv) +" is ending a procedure\n");
 	}
-	else if (status_state == 4)
+	else if (status_state == OPERATION_FAILED)
 	{
 		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
 		output_module->Output("Exp: driver " + to_string(check_driver_status_drv) + " has failed to accomplish an operation\n");
 	}
-	else if (status_state == 6)
+	else if (status_state == EEPROM_LOADING_FAILED)
 	{
 		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
 		output_module->Output("Exp: driver " + to_string(check_driver_status_drv) + " has failed to load data from eeprom failed\n");
 	}
-	else if (status_state == 0 || status_state == 5)
+	else if (status_state == READY_TO_START || status_state == OPERATION_SUCCESS)
 	{
 		int position_status = 0;
 
@@ -3431,7 +3446,7 @@ void CheckDriverStatus(modbus_t* ctx, int check_driver_status_drv)
 		}
 		else
 		{
-			output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(-1) + '\n');
+			output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 			output_module->Output("Exp: checking position of driver " + to_string(check_driver_status_drv) + "failed\n");
 		}
 		

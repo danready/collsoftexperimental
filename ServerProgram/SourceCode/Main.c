@@ -572,7 +572,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("homing: " + to_string(homing_drv) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
+					output_module->Output("homing: " + to_string(homing_drv) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(NEGATIVE_RESPONSE_TO_CLIENT));
 				}
 			}
 			
@@ -601,7 +601,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("get_move_par: " + to_string(get_mov_par_drv) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
+					output_module->Output("get_move_par: " + to_string(get_mov_par_drv) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(NEGATIVE_RESPONSE_TO_CLIENT));
 				}
 			}	
 			
@@ -639,7 +639,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("get_encoder_par: " + to_string(encoder_drv) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
+					output_module->Output("get_encoder_par: " + to_string(encoder_drv) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(NEGATIVE_RESPONSE_TO_CLIENT));
 				}				
 			}		
 			
@@ -671,7 +671,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("get_move_par: " + to_string(move_to_drv) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
+					output_module->Output("get_move_par: " + to_string(move_to_drv) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(NEGATIVE_RESPONSE_TO_CLIENT));
 				}
 			}				
 			
@@ -763,7 +763,7 @@ int main(int argc, char *argv[])
 					{
 						homing_mult_punt = SkipWord(homing_mult_punt);
 						homing_drv_array[i] = atoi(homing_mult_punt);
-						output_module->Output("homing: " + to_string(homing_drv_array[i]) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
+						output_module->Output("homing: " + to_string(homing_drv_array[i]) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(NEGATIVE_RESPONSE_TO_CLIENT));
 					}
 					
 					free(homing_drv_array);					
@@ -843,7 +843,7 @@ int main(int argc, char *argv[])
 					{
 						moveto_mult_punt = SkipWord(moveto_mult_punt);
 						moveto_drv_array[i] = atoi(moveto_mult_punt);
-						output_module->Output("get_move_par: " + to_string(moveto_drv_array[i]) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
+						output_module->Output("get_move_par: " + to_string(moveto_drv_array[i]) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(NEGATIVE_RESPONSE_TO_CLIENT));
 					}
 					
 					free(moveto_drv_array);					
@@ -1034,7 +1034,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("get_status_state: " + to_string(status_state_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("get_status_state: " + to_string(status_state_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}
@@ -1064,7 +1064,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("get_status_state: " + to_string(status_state_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("get_status_state: " + to_string(status_state_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}		
@@ -1097,7 +1097,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("get_request_state: " + to_string(request_state_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("get_request_state: " + to_string(request_state_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}
@@ -1127,7 +1127,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("get_request_state: " + to_string(request_state_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("get_request_state: " + to_string(request_state_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}					
@@ -1157,7 +1157,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("save_eprom: " + to_string(save_eprom_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("save_eprom: " + to_string(save_eprom_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}		
@@ -1187,7 +1187,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("check_fault: " + to_string(check_fault_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("check_fault: " + to_string(check_fault_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}					
@@ -1220,7 +1220,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("home_done: " + to_string(home_done_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("home_done: " + to_string(home_done_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}
@@ -1250,7 +1250,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("home_done: " + to_string(home_done_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("home_done: " + to_string(home_done_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}						
@@ -1283,7 +1283,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("encoder_max: " + to_string(encoder_max_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("encoder_max: " + to_string(encoder_max_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}
@@ -1313,7 +1313,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("encoder_max: " + to_string(encoder_max_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("encoder_max: " + to_string(encoder_max_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}													
@@ -1346,7 +1346,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("encoder_min: " + to_string(encoder_min_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("encoder_min: " + to_string(encoder_min_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}
@@ -1376,7 +1376,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("encoder_min: " + to_string(encoder_min_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("encoder_min: " + to_string(encoder_min_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}								
@@ -1410,7 +1410,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("delta_analog_pos: " + to_string(delta_analog_pos_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("delta_analog_pos: " + to_string(delta_analog_pos_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}
@@ -1440,7 +1440,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("delta_analog_pos: " + to_string(delta_analog_pos_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("delta_analog_pos: " + to_string(delta_analog_pos_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}				
@@ -1473,7 +1473,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("phase_current_user: " + to_string(phase_current_user_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("phase_current_user: " + to_string(phase_current_user_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}
@@ -1503,7 +1503,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("phase_current_user: " + to_string(phase_current_user_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("phase_current_user: " + to_string(phase_current_user_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}							
@@ -1536,7 +1536,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("delay_check_rot: " + to_string(delay_check_rot_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("delay_check_rot: " + to_string(delay_check_rot_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}
@@ -1566,7 +1566,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("delay_check_rot: " + to_string(delay_check_rot_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("delay_check_rot: " + to_string(delay_check_rot_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}
@@ -1600,7 +1600,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("delta_analog_neg: " + to_string(delta_analog_neg_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("delta_analog_neg: " + to_string(delta_analog_neg_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}
@@ -1630,7 +1630,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("delta_analog_neg: " + to_string(delta_analog_neg_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("delta_analog_neg: " + to_string(delta_analog_neg_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}					
@@ -1664,7 +1664,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("max_target_position: " + to_string(max_target_position_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("max_target_position: " + to_string(max_target_position_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}
@@ -1694,12 +1694,26 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("max_target_position: " + to_string(max_target_position_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("max_target_position: " + to_string(max_target_position_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}
 			
 			//check_driver_status drvnum
+			//This command sends to the client the status of the driver reading the status_state variable.
+			//This values are defined in DefineGeneral.h and they reflect the firmware conventions
+			//#define READY_TO_START	0
+			//#define OPERATION_BEGIN	1
+			//#define OPERATION_ONGOING	2
+			//#define OPERATION_ENDING	3
+			//#define OPERATION_FAILED	4
+			//#define OPERATION_SUCCESS	5
+			//#define EEPROM_LOADING_FAILED	6
+			//N.B. In case of OPERATION_SUCCESS and READY_TO_START is performed a position check with the function CheckEncoderPositionSingle.
+			//After that, this codes are sent to the client:
+			//#define POSITION_MATCH 100
+			//#define POSITION_MISMATCH 101
+			//If the status_state of the driver is different from the values above, it is sent as it is.
 			else if (reg_matches (buffer, "^[Cc][Hh][Ee][Cc][Kk]_[Dd][Rr][Ii][Vv][Ee][Rr]_[Ss][Tt][Aa][Tt][Uu][Ss][ \t]+[0-9]{1,2}[ \t]*$") || 
 					 reg_matches (command_received_by_user.command_sent_by_user, "^[Cc][Hh][Ee][Cc][Kk]_[Dd][Rr][Ii][Vv][Ee][Rr]_[Ss][Tt][Aa][Tt][Uu][Ss][ \t]+[0-9]{1,2}[ \t]*$"))
 			{
@@ -1723,7 +1737,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(-1) + '\n');
+					output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 					output_module->Output("Programmer not connected, digit 'connect programmerpath'.\n");
 				}
 			}																			
