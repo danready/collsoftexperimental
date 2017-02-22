@@ -101,6 +101,32 @@ void SendFailedGetStatusPos(int drv_num)
 	
 }
 
+//This function return true if the status_state variable of the driver is: 0,6,4,5.
+//Return false otherwise.
+bool VerifyStatusState (uint16_t status_state)
+{
+	if (status_state == 0)
+	{
+		return true;
+	}
+	else if (status_state == 6)
+	{
+		return true;
+	}
+	else if (status_state == 4)
+	{
+		return true;
+	}
+	else if (status_state == 5)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 //This function prints the list of the commands available by the server.
 void HelpCommand()
 {
@@ -1188,13 +1214,13 @@ void SetPar (modbus_t* ctx, int set_par_drv, char* buffer)
 	int analog_output0 = 0;
 	
 	//Skip the first word of the command.
-	char* set_par_punt = FindPointer(buffer);
+	char* set_par_punt = SkipWord(buffer);
 	
 	output_module->Output("###############\n");
 	output_module->Output("Executing SetPar function\n");
 	
 	//Storing max_vel values
-	max_vel = (uint16_t)FindIntegerValue(set_par_punt);
+	max_vel = (uint16_t)SkipWordAndAtoi(set_par_punt);
 	
 	//This condition is dued to the limitation of the driver DS44.
 	if (max_vel > MAXVEL)
@@ -1210,12 +1236,12 @@ void SetPar (modbus_t* ctx, int set_par_drv, char* buffer)
 	}
 	
 	//Skipping one word
-	set_par_punt = FindPointer(set_par_punt);
+	set_par_punt = SkipWord(set_par_punt);
 
 	output_module->Output("Max_vel = " + to_string(max_vel) + "\n");
 
 	//Storing vel_home values.
-	vel_home = (int16_t)FindIntegerValue(set_par_punt);
+	vel_home = (int16_t)SkipWordAndAtoi(set_par_punt);
 	
 	//This condition is important to avoid excessive speed to return in homing position.
 	if (vel_home > MAXVELHOME)
@@ -1231,12 +1257,12 @@ void SetPar (modbus_t* ctx, int set_par_drv, char* buffer)
 	}
 	
 	//Skipping one word.
-	set_par_punt = FindPointer(set_par_punt);
+	set_par_punt = SkipWord(set_par_punt);
 
 	output_module->Output("Vel_home = " + to_string(vel_home) + "\n");
 
 	//Storing acceleration value.
-	acceleration = (uint16_t)FindIntegerValue(set_par_punt);
+	acceleration = (uint16_t)SkipWordAndAtoi(set_par_punt);
 	
 	if (acceleration > MAXACCELERATION)
 	{	
@@ -1250,12 +1276,12 @@ void SetPar (modbus_t* ctx, int set_par_drv, char* buffer)
 		output_module->Output("Warning, you can't set to 0 acceleration. It will be set to 1. \n");						
 	}
 	
-	set_par_punt = FindPointer(set_par_punt);
+	set_par_punt = SkipWord(set_par_punt);
 
 	output_module->Output("Acceleration = " + to_string(acceleration) + "\n");
 
 	//Storing deceleration value.
-	deceleration = (uint16_t)FindIntegerValue(set_par_punt);
+	deceleration = (uint16_t)SkipWordAndAtoi(set_par_punt);
 	
 	if (deceleration > MAXDECELERATION)
 	{	
@@ -1269,12 +1295,12 @@ void SetPar (modbus_t* ctx, int set_par_drv, char* buffer)
 		output_module->Output("Warning, you can't set to 0 deceleration. It will be set to 1. \n");
 	}
 	
-	set_par_punt = FindPointer(set_par_punt);
+	set_par_punt = SkipWord(set_par_punt);
 	
 	output_module->Output("deceleration = " + to_string(deceleration) + "\n");
 
 	//Storing phase_current value.
-	phase_current = (uint16_t)FindIntegerValue(set_par_punt);
+	phase_current = (uint16_t)SkipWordAndAtoi(set_par_punt);
 	
 	if (phase_current > MAXPHASECURRENT)
 	{	
@@ -1288,12 +1314,12 @@ void SetPar (modbus_t* ctx, int set_par_drv, char* buffer)
 		output_module->Output("Warning, you can't set phase_current < 10. It will be set to 10. \n");
 	}
 	
-	set_par_punt = FindPointer(set_par_punt);
+	set_par_punt = SkipWord(set_par_punt);
 	
 	output_module->Output("phase_current = " + to_string(phase_current) + "\n");
 
 	//Storing analog_output0 value.
-	analog_output0 = (uint16_t)FindIntegerValue(set_par_punt);
+	analog_output0 = (uint16_t)SkipWordAndAtoi(set_par_punt);
 	
 	if (analog_output0 > MAXANALOGOUTPUT0)
 	{	
@@ -1399,7 +1425,7 @@ void SetParMult (modbus_t* ctx, int set_par_drv, char* buffer)
 	output_module->Output("Executing the function SetParMult\n");
 	
 	//Storing max_vel values	
-	max_vel = (uint16_t)FindIntegerValue(set_par_punt);
+	max_vel = (uint16_t)SkipWordAndAtoi(set_par_punt);
 	
 	//This condition is dued to the limitation of the driver DS44.
 	if (max_vel > MAXVEL)
@@ -1415,12 +1441,12 @@ void SetParMult (modbus_t* ctx, int set_par_drv, char* buffer)
 	}
 
 	//Skipping one word	
-	set_par_punt = FindPointer(set_par_punt);
+	set_par_punt = SkipWord(set_par_punt);
 
 	output_module->Output("Max_vel = " + to_string(max_vel) + "\n");
 
 	//Storing vel_home values.
-	vel_home = (int16_t)FindIntegerValue(set_par_punt);
+	vel_home = (int16_t)SkipWordAndAtoi(set_par_punt);
 
 	//This condition is important to avoid excessive speed to return in homing position.
 	if (vel_home > MAXVELHOME)
@@ -1437,12 +1463,12 @@ void SetParMult (modbus_t* ctx, int set_par_drv, char* buffer)
 	}
 	
 	//Skipping one word.	
-	set_par_punt = FindPointer(set_par_punt);
+	set_par_punt = SkipWord(set_par_punt);
 
 	output_module->Output("Vel_home = " + to_string(vel_home) + "\n");
 
 	//Storing acceleration value.
-	acceleration = (uint16_t)FindIntegerValue(set_par_punt);
+	acceleration = (uint16_t)SkipWordAndAtoi(set_par_punt);
 	
 	if (acceleration > MAXACCELERATION)
 	{	
@@ -1456,12 +1482,12 @@ void SetParMult (modbus_t* ctx, int set_par_drv, char* buffer)
 		output_module->Output("Warning, you can't set to 0 acceleration. It will be set to 1. \n");						
 	}
 	
-	set_par_punt = FindPointer(set_par_punt);
+	set_par_punt = SkipWord(set_par_punt);
 
 	output_module->Output("Acceleration = " + to_string(acceleration) + "\n");
 
 	//storing deceleration value.
-	deceleration = (uint16_t)FindIntegerValue(set_par_punt);
+	deceleration = (uint16_t)SkipWordAndAtoi(set_par_punt);
 	
 	if (deceleration > MAXDECELERATION)
 	{	
@@ -1475,12 +1501,12 @@ void SetParMult (modbus_t* ctx, int set_par_drv, char* buffer)
 		output_module->Output("Warning, you can't set to 0 deceleration. It will be set to 1. \n");
 	}
 	
-	set_par_punt = FindPointer(set_par_punt);
+	set_par_punt = SkipWord(set_par_punt);
 	
 	output_module->Output("deceleration = " + to_string(deceleration) + "\n");
 
 	//storing phase_current value.
-	phase_current = (uint16_t)FindIntegerValue(set_par_punt);
+	phase_current = (uint16_t)SkipWordAndAtoi(set_par_punt);
 	
 	if (phase_current > MAXPHASECURRENT)
 	{	
@@ -1494,12 +1520,12 @@ void SetParMult (modbus_t* ctx, int set_par_drv, char* buffer)
 		output_module->Output("Warning, you can't set phase_current < 10. It will be set to 10. \n");
 	}
 	
-	set_par_punt = FindPointer(set_par_punt);
+	set_par_punt = SkipWord(set_par_punt);
 	
 	output_module->Output("phase_current = " + to_string(phase_current) + "\n");
 
 	//storing analog_output0 value.
-	analog_output0 = (uint16_t)FindIntegerValue(set_par_punt);
+	analog_output0 = (uint16_t)SkipWordAndAtoi(set_par_punt);
 	
 	if (analog_output0 > MAXANALOGOUTPUT0)
 	{	
@@ -1591,29 +1617,29 @@ void Homing(modbus_t* ctx, int homing_drv)
 		return;
 	}
 	
-	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
+	//status_state == FAILED_STATUS_STATE_ERRORCODE is not a state contemplated by the firmware, so it is
 	//a neutral value to initialized the variable.
-	uint16_t status_state = FAILED_STATUS_STATE_RC;
+	uint16_t status_state = FAILED_STATUS_STATE_ERRORCODE;
 	
 	//This variable records the success following functions.
-	int rc;
+	int error_code;
 	
 	//Try to read the actual state.
-	status_state = ReadStatusState(ctx, &rc, "Exp: "); //Questo rc non va messo qui!!!!
+	status_state = ReadStatusState(ctx, &error_code, "Exp: "); 
 
 	//status_state = 4 or status_state = 5 means that the previous operation is terminated.
 	//Obviously these information are hard coded!	
 	//count is a timeout: if the operation is not ultimated in the times specified by LIMITSTATUS_STATE,
 	//the homing function is aborted.
 	int count = 0;
-	while (status_state != 4 && status_state != 5 && status_state != 0 && count < LIMITSTATUS_STATE)
+	while ( (error_code == -1 || VerifyStatusState(status_state) == false) && count < LIMITSTATUS_STATE)
 	{
 		usleep(SLEEPSTATUS_STATE);
 		count ++;
-		status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		status_state = ReadStatusState(ctx, &error_code, "Exp: ");
 		
-		if (rc == -1)
-			status_state = FAILED_STATUS_STATE_RC;		
+		if (error_code == -1)
+			status_state = FAILED_STATUS_STATE_ERRORCODE;		
 	}
 	
 	if (count == LIMITSTATUS_STATE)
@@ -1684,29 +1710,36 @@ void GetMovePar(modbus_t* ctx, int mov_par_drv)
 	//Try to set the driver indicated by the mov_par_value as the active one.
 	function_status = modbus_set_slave(ctx, mov_par_drv);
 	
-	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
+	if (function_status == -1)
+	{
+		output_module->Output("Exp: error, getmovpar not done because set slave function failed\n");
+		SendFailedGetMovPar(mov_par_drv);
+		return;
+	}
+	
+	//status_state == FAILED_STATUS_STATE_ERRORCODE is not a state contemplated by the firmware, so it is
 	//a neutral value to initialized the variable.
-	uint16_t status_state = FAILED_STATUS_STATE_RC;
+	uint16_t status_state = FAILED_STATUS_STATE_ERRORCODE;
 	
 	//This variable records the success following functions.	
-	int rc;
+	int error_code;
 	
 	//Try to read the actual state.
-	status_state = ReadStatusState(ctx, &rc, "Exp: ");
+	status_state = ReadStatusState(ctx, &error_code, "Exp: ");
 
 	//status_state = 4 or status_state = 5 means that the previous operation is terminated.
 	//Obviously these information are hard coded!	
 	//count is a timeout: if the operation is not ultimated in the times specified by LIMITSTATUS_STATE,
 	//the homing function is aborted.
 	int count = 0;
-	while (status_state != 4 && status_state != 5 && status_state != 0 && count < LIMITSTATUS_STATE)
+	while ((error_code == -1 || VerifyStatusState(status_state) == false) && count < LIMITSTATUS_STATE)
 	{
 		usleep(SLEEPSTATUS_STATE);
 		count ++;
-		status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		status_state = ReadStatusState(ctx, &error_code, "Exp: ");
 		
-		if (rc == -1)
-			status_state = FAILED_STATUS_STATE_RC;
+		if (error_code == -1)
+			status_state = FAILED_STATUS_STATE_ERRORCODE;
 	}	
 	
 	
@@ -1716,23 +1749,17 @@ void GetMovePar(modbus_t* ctx, int mov_par_drv)
 		return;
 	}
 	
-	//If no error occurred
+	//Reading current_position and analog_input0
+	//If an error occurred, a negative response is sent to the client.
+	//
+	current_position = ReadCurrentPosition(ctx, &function_status, "Exp: ");
 	if (function_status == -1) 
-		error = -1;	
-	else
-	{
-		//Reading current_position and analog_input0
-		//If an error occurred, a negative response is sent to the client.
-		//
-		current_position = ReadCurrentPosition(ctx, &function_status, "Exp: ");
-		if (function_status == -1) 
-			error = -1;
-			
-		analog_input0 = ReadAnalogInput0(ctx, &function_status, "Exp: ");
-		if (function_status == -1) 
-			error = -1;
+		error = -1;
+		
+	analog_input0 = ReadAnalogInput0(ctx, &function_status, "Exp: ");
+	if (function_status == -1) 
+		error = -1;
 					
-	}
 	
 	//If success.
 	if (error != -1)
@@ -1787,29 +1814,29 @@ void MoveTo(modbus_t* ctx, int moveto_drv_num, int moveto_value)
 		return;
 	}
 	
-	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
+	//status_state == FAILED_STATUS_STATE_ERRORCODE is not a state contemplated by the firmware, so it is
 	//a neutral value to initialized the variable.	
-	uint16_t status_state = FAILED_STATUS_STATE_RC;
+	uint16_t status_state = FAILED_STATUS_STATE_ERRORCODE;
 	
 	//This variable records the success following functions.		
-	int rc;
+	int error_code;
 	
 	//Try to read the actual state.	
-	status_state = ReadStatusState(ctx, &rc, "Exp: "); //Questo rc non va messo qui!!!!
+	status_state = ReadStatusState(ctx, &error_code, "Exp: "); 
 
 	//status_state = 4 or status_state = 5 means that the previous operation is terminated.
 	//Obviously these information are hard coded!	
 	//count is a timeout: if the operation is not ultimated in the times specified by LIMITSTATUS_STATE,
 	//the homing function is aborted.
 	int count = 0;
-	while (status_state != 4 && status_state != 5 && status_state != 0 && count < LIMITSTATUS_STATE)
+	while ((error_code == -1 || VerifyStatusState(status_state) == false) && count < LIMITSTATUS_STATE)
 	{
 		usleep(SLEEPSTATUS_STATE);
 		count ++;
-		status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		status_state = ReadStatusState(ctx, &error_code, "Exp: ");
 		
-		if (rc == -1)
-			status_state = FAILED_STATUS_STATE_RC;
+		if (error_code == -1)
+			status_state = FAILED_STATUS_STATE_ERRORCODE;
 	}
 	
 	if (count == LIMITSTATUS_STATE)
@@ -1910,29 +1937,29 @@ void Encode(modbus_t* ctx, int encode_drv_num, EncoderStruct& drv_parameters)
 		return;
 	}
 	
-	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
+	//status_state == FAILED_STATUS_STATE_ERRORCODE is not a state contemplated by the firmware, so it is
 	//a neutral value to initialized the variable.	
-	uint16_t status_state = FAILED_STATUS_STATE_RC; //Warning!
+	uint16_t status_state = FAILED_STATUS_STATE_ERRORCODE; //Warning!
 	
 	//This variable records the success following functions.		
-	int rc;
+	int error_code;
 	
 	//Try to read the actual state.		
-	status_state = ReadStatusState(ctx, &rc, "Exp: ");
+	status_state = ReadStatusState(ctx, &error_code, "Exp: ");
 
 	//status_state = 4 or status_state = 5 means that the previous operation is terminated.
 	//Obviously these information are hard coded!	
 	//count is a timeout: if the operation is not ultimated in the times specified by LIMITSTATUS_STATE,
 	//the homing function is aborted.
 	int count = 0;
-	while (status_state != 4 && status_state != 5 && status_state != 0 && count < LIMITSTATUS_STATE)
+	while ((error_code == -1 || VerifyStatusState(status_state) == false) && count < LIMITSTATUS_STATE)
 	{
 		usleep(SLEEPSTATUS_STATE);
 		count ++;
-		status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		status_state = ReadStatusState(ctx, &error_code, "Exp: ");
 		
-		if (rc == -1)
-			status_state = FAILED_STATUS_STATE_RC;
+		if (error_code == -1)
+			status_state = FAILED_STATUS_STATE_ERRORCODE;
 	}
 	
 	if (count == LIMITSTATUS_STATE)
@@ -1960,16 +1987,16 @@ void Encode(modbus_t* ctx, int encode_drv_num, EncoderStruct& drv_parameters)
 		//the homing function is aborted.		
 		int count = 0;
 
-		status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		status_state = ReadStatusState(ctx, &error_code, "Exp: ");
 
-		while (status_state != 4 && status_state != 5 && status_state != 0 && count < LIMITSTATUS_STATE)
+		while ((error_code == -1 || VerifyStatusState(status_state) == false) && count < LIMITSTATUS_STATE)
 		{
 			usleep(SLEEPSTATUS_STATE);
 			count ++;
-			status_state = ReadStatusState(ctx, &rc, "Exp: ");
+			status_state = ReadStatusState(ctx, &error_code, "Exp: ");
 		
-			if (rc == -1)
-				status_state = FAILED_STATUS_STATE_RC;		
+			if (error_code == -1)
+				status_state = FAILED_STATUS_STATE_ERRORCODE;		
 		
 		}
 		
@@ -2075,29 +2102,29 @@ int CheckPositionEncoderSingle (modbus_t* ctx, int position_encoder_drv_num)
 		return -2;
 	}
 	
-	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
+	//status_state == FAILED_STATUS_STATE_ERRORCODE is not a state contemplated by the firmware, so it is
 	//a neutral value to initialized the variable.		
-	uint16_t status_state = FAILED_STATUS_STATE_RC;
+	uint16_t status_state = FAILED_STATUS_STATE_ERRORCODE;
 	
 	//This variable records the success following functions.			
-	int rc;
+	int error_code;
 	
 	//Try to read the actual state.		
-	status_state = ReadStatusState(ctx, &rc, "Exp: "); //Questo rc non va messo qui!!!!
+	status_state = ReadStatusState(ctx, &error_code, "Exp: "); 
 
 	//status_state = 4 or status_state = 5 means that the previous operation is terminated.
 	//Obviously these information are hard coded!	
 	//count is a timeout: if the operation is not ultimated in the times specified by LIMITSTATUS_STATE,
 	//the homing function is aborted.
 	int count = 0;
-	while (status_state != 4 && status_state != 5 && status_state != 0 && count < LIMITSTATUS_STATE)
+	while ((error_code == -1 || VerifyStatusState(status_state) == false) && count < LIMITSTATUS_STATE)
 	{
 		usleep(SLEEPSTATUS_STATE);
 		count ++;
-		status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		status_state = ReadStatusState(ctx, &error_code, "Exp: ");
 		
-		if (rc == -1)
-			status_state = FAILED_STATUS_STATE_RC;
+		if (error_code == -1)
+			status_state = FAILED_STATUS_STATE_ERRORCODE;
 		
 	}
 	
@@ -2210,29 +2237,29 @@ int CheckPositionEncoderToAll (modbus_t* ctx, int position_encoder_drv_num)
 		return -2;
 	}
 	
-	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
+	//status_state == FAILED_STATUS_STATE_ERRORCODE is not a state contemplated by the firmware, so it is
 	//a neutral value to initialized the variable.		
-	uint16_t status_state = FAILED_STATUS_STATE_RC;
+	uint16_t status_state = FAILED_STATUS_STATE_ERRORCODE;
 	
 	//This variable records the success following functions.	
-	int rc;
+	int error_code;
 	
 	//Try to read the actual state.	
-	status_state = ReadStatusState(ctx, &rc, "Exp: "); //Questo rc non va messo qui!!!!
-
+	status_state = ReadStatusState(ctx, &error_code, "Exp: "); 
+	
 	//status_state = 4 or status_state = 5 means that the previous operation is terminated.
 	//Obviously these information are hard coded!	
 	//count is a timeout: if the operation is not ultimated in the times specified by LIMITSTATUS_STATE,
 	//the homing function is aborted.
 	int count = 0;
-	while (status_state != 4 && status_state != 5 && status_state != 0 && count < LIMITSTATUS_STATE)
+	while ((error_code == -1 || VerifyStatusState(status_state) == false) && count < LIMITSTATUS_STATE)
 	{
 		usleep(SLEEPSTATUS_STATE);
 		count ++;
-		status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		status_state = ReadStatusState(ctx, &error_code, "Exp: ");
 		
-		if (rc == -1)
-			status_state = FAILED_STATUS_STATE_RC;		
+		if (error_code == -1)
+			status_state = FAILED_STATUS_STATE_ERRORCODE;		
 	}
 	
 	if (count == LIMITSTATUS_STATE)
@@ -2396,7 +2423,7 @@ void ReadActualEncoderValue()
 	output_module->Output(output_tmp);
 }
 
-void SetStatusStateVariable(modbus_t* ctx, int status_state_drv, uint16_t status_state_value)
+void SetStatusStateSoftwareCmd(modbus_t* ctx, int status_state_drv, uint16_t status_state_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -2433,7 +2460,7 @@ void SetStatusStateVariable(modbus_t* ctx, int status_state_drv, uint16_t status
 }
 
 
-void GetStatusStateVariable(modbus_t* ctx, int status_state_drv)
+void GetStatusStateSoftwareCmd(modbus_t* ctx, int status_state_drv)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -2475,7 +2502,7 @@ void GetStatusStateVariable(modbus_t* ctx, int status_state_drv)
 	}
 }
 
-void SetRequestStateVariable(modbus_t* ctx, int request_state_drv, uint16_t request_state_value)
+void SetRequestStateSoftwareCmd(modbus_t* ctx, int request_state_drv, uint16_t request_state_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -2512,7 +2539,7 @@ void SetRequestStateVariable(modbus_t* ctx, int request_state_drv, uint16_t requ
 }
 
 
-void GetRequestStateVariable(modbus_t* ctx, int request_state_drv)
+void GetRequestStateSoftwareCmd(modbus_t* ctx, int request_state_drv)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -2586,29 +2613,29 @@ void SaveEprom(modbus_t* ctx, int eprom_value)
 		return;
 	}
 	
-	//status_state == FAILED_STATUS_STATE_RC is not a state contemplated by the firmware, so it is
+	//status_state == FAILED_STATUS_STATE_ERRORCODE is not a state contemplated by the firmware, so it is
 	//a neutral value to initialized the variable.
-	uint16_t status_state = FAILED_STATUS_STATE_RC;
+	uint16_t status_state = FAILED_STATUS_STATE_ERRORCODE;
 	
 	//This variable records the success following functions.
-	int rc;
+	int error_code;
 	
 	//Try to read the actual state.
-	status_state = ReadStatusState(ctx, &rc, "Exp: "); //Questo rc non va messo qui!!!!
+	status_state = ReadStatusState(ctx, &error_code, "Exp: ");
 
 	//status_state = 4 or status_state = 5 means that the previous operation is terminated.
 	//Obviously these information are hard coded!	
 	//count is a timeout: if the operation is not ultimated in the times specified by LIMITSTATUS_STATE,
 	//the homing function is aborted.
 	int count = 0;
-	while (status_state != 4 && status_state != 5 && status_state != 0 && count < LIMITSTATUS_STATE)
+	while ((error_code == -1 || VerifyStatusState(status_state) == false) && count < LIMITSTATUS_STATE)
 	{
 		usleep(SLEEPSTATUS_STATE);
 		count ++;
-		status_state = ReadStatusState(ctx, &rc, "Exp: ");
+		status_state = ReadStatusState(ctx, &error_code, "Exp: ");
 		
-		if (rc == -1)
-			status_state = FAILED_STATUS_STATE_RC;		
+		if (error_code == -1)
+			status_state = FAILED_STATUS_STATE_ERRORCODE;		
 	}
 	
 	if (count == LIMITSTATUS_STATE)
@@ -2688,7 +2715,7 @@ void CheckFault(modbus_t* ctx, int check_fault_drv)
 }
 
 
-void SetHomeDoneVariable(modbus_t* ctx, int home_done_drv, uint16_t home_done_value)
+void SetHomeDoneSoftwareCmd(modbus_t* ctx, int home_done_drv, uint16_t home_done_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -2725,7 +2752,7 @@ void SetHomeDoneVariable(modbus_t* ctx, int home_done_drv, uint16_t home_done_va
 }
 
 
-void GetHomeDoneVariable(modbus_t* ctx, int home_done_drv)
+void GetHomeDoneSoftwareCmd(modbus_t* ctx, int home_done_drv)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -2767,7 +2794,7 @@ void GetHomeDoneVariable(modbus_t* ctx, int home_done_drv)
 	}
 }
 
-void SetEncoderMaxVariable(modbus_t* ctx, int encoder_max_drv, uint16_t encoder_max_value)
+void SetEncoderMaxSoftwareCmd(modbus_t* ctx, int encoder_max_drv, uint16_t encoder_max_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -2804,7 +2831,7 @@ void SetEncoderMaxVariable(modbus_t* ctx, int encoder_max_drv, uint16_t encoder_
 }
 
 
-void GetEncoderMaxVariable(modbus_t* ctx, int encoder_max_drv)
+void GetEncoderMaxSoftwareCmd(modbus_t* ctx, int encoder_max_drv)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -2846,7 +2873,7 @@ void GetEncoderMaxVariable(modbus_t* ctx, int encoder_max_drv)
 	}
 }
 
-void SetEncoderMinVariable(modbus_t* ctx, int encoder_min_drv, uint16_t encoder_min_value)
+void SetEncoderMinSoftwareCmd(modbus_t* ctx, int encoder_min_drv, uint16_t encoder_min_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -2883,7 +2910,7 @@ void SetEncoderMinVariable(modbus_t* ctx, int encoder_min_drv, uint16_t encoder_
 }
 
 
-void GetEncoderMinVariable(modbus_t* ctx, int encoder_min_drv)
+void GetEncoderMinSoftwareCmd(modbus_t* ctx, int encoder_min_drv)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -2925,7 +2952,7 @@ void GetEncoderMinVariable(modbus_t* ctx, int encoder_min_drv)
 	}
 }
 
-void SetDeltaAnalogPosVariable(modbus_t* ctx, int delta_analog_pos_drv, uint16_t delta_analog_pos_value)
+void SetDeltaAnalogPosSoftwareCmd(modbus_t* ctx, int delta_analog_pos_drv, uint16_t delta_analog_pos_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -2962,7 +2989,7 @@ void SetDeltaAnalogPosVariable(modbus_t* ctx, int delta_analog_pos_drv, uint16_t
 }
 
 
-void GetDeltaAnalogPosVariable(modbus_t* ctx, int delta_analog_pos_drv)
+void GetDeltaAnalogPosSoftwareCmd(modbus_t* ctx, int delta_analog_pos_drv)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -3005,7 +3032,7 @@ void GetDeltaAnalogPosVariable(modbus_t* ctx, int delta_analog_pos_drv)
 }
 
 
-void SetPhaseCurrentUserVariable(modbus_t* ctx, int phase_current_user_drv, uint16_t phase_current_user_value)
+void SetPhaseCurrentUserSoftwareCmd(modbus_t* ctx, int phase_current_user_drv, uint16_t phase_current_user_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -3042,7 +3069,7 @@ void SetPhaseCurrentUserVariable(modbus_t* ctx, int phase_current_user_drv, uint
 }
 
 
-void GetPhaseCurrentUserVariable(modbus_t* ctx, int phase_current_user_drv)
+void GetPhaseCurrentUserSoftwareCmd(modbus_t* ctx, int phase_current_user_drv)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -3084,7 +3111,7 @@ void GetPhaseCurrentUserVariable(modbus_t* ctx, int phase_current_user_drv)
 	}
 }
 
-void SetDelayCheckRotVariable(modbus_t* ctx, int delay_check_rot_drv, uint16_t delay_check_rot_value)
+void SetDelayCheckRotSoftwareCmd(modbus_t* ctx, int delay_check_rot_drv, uint16_t delay_check_rot_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -3121,7 +3148,7 @@ void SetDelayCheckRotVariable(modbus_t* ctx, int delay_check_rot_drv, uint16_t d
 }
 
 
-void GetDelayCheckRotVariable(modbus_t* ctx, int delay_check_rot_drv)
+void GetDelayCheckRotSoftwareCmd(modbus_t* ctx, int delay_check_rot_drv)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -3164,7 +3191,7 @@ void GetDelayCheckRotVariable(modbus_t* ctx, int delay_check_rot_drv)
 }
 
 
-void SetDeltaAnalogNegVariable(modbus_t* ctx, int delta_analog_neg_drv, int16_t delta_analog_neg_value)
+void SetDeltaAnalogNegSoftwareCmd(modbus_t* ctx, int delta_analog_neg_drv, int16_t delta_analog_neg_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -3201,7 +3228,7 @@ void SetDeltaAnalogNegVariable(modbus_t* ctx, int delta_analog_neg_drv, int16_t 
 }
 
 
-void GetDeltaAnalogNegVariable(modbus_t* ctx, int delta_analog_neg_drv)
+void GetDeltaAnalogNegSoftwareCmd(modbus_t* ctx, int delta_analog_neg_drv)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -3243,7 +3270,7 @@ void GetDeltaAnalogNegVariable(modbus_t* ctx, int delta_analog_neg_drv)
 	}
 }
 
-void SetMaxTargetPositionVariable(modbus_t* ctx, int max_target_position_drv, int max_target_position_value)
+void SetMaxTargetPositionSoftwareCmd(modbus_t* ctx, int max_target_position_drv, int max_target_position_value)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	
@@ -3280,7 +3307,7 @@ void SetMaxTargetPositionVariable(modbus_t* ctx, int max_target_position_drv, in
 }
 
 
-void GetMaxTargetPositionVariable(modbus_t* ctx, int max_target_position_drv)
+void GetMaxTargetPositionSoftwareCmd(modbus_t* ctx, int max_target_position_drv)
 {
 	
 	//This function flushes the pending datagrams to the drivers.	

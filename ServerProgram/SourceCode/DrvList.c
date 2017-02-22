@@ -846,7 +846,7 @@ YY_RULE_SETUP
 	unsigned int uli;
 	int num_drv = atoi(Drv1text);
 	tmp1.drv_num = num_drv;
-	char* mypunt = FindPointer(Drv1text);
+	char* mypunt = SkipWord(Drv1text);
 	uli = strtoul(mypunt,NULL,10);
 	tmp1.serial_number=uli;
 	serial.push_back(tmp1);

@@ -19,9 +19,9 @@
 
 using std::string;
 
-//The FindPointer function returns a pointer to the word that follow the initial one.
-//Ex. : FindPointer("moveto 1000") returns a pointer to 1 
-char * FindPointer (char *yytext)
+//The SkipWord function returns a pointer to the word that follow the initial one.
+//Ex. : SkipWord("moveto 1000") returns a pointer to 1 
+char * SkipWord (char *yytext)
 {
 	int i = 0;
 	char *punt;
@@ -33,13 +33,13 @@ char * FindPointer (char *yytext)
 	return punt;
 }
 
-//The FindIntegerValue function returns the value of the integer that follow the initial word of the string yytext.
-//Ex. : FindIntegerValue("moveto 1000") returns 1000
-int FindIntegerValue (char *yytext)
+//The SkipWordAndAtoi function returns the value of the integer that follow the initial word of the string yytext.
+//Ex. : SkipWordAndAtoi("moveto 1000") returns 1000
+int SkipWordAndAtoi (char *yytext)
 {
 	char *punt;
 	int integer_value;
-	punt = FindPointer (yytext);
+	punt = SkipWord (yytext);
 	integer_value = atoi (punt);
 	return integer_value;
 }

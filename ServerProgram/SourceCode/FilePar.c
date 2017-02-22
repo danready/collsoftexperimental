@@ -886,17 +886,17 @@ YY_RULE_SETUP
 	tmp1.analog_output0 = 0;
 	int num_drv = atoi(FilePartext);
 	tmp1.drv_num = num_drv;
-	char* mypunt = FindPointer(FilePartext);
+	char* mypunt = SkipWord(FilePartext);
 	tmp1.max_vel = atoi(mypunt);
-	mypunt = FindPointer(mypunt);
+	mypunt = SkipWord(mypunt);
 	tmp1.vel_home = (int16_t)atoi(mypunt);
-	mypunt = FindPointer(mypunt);
+	mypunt = SkipWord(mypunt);
 	tmp1.acceleration = atoi(mypunt);
-	mypunt = FindPointer(mypunt);
+	mypunt = SkipWord(mypunt);
 	tmp1.deceleration = atoi(mypunt);
-	mypunt = FindPointer(mypunt);
+	mypunt = SkipWord(mypunt);
 	tmp1.phase_current = atoi(mypunt);
-	mypunt = FindPointer(mypunt);
+	mypunt = SkipWord(mypunt);
 	tmp1.analog_output0 = atoi(mypunt);
 	parameter_vector.push_back(tmp1);
 }

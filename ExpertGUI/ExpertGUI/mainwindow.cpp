@@ -43,8 +43,8 @@ using namespace std;
 
 //Support function to analyze the messages sent to this GUI from server.
 //This function return a pointer to the second word of the argument string.
-//Ex. FindPointer("get_par 2") returns a pointer to 2.
-char * FindPointer (char *yytext)
+//Ex. SkipWord("get_par 2") returns a pointer to 2.
+char * SkipWord (char *yytext)
 {
     int i = 0;
     char *punt;
@@ -433,7 +433,7 @@ void MainWindow::readTcpData()
         if (re1.match(data_string).hasMatch()) {
 
             char* mypunt;
-            mypunt = FindPointer(data_string.toLatin1().data());
+            mypunt = SkipWord(data_string.toLatin1().data());
 
             int num_drv_value = atoi(mypunt);
 
@@ -443,7 +443,7 @@ void MainWindow::readTcpData()
                 return;
             }
 
-            int status = atoi(FindPointer(mypunt));
+            int status = atoi(SkipWord(mypunt));
 
             QString tmpStatus("LabelPositionStatus_");
             QString tmpStatus2 = QString::number(num_drv_value);
@@ -571,12 +571,12 @@ void MainWindow::readTcpData()
         if (re1.match(data_string).hasMatch()) {
 
             char* mypunt;
-            mypunt = FindPointer(data_string.toLatin1().data());
+            mypunt = SkipWord(data_string.toLatin1().data());
             int num_drv_value = atoi(mypunt);
-            mypunt = FindPointer(mypunt);
+            mypunt = SkipWord(mypunt);
             char switch_char = mypunt[0];
             char switch_char2 = mypunt[1];
-            mypunt = FindPointer(mypunt);
+            mypunt = SkipWord(mypunt);
             int value = atoi(mypunt);
 
             //Be careful: hard coded values!
@@ -809,12 +809,12 @@ void MainWindow::readTcpData()
         if (re1.match(data_string).hasMatch()) {
 
             char* mypunt;
-            mypunt = FindPointer(data_string.toLatin1().data());
+            mypunt = SkipWord(data_string.toLatin1().data());
             int num_drv_value = atoi(mypunt);
-            mypunt = FindPointer(mypunt);
+            mypunt = SkipWord(mypunt);
             char switch_char = mypunt[0];
             char switch_char2 = mypunt[1];
-            mypunt = FindPointer(mypunt);
+            mypunt = SkipWord(mypunt);
             int value = atoi(mypunt);
 
             //Be careful: hard coded values!

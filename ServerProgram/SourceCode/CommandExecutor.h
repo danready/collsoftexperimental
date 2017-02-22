@@ -108,49 +108,49 @@ void MoveTo(modbus_t* ctx, int moveto_drv_num, int moveto_value);
 //encode drvnum
 void Encode(modbus_t* ctx, int encode_drv_num, EncoderStruct& drv_parameters);
 //set_status_state drvnum status_state
-void SetStatusStateVariable (modbus_t* ctx, int set_status_state_drv, uint16_t set_status_state_value);
+void SetStatusStateSoftwareCmd (modbus_t* ctx, int set_status_state_drv, uint16_t set_status_state_value);
 //get_status_state drvnum
-void GetStatusStateVariable (modbus_t* ctx, int get_status_state_drv);
+void GetStatusStateSoftwareCmd (modbus_t* ctx, int get_status_state_drv);
 //set_request_state drvnum status_state
-void SetRequestStateVariable (modbus_t* ctx, int set_request_state_drv, uint16_t request_state_value);
+void SetRequestStateSoftwareCmd (modbus_t* ctx, int set_request_state_drv, uint16_t request_state_value);
 //get_request_state drvnum
-void GetRequestStateVariable (modbus_t* ctx, int get_request_state_drv);
+void GetRequestStateSoftwareCmd (modbus_t* ctx, int get_request_state_drv);
 //save_eprom drvnum
 void SaveEprom (modbus_t* ctx, int save_eprom_drv);
 //check_fault drvnum
 void CheckFault (modbus_t* ctx, int check_fault_drv);
 //set_home_done drvnum home_done
-void SetHomeDoneVariable (modbus_t* ctx, int set_home_done_drv, uint16_t set_home_done_value);
+void SetHomeDoneSoftwareCmd (modbus_t* ctx, int set_home_done_drv, uint16_t set_home_done_value);
 //get_home_done drvnum
-void GetHomeDoneVariable (modbus_t* ctx, int get_home_done_drv);
+void GetHomeDoneSoftwareCmd (modbus_t* ctx, int get_home_done_drv);
 //set_encoder_max drvnum encoder_max
-void SetEncoderMaxVariable (modbus_t* ctx, int set_encoder_max_drv, uint16_t set_encoder_max_value);
+void SetEncoderMaxSoftwareCmd (modbus_t* ctx, int set_encoder_max_drv, uint16_t set_encoder_max_value);
 //get_encoder_max drvnum
-void GetEncoderMaxVariable (modbus_t* ctx, int get_encoder_max_drv);
+void GetEncoderMaxSoftwareCmd (modbus_t* ctx, int get_encoder_max_drv);
 //set_encoder_min drvnum encoder_min
-void SetEncoderMinVariable (modbus_t* ctx, int set_encoder_min_drv, uint16_t set_encoder_min_value);
+void SetEncoderMinSoftwareCmd (modbus_t* ctx, int set_encoder_min_drv, uint16_t set_encoder_min_value);
 //get_encoder_min drvnum
-void GetEncoderMinVariable (modbus_t* ctx, int get_encoder_min_drv);
+void GetEncoderMinSoftwareCmd (modbus_t* ctx, int get_encoder_min_drv);
 //set_delta_analog_pos drvnum delta_analog_pos
-void SetDeltaAnalogPosVariable (modbus_t* ctx, int set_delta_analog_pos_drv, uint16_t set_delta_analog_pos_value);
+void SetDeltaAnalogPosSoftwareCmd (modbus_t* ctx, int set_delta_analog_pos_drv, uint16_t set_delta_analog_pos_value);
 //set_delta_analog_neg drvnum delta_analog_neg
-void GetDeltaAnalogPosVariable (modbus_t* ctx, int get_delta_analog_pos_drv);
+void GetDeltaAnalogPosSoftwareCmd (modbus_t* ctx, int get_delta_analog_pos_drv);
 //get_delta_analog_neg drvnum
-void SetDeltaAnalogNegVariable (modbus_t* ctx, int set_delta_analog_neg_drv, int16_t set_delta_analog_neg_value);
+void SetDeltaAnalogNegSoftwareCmd (modbus_t* ctx, int set_delta_analog_neg_drv, int16_t set_delta_analog_neg_value);
 //get_delta_analog_pos drvnum
-void GetDeltaAnalogNegVariable (modbus_t* ctx, int get_delta_analog_neg_drv);
+void GetDeltaAnalogNegSoftwareCmd (modbus_t* ctx, int get_delta_analog_neg_drv);
 //set_phase_current_user drvnum phase_current_user
-void SetPhaseCurrentUserVariable (modbus_t* ctx, int set_phase_current_user_drv, uint16_t set_phase_current_user_value);
+void SetPhaseCurrentUserSoftwareCmd (modbus_t* ctx, int set_phase_current_user_drv, uint16_t set_phase_current_user_value);
 //get_phase_current_user drvnum
-void GetPhaseCurrentUserVariable (modbus_t* ctx, int get_phase_current_user_drv);
+void GetPhaseCurrentUserSoftwareCmd (modbus_t* ctx, int get_phase_current_user_drv);
 //set_delay_check_rot drvnum delay_check_rot
-void SetDelayCheckRotVariable (modbus_t* ctx, int set_delay_check_rot_drv, uint16_t set_delay_check_rot_value);
+void SetDelayCheckRotSoftwareCmd (modbus_t* ctx, int set_delay_check_rot_drv, uint16_t set_delay_check_rot_value);
 //get_delay_check_rot drvnum
-void GetDelayCheckRotVariable (modbus_t* ctx, int get_delay_check_rot_drv);
+void GetDelayCheckRotSoftwareCmd (modbus_t* ctx, int get_delay_check_rot_drv);
 //set_max_target_position drvnum max_target_position
-void SetMaxTargetPositionVariable (modbus_t* ctx, int set_max_target_position_drv, int set_max_target_position_value);
+void SetMaxTargetPositionSoftwareCmd (modbus_t* ctx, int set_max_target_position_drv, int set_max_target_position_value);
 //get_max_target_position drvnum
-void GetMaxTargetPositionVariable (modbus_t* ctx, int get_max_target_position_drv);
+void GetMaxTargetPositionSoftwareCmd (modbus_t* ctx, int get_max_target_position_drv);
 //
 //check_position drvnum
 /////////////////////////////////////
@@ -181,5 +181,9 @@ void LoadEncoderFromFile();
 
 //Prints the values of the EncoderArrayValue array. 
 void ReadActualEncoderValue();
+
+//This function return true if the status_state variable of the driver is: 0,6,4,5.
+//Return false otherwise.
+bool VerifyStatusState(uint16_t status_state);
 
 #endif

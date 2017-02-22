@@ -318,12 +318,12 @@ int main(int argc, char *argv[])
 				//if the command was sent via TCP/IP
 				if (reg_matches (command_received_by_user.command_sent_by_user, "^[Cc][Oo][Nn][Nn][Ee][Cc][Tt][ \t][A-z0-9/\\]{1,100}[ \t]*$")) 
 				{
-					tmp_pointer = FindPointer(command_received_by_user.command_sent_by_user);
+					tmp_pointer = SkipWord(command_received_by_user.command_sent_by_user);
 				}
 				//if the command was sent via stdin
 				else 
 				{
-					tmp_pointer = FindPointer(buffer);
+					tmp_pointer = SkipWord(buffer);
 				}
 				
 				//STATE_CONNECT will record the connection status.
@@ -460,12 +460,12 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Pp][Aa][Rr][ \t][0-9]{1,2}[ \t]*$"))
 				{
-					get_par_drv = FindIntegerValue(buffer);
+					get_par_drv = SkipWordAndAtoi(buffer);
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					get_par_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					get_par_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 				}
 					
 				if (STATE_CONNECT == 1)
@@ -489,12 +489,12 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Cc][Hh][Ee][Cc][Kk]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t][0-9]{1,2}[ \t]*$"))
 				{
-					get_pos_drv = FindIntegerValue(buffer);
+					get_pos_drv = SkipWordAndAtoi(buffer);
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					get_pos_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					get_pos_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 				}
 					
 				if (STATE_CONNECT == 1)
@@ -527,13 +527,13 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Pp][Aa][Rr]([ \t]+[0-9]{1,5})([ \t]+[0-9]{1,5})([ \t]+-{0,1}[0-9]{1,5})([ \t]+[0-9]{1,5})([ \t]+[0-9]{1,5})([ \t]+[0-9]{1,5})([ \t]+[0-9]{1,5})[ \t]*$"))
 				{
-					set_par_drv = FindIntegerValue(buffer);
+					set_par_drv = SkipWordAndAtoi(buffer);
 					set_par_contents = buffer;
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					set_par_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					set_par_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 					set_par_contents = command_received_by_user.command_sent_by_user;
 				}				
 			  
@@ -558,12 +558,12 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer,"^[Hh][Oo][Mm][Ii][Nn][Gg][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					homing_drv = FindIntegerValue(buffer);
+					homing_drv = SkipWordAndAtoi(buffer);
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					homing_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					homing_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
@@ -588,12 +588,12 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer,"^[Gg][Ee][Tt]_[Mm][Oo][Vv]_[Pp][Aa][Rr][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					get_mov_par_drv = FindIntegerValue(buffer);
+					get_mov_par_drv = SkipWordAndAtoi(buffer);
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					get_mov_par_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					get_mov_par_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
@@ -622,12 +622,12 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer,"^[Ee][Nn][Cc][Oo][Dd][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					encoder_drv = FindIntegerValue(buffer);
+					encoder_drv = SkipWordAndAtoi(buffer);
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					encoder_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					encoder_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
@@ -656,14 +656,14 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer,"^[Mm][Oo][Vv][Ee]_[Tt][Oo][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$"))
 				{
-					move_to_drv = FindIntegerValue(buffer);
-					move_to_value = FindIntegerValue(FindPointer(buffer));
+					move_to_drv = SkipWordAndAtoi(buffer);
+					move_to_value = SkipWordAndAtoi(SkipWord(buffer));
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					move_to_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
-					move_to_value = FindIntegerValue(FindPointer(command_received_by_user.command_sent_by_user));
+					move_to_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
+					move_to_value = SkipWordAndAtoi(SkipWord(command_received_by_user.command_sent_by_user));
 				}				
 			  
 				if (STATE_CONNECT == 1)
@@ -743,7 +743,7 @@ int main(int argc, char *argv[])
 					
 					for (i=0; i<num_arg_homing; i++)
 					{
-						homing_mult_punt = FindPointer(homing_mult_punt);
+						homing_mult_punt = SkipWord(homing_mult_punt);
 						homing_drv_array[i] = atoi(homing_mult_punt);
 						
 						Homing(ctx, homing_drv_array[i]);
@@ -764,7 +764,7 @@ int main(int argc, char *argv[])
 					
 					for (i=0; i<num_arg_homing; i++)
 					{
-						homing_mult_punt = FindPointer(homing_mult_punt);
+						homing_mult_punt = SkipWord(homing_mult_punt);
 						homing_drv_array[i] = atoi(homing_mult_punt);
 						output_module->Output("homing: " + to_string(homing_drv_array[i]) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
 					}
@@ -798,7 +798,7 @@ int main(int argc, char *argv[])
 				
 				if (reg_matches (buffer, "^[Mm][Oo][Vv][Ee][Tt][Oo]_[Mm][Uu][Ll][Tt]([ \t]+-{0,1}[0-9]{1,12})([ \t]+[0-9]{1,2}){1,14}[ \t]*$"))
 				{
-					moveto_value = FindIntegerValue(buffer);
+					moveto_value = SkipWordAndAtoi(buffer);
 					buffer_moveto_value = buffer;
 					buffer_arg = buffer;
 				}
@@ -806,7 +806,7 @@ int main(int argc, char *argv[])
 				//if the command was sent via TCP/IP
 				else
 				{
-					moveto_value = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					moveto_value = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 					buffer_moveto_value = command_received_by_user.command_sent_by_user;
 					buffer_arg = command_received_by_user.command_sent_by_user;
 				}				
@@ -814,17 +814,17 @@ int main(int argc, char *argv[])
 				if (STATE_CONNECT == 1)
 				{
 					
-					moveto_mult_value = FindIntegerValue(buffer_moveto_value); 
+					moveto_mult_value = SkipWordAndAtoi(buffer_moveto_value); 
 					
 					num_arg_moveto = FindNumArg(buffer_moveto_value) - 1; //be careful to this hard coded value!
 					
 					moveto_drv_array = (int*)malloc(num_arg_moveto*sizeof(int));
 					
-					moveto_mult_punt = FindPointer(buffer_moveto_value);
+					moveto_mult_punt = SkipWord(buffer_moveto_value);
 					
 					for (i=0; i<num_arg_moveto; i++)
 					{
-						moveto_mult_punt = FindPointer(moveto_mult_punt);
+						moveto_mult_punt = SkipWord(moveto_mult_punt);
 						moveto_drv_array[i] = atoi(moveto_mult_punt);
 						
 						MoveTo(ctx, moveto_drv_array[i], moveto_value);
@@ -841,11 +841,11 @@ int main(int argc, char *argv[])
 					
 					moveto_drv_array = (int*)malloc(num_arg_moveto*sizeof(int));
 					
-					moveto_mult_punt = FindPointer(buffer_moveto_value);
+					moveto_mult_punt = SkipWord(buffer_moveto_value);
 					
 					for (i=0; i<num_arg_moveto; i++)
 					{
-						moveto_mult_punt = FindPointer(moveto_mult_punt);
+						moveto_mult_punt = SkipWord(moveto_mult_punt);
 						moveto_drv_array[i] = atoi(moveto_mult_punt);
 						output_module->Output("get_move_par: " + to_string(moveto_drv_array[i]) + " Programmer not connected, digit 'connect programmerpath'.\n " + to_string(-1));
 					}
@@ -900,16 +900,16 @@ int main(int argc, char *argv[])
 					
 					setpar_mult_val = (int*)malloc(num_arg_setpar_mult*sizeof(int));
 					
-					setpar_mult_punt = FindPointer(buffer_setpar_mult_value);
-					setpar_mult_punt = FindPointer(setpar_mult_punt);
-					setpar_mult_punt = FindPointer(setpar_mult_punt);
-					setpar_mult_punt = FindPointer(setpar_mult_punt);
-					setpar_mult_punt = FindPointer(setpar_mult_punt);
-					setpar_mult_punt = FindPointer(setpar_mult_punt);
+					setpar_mult_punt = SkipWord(buffer_setpar_mult_value);
+					setpar_mult_punt = SkipWord(setpar_mult_punt);
+					setpar_mult_punt = SkipWord(setpar_mult_punt);
+					setpar_mult_punt = SkipWord(setpar_mult_punt);
+					setpar_mult_punt = SkipWord(setpar_mult_punt);
+					setpar_mult_punt = SkipWord(setpar_mult_punt);
 					
 					for (i=0; i<num_arg_setpar_mult; i++)
 					{
-						setpar_mult_punt = FindPointer(setpar_mult_punt);
+						setpar_mult_punt = SkipWord(setpar_mult_punt);
 						setpar_mult_val[i] = atoi(setpar_mult_punt);
 						
 						SetParMult(ctx, setpar_mult_val[i], buffer_arg);
@@ -926,16 +926,16 @@ int main(int argc, char *argv[])
 					
 					setpar_mult_val = (int*)malloc(num_arg_setpar_mult*sizeof(int));
 					
-					setpar_mult_punt = FindPointer(buffer_setpar_mult_value);
-					setpar_mult_punt = FindPointer(setpar_mult_punt);
-					setpar_mult_punt = FindPointer(setpar_mult_punt);
-					setpar_mult_punt = FindPointer(setpar_mult_punt);
-					setpar_mult_punt = FindPointer(setpar_mult_punt);
-					setpar_mult_punt = FindPointer(setpar_mult_punt);
+					setpar_mult_punt = SkipWord(buffer_setpar_mult_value);
+					setpar_mult_punt = SkipWord(setpar_mult_punt);
+					setpar_mult_punt = SkipWord(setpar_mult_punt);
+					setpar_mult_punt = SkipWord(setpar_mult_punt);
+					setpar_mult_punt = SkipWord(setpar_mult_punt);
+					setpar_mult_punt = SkipWord(setpar_mult_punt);
 					
 					for (i=0; i<num_arg_setpar_mult; i++)
 					{
-						setpar_mult_punt = FindPointer(setpar_mult_punt);
+						setpar_mult_punt = SkipWord(setpar_mult_punt);
 						setpar_mult_val[i] = atoi(setpar_mult_punt);
 						
 						SendFailedGetPar(setpar_mult_val[i]);					
@@ -1022,19 +1022,19 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Ss][Tt][Aa][Tt][Uu][Ss]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 				{
-					status_state_drv = FindIntegerValue(buffer);
+					status_state_drv = SkipWordAndAtoi(buffer);
 					buffer_status_state = buffer;
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					status_state_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					status_state_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 					buffer_status_state = command_received_by_user.command_sent_by_user;
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetStatusStateVariable(ctx, status_state_drv, (uint16_t)FindIntegerValue(FindPointer(buffer_status_state)));
+					SetStatusStateSoftwareCmd(ctx, status_state_drv, (uint16_t)SkipWordAndAtoi(SkipWord(buffer_status_state)));
 				}
 				else
 				{
@@ -1054,17 +1054,17 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Ss][Tt][Aa][Tt][Uu][Ss]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					status_state_drv = FindIntegerValue(buffer);
+					status_state_drv = SkipWordAndAtoi(buffer);
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					status_state_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					status_state_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					GetStatusStateVariable(ctx, status_state_drv);
+					GetStatusStateSoftwareCmd(ctx, status_state_drv);
 				}
 				else
 				{
@@ -1085,19 +1085,19 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Rr][Ee][Qq][Uu][Ee][Ss][Tt]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 				{
-					request_state_drv = FindIntegerValue(buffer);
+					request_state_drv = SkipWordAndAtoi(buffer);
 					buffer_request_state = buffer;
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					request_state_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					request_state_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 					buffer_request_state = command_received_by_user.command_sent_by_user;
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetRequestStateVariable(ctx, request_state_drv, (uint16_t)FindIntegerValue(FindPointer(buffer_request_state)));
+					SetRequestStateSoftwareCmd(ctx, request_state_drv, (uint16_t)SkipWordAndAtoi(SkipWord(buffer_request_state)));
 				}
 				else
 				{
@@ -1117,17 +1117,17 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Rr][Ee][Qq][Uu][Ee][Ss][Tt]_[Ss][Tt][Aa][Tt][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					request_state_drv = FindIntegerValue(buffer);
+					request_state_drv = SkipWordAndAtoi(buffer);
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					request_state_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					request_state_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					GetRequestStateVariable(ctx, request_state_drv);
+					GetRequestStateSoftwareCmd(ctx, request_state_drv);
 				}
 				else
 				{
@@ -1147,17 +1147,17 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Aa][Vv][Ee]_[Ee][Pp][Rr][Oo][Mm][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					save_eprom_drv = FindIntegerValue(buffer);
+					save_eprom_drv = SkipWordAndAtoi(buffer);
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					save_eprom_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					save_eprom_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					GetRequestStateVariable(ctx, save_eprom_drv);
+					GetRequestStateSoftwareCmd(ctx, save_eprom_drv);
 				}
 				else
 				{
@@ -1177,12 +1177,12 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Cc][Hh][Ee][Cc][Kk]_[Ff][Aa][Uu][Ll][Tt][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					check_fault_drv = FindIntegerValue(buffer);
+					check_fault_drv = SkipWordAndAtoi(buffer);
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					check_fault_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					check_fault_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
@@ -1208,19 +1208,19 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Hh][Oo][Mm][Ee]_[Dd][Oo][Nn][Ee][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 				{
-					home_done_drv = FindIntegerValue(buffer);
+					home_done_drv = SkipWordAndAtoi(buffer);
 					buffer_home_done = buffer;
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					home_done_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					home_done_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 					buffer_home_done = command_received_by_user.command_sent_by_user;
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetHomeDoneVariable(ctx, home_done_drv, (uint16_t)FindIntegerValue(FindPointer(buffer_home_done)));
+					SetHomeDoneSoftwareCmd(ctx, home_done_drv, (uint16_t)SkipWordAndAtoi(SkipWord(buffer_home_done)));
 				}
 				else
 				{
@@ -1240,17 +1240,17 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Hh][Oo][Mm][Ee]_[Dd][Oo][Nn][Ee][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					home_done_drv = FindIntegerValue(buffer);
+					home_done_drv = SkipWordAndAtoi(buffer);
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					home_done_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					home_done_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					GetHomeDoneVariable(ctx, home_done_drv);
+					GetHomeDoneSoftwareCmd(ctx, home_done_drv);
 				}
 				else
 				{
@@ -1271,19 +1271,19 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Aa][Xx][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 				{
-					encoder_max_drv = FindIntegerValue(buffer);
+					encoder_max_drv = SkipWordAndAtoi(buffer);
 					buffer_encoder_max = buffer;
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					encoder_max_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					encoder_max_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 					buffer_encoder_max = command_received_by_user.command_sent_by_user;
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetEncoderMaxVariable(ctx, encoder_max_drv, (uint16_t)FindIntegerValue(FindPointer(buffer_encoder_max)));
+					SetEncoderMaxSoftwareCmd(ctx, encoder_max_drv, (uint16_t)SkipWordAndAtoi(SkipWord(buffer_encoder_max)));
 				}
 				else
 				{
@@ -1303,17 +1303,17 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Aa][Xx][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					encoder_max_drv = FindIntegerValue(buffer);
+					encoder_max_drv = SkipWordAndAtoi(buffer);
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					encoder_max_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					encoder_max_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					GetEncoderMaxVariable(ctx, encoder_max_drv);
+					GetEncoderMaxSoftwareCmd(ctx, encoder_max_drv);
 				}
 				else
 				{
@@ -1334,19 +1334,19 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Ii][Nn][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 				{
-					encoder_min_drv = FindIntegerValue(buffer);
+					encoder_min_drv = SkipWordAndAtoi(buffer);
 					buffer_encoder_min = buffer;
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					encoder_min_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					encoder_min_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 					buffer_encoder_min = command_received_by_user.command_sent_by_user;
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetEncoderMinVariable(ctx, encoder_min_drv, (uint16_t)FindIntegerValue(FindPointer(buffer_encoder_min)));
+					SetEncoderMinSoftwareCmd(ctx, encoder_min_drv, (uint16_t)SkipWordAndAtoi(SkipWord(buffer_encoder_min)));
 				}
 				else
 				{
@@ -1366,17 +1366,17 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Ee][Nn][Cc][Oo][Dd][Ee][Rr]_[Mm][Ii][Nn][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					encoder_min_drv = FindIntegerValue(buffer);
+					encoder_min_drv = SkipWordAndAtoi(buffer);
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					encoder_min_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					encoder_min_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					GetEncoderMinVariable(ctx, encoder_min_drv);
+					GetEncoderMinSoftwareCmd(ctx, encoder_min_drv);
 				}
 				else
 				{
@@ -1398,19 +1398,19 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Pp][Oo][Ss][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 				{
-					delta_analog_pos_drv = FindIntegerValue(buffer);
+					delta_analog_pos_drv = SkipWordAndAtoi(buffer);
 					buffer_delta_analog_pos = buffer;
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					delta_analog_pos_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					delta_analog_pos_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 					buffer_delta_analog_pos = command_received_by_user.command_sent_by_user;
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetDeltaAnalogPosVariable(ctx, delta_analog_pos_drv, (uint16_t)FindIntegerValue(FindPointer(buffer_delta_analog_pos)));
+					SetDeltaAnalogPosSoftwareCmd(ctx, delta_analog_pos_drv, (uint16_t)SkipWordAndAtoi(SkipWord(buffer_delta_analog_pos)));
 				}
 				else
 				{
@@ -1430,17 +1430,17 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Pp][Oo][Ss][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					delta_analog_pos_drv = FindIntegerValue(buffer);
+					delta_analog_pos_drv = SkipWordAndAtoi(buffer);
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					delta_analog_pos_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					delta_analog_pos_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					GetDeltaAnalogPosVariable(ctx, delta_analog_pos_drv);
+					GetDeltaAnalogPosSoftwareCmd(ctx, delta_analog_pos_drv);
 				}
 				else
 				{
@@ -1461,19 +1461,19 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Pp][Hh][Aa][Ss][Ee]_[Cc][Uu][Rr][Rr][Ee][Nn][Tt]_[Uu][Ss][Ee][Rr][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 				{
-					phase_current_user_drv = FindIntegerValue(buffer);
+					phase_current_user_drv = SkipWordAndAtoi(buffer);
 					buffer_phase_current_user = buffer;
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					phase_current_user_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					phase_current_user_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 					buffer_phase_current_user = command_received_by_user.command_sent_by_user;
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetPhaseCurrentUserVariable(ctx, phase_current_user_drv, (uint16_t)FindIntegerValue(FindPointer(buffer_phase_current_user)));
+					SetPhaseCurrentUserSoftwareCmd(ctx, phase_current_user_drv, (uint16_t)SkipWordAndAtoi(SkipWord(buffer_phase_current_user)));
 				}
 				else
 				{
@@ -1493,17 +1493,17 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Pp][Hh][Aa][Ss][Ee]_[Cc][Uu][Rr][Rr][Ee][Nn][Tt]_[Uu][Ss][Ee][Rr][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					phase_current_user_drv = FindIntegerValue(buffer);
+					phase_current_user_drv = SkipWordAndAtoi(buffer);
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					phase_current_user_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					phase_current_user_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					GetPhaseCurrentUserVariable(ctx, phase_current_user_drv);
+					GetPhaseCurrentUserSoftwareCmd(ctx, phase_current_user_drv);
 				}
 				else
 				{
@@ -1524,19 +1524,19 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Aa][Yy]_[Cc][Hh][Ee][Cc][Kk]_[Rr][Oo][Tt][ \t]+[0-9]{1,2}([ \t]+[0-9]{1,10})[ \t]*$"))
 				{
-					delay_check_rot_drv = FindIntegerValue(buffer);
+					delay_check_rot_drv = SkipWordAndAtoi(buffer);
 					buffer_delay_check_rot = buffer;
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					delay_check_rot_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					delay_check_rot_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 					buffer_delay_check_rot = command_received_by_user.command_sent_by_user;
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetDelayCheckRotVariable(ctx, delay_check_rot_drv, (uint16_t)FindIntegerValue(FindPointer(buffer_delay_check_rot)));
+					SetDelayCheckRotSoftwareCmd(ctx, delay_check_rot_drv, (uint16_t)SkipWordAndAtoi(SkipWord(buffer_delay_check_rot)));
 				}
 				else
 				{
@@ -1556,17 +1556,17 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Aa][Yy]_[Cc][Hh][Ee][Cc][Kk]_[Rr][Oo][Tt][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					delay_check_rot_drv = FindIntegerValue(buffer);
+					delay_check_rot_drv = SkipWordAndAtoi(buffer);
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					delay_check_rot_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					delay_check_rot_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					GetDelayCheckRotVariable(ctx, delay_check_rot_drv);
+					GetDelayCheckRotSoftwareCmd(ctx, delay_check_rot_drv);
 				}
 				else
 				{
@@ -1588,19 +1588,19 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Nn][Ee][Gg][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$"))
 				{
-					delta_analog_neg_drv = FindIntegerValue(buffer);
+					delta_analog_neg_drv = SkipWordAndAtoi(buffer);
 					buffer_delta_analog_neg = buffer;
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					delta_analog_neg_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					delta_analog_neg_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 					buffer_delta_analog_neg = command_received_by_user.command_sent_by_user;
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetDeltaAnalogNegVariable(ctx, delta_analog_neg_drv, (int16_t)FindIntegerValue(FindPointer(buffer_delta_analog_neg)));
+					SetDeltaAnalogNegSoftwareCmd(ctx, delta_analog_neg_drv, (int16_t)SkipWordAndAtoi(SkipWord(buffer_delta_analog_neg)));
 				}
 				else
 				{
@@ -1620,17 +1620,17 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Dd][Ee][Ll][Tt][Aa]_[Aa][Nn][Aa][Ll][Oo][Gg]_[Nn][Ee][Gg][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					delta_analog_neg_drv = FindIntegerValue(buffer);
+					delta_analog_neg_drv = SkipWordAndAtoi(buffer);
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					delta_analog_neg_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					delta_analog_neg_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					GetDeltaAnalogNegVariable(ctx, delta_analog_neg_drv);
+					GetDeltaAnalogNegSoftwareCmd(ctx, delta_analog_neg_drv);
 				}
 				else
 				{
@@ -1652,19 +1652,19 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Ss][Ee][Tt]_[Mm][Aa][Xx]_[Tt][Aa][Rr][Gg][Ee][Tt]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t]+[0-9]{1,2}([ \t]+-{0,1}[0-9]{1,10})[ \t]*$"))
 				{
-					max_target_position_drv = FindIntegerValue(buffer);
+					max_target_position_drv = SkipWordAndAtoi(buffer);
 					buffer_max_target_position = buffer;
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					max_target_position_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					max_target_position_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 					buffer_max_target_position = command_received_by_user.command_sent_by_user;
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					SetMaxTargetPositionVariable(ctx, max_target_position_drv, (int)FindIntegerValue(FindPointer(buffer_max_target_position)));
+					SetMaxTargetPositionSoftwareCmd(ctx, max_target_position_drv, (int)SkipWordAndAtoi(SkipWord(buffer_max_target_position)));
 				}
 				else
 				{
@@ -1684,17 +1684,17 @@ int main(int argc, char *argv[])
 				//if the command was sent via stdin
 				if (reg_matches (buffer, "^[Gg][Ee][Tt]_[Mm][Aa][Xx]_[Tt][Aa][Rr][Gg][Ee][Tt]_[Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][ \t]+[0-9]{1,2}[ \t]*$"))
 				{
-					max_target_position_drv = FindIntegerValue(buffer);
+					max_target_position_drv = SkipWordAndAtoi(buffer);
 				}
 				//if the command was sent via TCP/IP
 				else
 				{
-					max_target_position_drv = FindIntegerValue(command_received_by_user.command_sent_by_user);
+					max_target_position_drv = SkipWordAndAtoi(command_received_by_user.command_sent_by_user);
 				}				
 			  
 				if (STATE_CONNECT == 1)
 				{
-					GetMaxTargetPositionVariable(ctx, max_target_position_drv);
+					GetMaxTargetPositionSoftwareCmd(ctx, max_target_position_drv);
 				}
 				else
 				{

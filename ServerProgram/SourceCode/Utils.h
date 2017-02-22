@@ -22,13 +22,13 @@
 using std::vector;
 using std::string;
 
-//The FindPointer function returns a pointer to the word that follow the initial one.
-//Ex. : FindPointer("moveto 1000") returns a pointer to 1 
-char * FindPointer (char *yytext);
+//The SkipWord function returns a pointer to the word that follow the initial one.
+//Ex. : SkipWord("moveto 1000") returns a pointer to 1 
+char * SkipWord (char *yytext);
 
-//The FindIntegerValue function returns the value of the integer that follow the initial word of the string yytext.
-//Ex. : FindIntegerValue("moveto 1000") returns 1000
-int FindIntegerValue (char *yytext);
+//The SkipWordAndAtoi function returns the value of the integer that follow the initial word of the string yytext.
+//Ex. : SkipWordAndAtoi("moveto 1000") returns 1000
+int SkipWordAndAtoi (char *yytext);
 
 //The reg_matches function tries to find "pattern" in the string pointed by str.
 //It returns true if the string is found or returns false if the string is not found.
