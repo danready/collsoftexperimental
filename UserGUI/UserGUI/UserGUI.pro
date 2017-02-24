@@ -50,3 +50,6 @@ OBJECTS_DIR = ../bin/.obj
 MOC_DIR = ../bin/.moc
 RCC_DIR = ../bin/.rcc
 UI_DIR = ../bin/.ui
+
+QMAKE_MAC_SDK = macosx10.12
+

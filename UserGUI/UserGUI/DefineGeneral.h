@@ -13,7 +13,7 @@
 #ifndef DEFINEGENERAL_H
 #define DEFINEGENERAL_H
 
-#define EXPERT_GUI_PATH "/home/mandreot/ELI-NP/collsoft/ExpertGUI/bin/ExpertGUI"
+#define EXPERT_GUI_PATH "/Users/mircoandreotti/Documents/ELI-NP/Collimatore/Software/collsoft/ExpertGUI/bin/ExpertGUI.app"
 
 //Ip of the CollSoft server.
 //#define COLLSOFT_IP "192.84.144.245"
