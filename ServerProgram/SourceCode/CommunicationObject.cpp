@@ -81,12 +81,15 @@ CommunicationObject::Main ()
   server.sin_addr.s_addr = inet_addr(SERVER_IP);
   server.sin_port = htons (SERVER_PORT);
 
-  int flag1 = 1;
-  int result1 = setsockopt(client_sock,   /* socket affected */
-                        IPPROTO_TCP,     /* set option at TCP level */
-                        TCP_NODELAY,     /* name of option */
-                        (char *) &flag1,  /* the cast is historical cruft */
-                        sizeof(int));    /* length of option value */
+  if (FLUSH_OUTPUTMODULETCP == 1)
+  {
+	  int flag1 = 1;
+	  int result1 = setsockopt(client_sock,   /* socket affected */
+							IPPROTO_TCP,     /* set option at TCP level */
+							TCP_NODELAY,     /* name of option */
+							(char *) &flag1,  /* the cast is historical cruft */
+							sizeof(int));    /* length of option value */
+  }
 
   /*Binding the socket*/
   bind (socket_desc, (struct sockaddr *) &server, sizeof (server));
@@ -106,12 +109,15 @@ CommunicationObject::Main ()
    client_sock = 
    accept (socket_desc, (struct sockaddr *) &client, (socklen_t *) & c);
 
-   int flag = 1;
-   int result = setsockopt(client_sock,  /* socket affected */
+	if (FLUSH_OUTPUTMODULETCP == 1)
+	{
+		int flag = 1;
+		int result = setsockopt(client_sock,  /* socket affected */
                         IPPROTO_TCP,     /* set option at TCP level */
                         TCP_NODELAY,     /* name of option */
                         (char *) &flag,  /* the cast is historical cruft */
                         sizeof(int));    /* length of option value */
+	}
 
       if (go == 0)
 	{

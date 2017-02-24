@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <QDialog>
 #include <unistd.h>
+#include <QSignalMapper>
 
 #include <vector>
 #include <sstream>
@@ -109,6 +110,217 @@ MainWindow::MainWindow(char* user, QWidget *parent) :
 
 
     connect(ui->CommandString, SIGNAL(returnPressed()),ui->CommandStringButton,SIGNAL(clicked()));
+
+    ////////////////////////////////////
+    //Connecting with signal mapper with getparameter button
+
+    QSignalMapper* GetParameterMapper = new QSignalMapper( this );
+
+
+    // Map button to an int
+    GetParameterMapper->setMapping( ui->GetParameterDriver_1, 1 );
+    GetParameterMapper->setMapping( ui->GetParameterDriver_2, 2 );
+    GetParameterMapper->setMapping( ui->GetParameterDriver_3, 3 );
+    GetParameterMapper->setMapping( ui->GetParameterDriver_4, 4 );
+    GetParameterMapper->setMapping( ui->GetParameterDriver_5, 5 );
+    GetParameterMapper->setMapping( ui->GetParameterDriver_6, 6 );
+    GetParameterMapper->setMapping( ui->GetParameterDriver_7, 7 );
+    GetParameterMapper->setMapping( ui->GetParameterDriver_8, 8 );
+    GetParameterMapper->setMapping( ui->GetParameterDriver_9, 9 );
+    GetParameterMapper->setMapping( ui->GetParameterDriver_10, 10 );
+    GetParameterMapper->setMapping( ui->GetParameterDriver_11, 11 );
+    GetParameterMapper->setMapping( ui->GetParameterDriver_12, 12 );
+    GetParameterMapper->setMapping( ui->GetParameterDriver_13, 13 );
+    GetParameterMapper->setMapping( ui->GetParameterDriver_14, 14 );
+
+    connect( ui->GetParameterDriver_1, SIGNAL( clicked() ), GetParameterMapper, SLOT( map() ) );
+    connect( ui->GetParameterDriver_2, SIGNAL( clicked() ), GetParameterMapper, SLOT( map() ) );
+    connect( ui->GetParameterDriver_3, SIGNAL( clicked() ), GetParameterMapper, SLOT( map() ) );
+    connect( ui->GetParameterDriver_4, SIGNAL( clicked() ), GetParameterMapper, SLOT( map() ) );
+    connect( ui->GetParameterDriver_5, SIGNAL( clicked() ), GetParameterMapper, SLOT( map() ) );
+    connect( ui->GetParameterDriver_6, SIGNAL( clicked() ), GetParameterMapper, SLOT( map() ) );
+    connect( ui->GetParameterDriver_7, SIGNAL( clicked() ), GetParameterMapper, SLOT( map() ) );
+    connect( ui->GetParameterDriver_8, SIGNAL( clicked() ), GetParameterMapper, SLOT( map() ) );
+    connect( ui->GetParameterDriver_9, SIGNAL( clicked() ), GetParameterMapper, SLOT( map() ) );
+    connect( ui->GetParameterDriver_10, SIGNAL( clicked() ), GetParameterMapper, SLOT( map() ) );
+    connect( ui->GetParameterDriver_11, SIGNAL( clicked() ), GetParameterMapper, SLOT( map() ) );
+    connect( ui->GetParameterDriver_12, SIGNAL( clicked() ), GetParameterMapper, SLOT( map() ) );
+    connect( ui->GetParameterDriver_13, SIGNAL( clicked() ), GetParameterMapper, SLOT( map() ) );
+    connect( ui->GetParameterDriver_14, SIGNAL( clicked() ), GetParameterMapper, SLOT( map() ) );
+
+    // Use signal mapper instead of button to trigger slot
+    connect( GetParameterMapper, SIGNAL( mapped( int )), this, SLOT( GetParameterDriver_clicked( int ) ) );
+
+    ////////////////////////////////////
+
+    ////////////////////////////////////
+    //Connecting with signal mapper with homing button
+
+    QSignalMapper* HomingMapper = new QSignalMapper( this );
+
+
+    // Map button to an int
+    HomingMapper->setMapping( ui->Homing_1, 1 );
+    HomingMapper->setMapping( ui->Homing_2, 2 );
+    HomingMapper->setMapping( ui->Homing_3, 3 );
+    HomingMapper->setMapping( ui->Homing_4, 4 );
+    HomingMapper->setMapping( ui->Homing_5, 5 );
+    HomingMapper->setMapping( ui->Homing_6, 6 );
+    HomingMapper->setMapping( ui->Homing_7, 7 );
+    HomingMapper->setMapping( ui->Homing_8, 8 );
+    HomingMapper->setMapping( ui->Homing_9, 9 );
+    HomingMapper->setMapping( ui->Homing_10, 10 );
+    HomingMapper->setMapping( ui->Homing_11, 11 );
+    HomingMapper->setMapping( ui->Homing_12, 12 );
+    HomingMapper->setMapping( ui->Homing_13, 13 );
+    HomingMapper->setMapping( ui->Homing_14, 14 );
+
+    connect( ui->Homing_1, SIGNAL( clicked() ), HomingMapper, SLOT( map() ) );
+    connect( ui->Homing_2, SIGNAL( clicked() ), HomingMapper, SLOT( map() ) );
+    connect( ui->Homing_3, SIGNAL( clicked() ), HomingMapper, SLOT( map() ) );
+    connect( ui->Homing_4, SIGNAL( clicked() ), HomingMapper, SLOT( map() ) );
+    connect( ui->Homing_5, SIGNAL( clicked() ), HomingMapper, SLOT( map() ) );
+    connect( ui->Homing_6, SIGNAL( clicked() ), HomingMapper, SLOT( map() ) );
+    connect( ui->Homing_7, SIGNAL( clicked() ), HomingMapper, SLOT( map() ) );
+    connect( ui->Homing_8, SIGNAL( clicked() ), HomingMapper, SLOT( map() ) );
+    connect( ui->Homing_9, SIGNAL( clicked() ), HomingMapper, SLOT( map() ) );
+    connect( ui->Homing_10, SIGNAL( clicked() ), HomingMapper, SLOT( map() ) );
+    connect( ui->Homing_11, SIGNAL( clicked() ), HomingMapper, SLOT( map() ) );
+    connect( ui->Homing_12, SIGNAL( clicked() ), HomingMapper, SLOT( map() ) );
+    connect( ui->Homing_13, SIGNAL( clicked() ), HomingMapper, SLOT( map() ) );
+    connect( ui->Homing_14, SIGNAL( clicked() ), HomingMapper, SLOT( map() ) );
+
+    // Use signal mapper instead of button to trigger slot
+    connect( HomingMapper, SIGNAL( mapped( int )), this, SLOT( Homing_clicked( int ) ) );
+
+    ////////////////////////////////////
+
+    ////////////////////////////////////
+    //Connecting with signal mapper with GetParameterMov button
+
+    QSignalMapper* GetParameterMovMapper = new QSignalMapper( this );
+
+
+    // Map button to an int
+    GetParameterMovMapper->setMapping( ui->GetParameterMov_1, 1 );
+    GetParameterMovMapper->setMapping( ui->GetParameterMov_2, 2 );
+    GetParameterMovMapper->setMapping( ui->GetParameterMov_3, 3 );
+    GetParameterMovMapper->setMapping( ui->GetParameterMov_4, 4 );
+    GetParameterMovMapper->setMapping( ui->GetParameterMov_5, 5 );
+    GetParameterMovMapper->setMapping( ui->GetParameterMov_6, 6 );
+    GetParameterMovMapper->setMapping( ui->GetParameterMov_7, 7 );
+    GetParameterMovMapper->setMapping( ui->GetParameterMov_8, 8 );
+    GetParameterMovMapper->setMapping( ui->GetParameterMov_9, 9 );
+    GetParameterMovMapper->setMapping( ui->GetParameterMov_10, 10 );
+    GetParameterMovMapper->setMapping( ui->GetParameterMov_11, 11 );
+    GetParameterMovMapper->setMapping( ui->GetParameterMov_12, 12 );
+    GetParameterMovMapper->setMapping( ui->GetParameterMov_13, 13 );
+    GetParameterMovMapper->setMapping( ui->GetParameterMov_14, 14 );
+
+    connect( ui->GetParameterMov_1, SIGNAL( clicked() ), GetParameterMovMapper, SLOT( map() ) );
+    connect( ui->GetParameterMov_2, SIGNAL( clicked() ), GetParameterMovMapper, SLOT( map() ) );
+    connect( ui->GetParameterMov_3, SIGNAL( clicked() ), GetParameterMovMapper, SLOT( map() ) );
+    connect( ui->GetParameterMov_4, SIGNAL( clicked() ), GetParameterMovMapper, SLOT( map() ) );
+    connect( ui->GetParameterMov_5, SIGNAL( clicked() ), GetParameterMovMapper, SLOT( map() ) );
+    connect( ui->GetParameterMov_6, SIGNAL( clicked() ), GetParameterMovMapper, SLOT( map() ) );
+    connect( ui->GetParameterMov_7, SIGNAL( clicked() ), GetParameterMovMapper, SLOT( map() ) );
+    connect( ui->GetParameterMov_8, SIGNAL( clicked() ), GetParameterMovMapper, SLOT( map() ) );
+    connect( ui->GetParameterMov_9, SIGNAL( clicked() ), GetParameterMovMapper, SLOT( map() ) );
+    connect( ui->GetParameterMov_10, SIGNAL( clicked() ), GetParameterMovMapper, SLOT( map() ) );
+    connect( ui->GetParameterMov_11, SIGNAL( clicked() ), GetParameterMovMapper, SLOT( map() ) );
+    connect( ui->GetParameterMov_12, SIGNAL( clicked() ), GetParameterMovMapper, SLOT( map() ) );
+    connect( ui->GetParameterMov_13, SIGNAL( clicked() ), GetParameterMovMapper, SLOT( map() ) );
+    connect( ui->GetParameterMov_14, SIGNAL( clicked() ), GetParameterMovMapper, SLOT( map() ) );
+
+    // Use signal mapper instead of button to trigger slot
+    connect( GetParameterMovMapper, SIGNAL( mapped( int )), this, SLOT( GetParameterMov_clicked( int ) ) );
+
+    ////////////////////////////////////
+
+    ////////////////////////////////////
+    //Connecting with signal mapper with CheckPosition button
+
+    QSignalMapper* CheckPositionMapper = new QSignalMapper( this );
+
+
+    // Map button to an int
+    CheckPositionMapper->setMapping( ui->CheckPositionButton_1, 1 );
+    CheckPositionMapper->setMapping( ui->CheckPositionButton_2, 2 );
+    CheckPositionMapper->setMapping( ui->CheckPositionButton_3, 3 );
+    CheckPositionMapper->setMapping( ui->CheckPositionButton_4, 4 );
+    CheckPositionMapper->setMapping( ui->CheckPositionButton_5, 5 );
+    CheckPositionMapper->setMapping( ui->CheckPositionButton_6, 6 );
+    CheckPositionMapper->setMapping( ui->CheckPositionButton_7, 7 );
+    CheckPositionMapper->setMapping( ui->CheckPositionButton_8, 8 );
+    CheckPositionMapper->setMapping( ui->CheckPositionButton_9, 9 );
+    CheckPositionMapper->setMapping( ui->CheckPositionButton_10, 10 );
+    CheckPositionMapper->setMapping( ui->CheckPositionButton_11, 11 );
+    CheckPositionMapper->setMapping( ui->CheckPositionButton_12, 12 );
+    CheckPositionMapper->setMapping( ui->CheckPositionButton_13, 13 );
+    CheckPositionMapper->setMapping( ui->CheckPositionButton_14, 14 );
+
+    connect( ui->CheckPositionButton_1, SIGNAL( clicked() ), CheckPositionMapper, SLOT( map() ) );
+    connect( ui->CheckPositionButton_2, SIGNAL( clicked() ), CheckPositionMapper, SLOT( map() ) );
+    connect( ui->CheckPositionButton_3, SIGNAL( clicked() ), CheckPositionMapper, SLOT( map() ) );
+    connect( ui->CheckPositionButton_4, SIGNAL( clicked() ), CheckPositionMapper, SLOT( map() ) );
+    connect( ui->CheckPositionButton_5, SIGNAL( clicked() ), CheckPositionMapper, SLOT( map() ) );
+    connect( ui->CheckPositionButton_6, SIGNAL( clicked() ), CheckPositionMapper, SLOT( map() ) );
+    connect( ui->CheckPositionButton_7, SIGNAL( clicked() ), CheckPositionMapper, SLOT( map() ) );
+    connect( ui->CheckPositionButton_8, SIGNAL( clicked() ), CheckPositionMapper, SLOT( map() ) );
+    connect( ui->CheckPositionButton_9, SIGNAL( clicked() ), CheckPositionMapper, SLOT( map() ) );
+    connect( ui->CheckPositionButton_10, SIGNAL( clicked() ), CheckPositionMapper, SLOT( map() ) );
+    connect( ui->CheckPositionButton_11, SIGNAL( clicked() ), CheckPositionMapper, SLOT( map() ) );
+    connect( ui->CheckPositionButton_12, SIGNAL( clicked() ), CheckPositionMapper, SLOT( map() ) );
+    connect( ui->CheckPositionButton_13, SIGNAL( clicked() ), CheckPositionMapper, SLOT( map() ) );
+    connect( ui->CheckPositionButton_14, SIGNAL( clicked() ), CheckPositionMapper, SLOT( map() ) );
+
+    // Use signal mapper instead of button to trigger slot
+    connect( CheckPositionMapper, SIGNAL( mapped( int )), this, SLOT( CheckPositionButton_clicked( int ) ) );
+
+    ////////////////////////////////////
+
+    ////////////////////////////////////
+    //Connecting with signal mapper with MoveTo button
+
+    QSignalMapper* MoveToMapper = new QSignalMapper( this );
+
+
+    // Map button to an int
+    MoveToMapper->setMapping( ui->MoveTo_1, 1 );
+    MoveToMapper->setMapping( ui->MoveTo_2, 2 );
+    MoveToMapper->setMapping( ui->MoveTo_3, 3 );
+    MoveToMapper->setMapping( ui->MoveTo_4, 4 );
+    MoveToMapper->setMapping( ui->MoveTo_5, 5 );
+    MoveToMapper->setMapping( ui->MoveTo_6, 6 );
+    MoveToMapper->setMapping( ui->MoveTo_7, 7 );
+    MoveToMapper->setMapping( ui->MoveTo_8, 8 );
+    MoveToMapper->setMapping( ui->MoveTo_9, 9 );
+    MoveToMapper->setMapping( ui->MoveTo_10, 10 );
+    MoveToMapper->setMapping( ui->MoveTo_11, 11 );
+    MoveToMapper->setMapping( ui->MoveTo_12, 12 );
+    MoveToMapper->setMapping( ui->MoveTo_13, 13 );
+    MoveToMapper->setMapping( ui->MoveTo_14, 14 );
+
+    connect( ui->MoveTo_1, SIGNAL( clicked() ), MoveToMapper, SLOT( map() ) );
+    connect( ui->MoveTo_2, SIGNAL( clicked() ), MoveToMapper, SLOT( map() ) );
+    connect( ui->MoveTo_3, SIGNAL( clicked() ), MoveToMapper, SLOT( map() ) );
+    connect( ui->MoveTo_4, SIGNAL( clicked() ), MoveToMapper, SLOT( map() ) );
+    connect( ui->MoveTo_5, SIGNAL( clicked() ), MoveToMapper, SLOT( map() ) );
+    connect( ui->MoveTo_6, SIGNAL( clicked() ), MoveToMapper, SLOT( map() ) );
+    connect( ui->MoveTo_7, SIGNAL( clicked() ), MoveToMapper, SLOT( map() ) );
+    connect( ui->MoveTo_8, SIGNAL( clicked() ), MoveToMapper, SLOT( map() ) );
+    connect( ui->MoveTo_9, SIGNAL( clicked() ), MoveToMapper, SLOT( map() ) );
+    connect( ui->MoveTo_10, SIGNAL( clicked() ), MoveToMapper, SLOT( map() ) );
+    connect( ui->MoveTo_11, SIGNAL( clicked() ), MoveToMapper, SLOT( map() ) );
+    connect( ui->MoveTo_12, SIGNAL( clicked() ), MoveToMapper, SLOT( map() ) );
+    connect( ui->MoveTo_13, SIGNAL( clicked() ), MoveToMapper, SLOT( map() ) );
+    connect( ui->MoveTo_14, SIGNAL( clicked() ), MoveToMapper, SLOT( map() ) );
+
+    // Use signal mapper instead of button to trigger slot
+    connect( MoveToMapper, SIGNAL( mapped( int )), this, SLOT( MoveTo_clicked( int ) ) );
+
+    ////////////////////////////////////
+
 
     //Setting status label to red.
     ui->label_status1->setStyleSheet("QLabel { color : red; }");
@@ -1120,147 +1332,19 @@ void MainWindow::on_CheckParAssoc_clicked()
     AppendMessageToQtextEdit(ui->GeneralConnectionLog, "check_par_assoc_sent\nwait a moment...\n");
 }
 
-
+////
 //Getting parameter signal
-void MainWindow::on_GetParameterDriver_1_clicked()
+void MainWindow::GetParameterDriver_clicked(int drv_num)
 {
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting the parameters of the driver 1...");
+    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting the parameters of the driver " + to_string(drv_num) + "...");
 
-    QString tmp = "get_par 1\n";
+    QString tmp = "get_par " + QString::number(drv_num) + '\n';
 
     QByteArray data(tmp.toUtf8()); // <-- fill with data
     _pSocket->write( data );
 }
 
-void MainWindow::on_GetParameterDriver_2_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting the parameters of the driver 2...");
-
-    QString tmp = "get_par 2\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterDriver_3_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting the parameters of the driver 3...");
-
-    QString tmp = "get_par 3\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterDriver_4_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting the parameters of the driver 4...");
-
-    QString tmp = "get_par 4\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterDriver_5_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting the parameters of the driver 5...");
-
-    QString tmp = "get_par 5\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterDriver_6_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting the parameters of the driver 6...");
-
-    QString tmp = "get_par 6\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterDriver_7_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting the parameters of the driver 7...");
-
-    QString tmp = "get_par 7\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterDriver_8_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting the parameters of the driver 8...");
-
-    QString tmp = "get_par 8\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterDriver_9_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting the parameters of the driver 9...");
-
-    QString tmp = "get_par 9\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterDriver_10_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting the parameters of the driver 10...");
-
-    QString tmp = "get_par 10\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterDriver_11_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting the parameters of the driver 11...");
-
-    QString tmp = "get_par 11\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterDriver_12_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting the parameters of the driver 12...");
-
-    QString tmp = "get_par 12\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterDriver_13_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting the parameters of the driver 13...");
-
-    QString tmp = "get_par 13\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterDriver_14_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting the parameters of the driver 14...");
-
-    QString tmp = "get_par 14\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
+/////
 
 void MainWindow::on_SetParameterDriver_1_clicked()
 {
@@ -1572,435 +1656,51 @@ void MainWindow::on_SetParameterDriver_14_clicked()
     }
 }
 
-void MainWindow::on_Homing_1_clicked()
+void MainWindow::Homing_clicked(int drv_num)
 {
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Homing driver 1...");
+    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Homing driver " + to_string(drv_num) + "...");
 
-    QString tmp = "homing 1\n";
+    QString tmp = "homing " + QString::number(drv_num) + '\n';
 
     QByteArray data(tmp.toUtf8()); // <-- fill with data
     _pSocket->write( data );
 }
 
-void MainWindow::on_Homing_2_clicked()
+void MainWindow::GetParameterMov_clicked(int drv_num)
 {
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Homing driver 2...");
+    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting movimentation parameters of driver " + to_string(drv_num) + "...");
 
-    QString tmp = "homing 2\n";
-
+    QString tmp = "get_mov_par " + QString::number(drv_num) + '\n';
     QByteArray data(tmp.toUtf8()); // <-- fill with data
     _pSocket->write( data );
 }
 
-void MainWindow::on_Homing_3_clicked()
+void MainWindow::MoveTo_clicked(int drv_num)
 {
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Homing driver 3...");
 
-    QString tmp = "homing 3\n";
 
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
 
-void MainWindow::on_Homing_4_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Homing driver 4...");
+    QString tmpTextMove("LineEditMoveToValue_");
+    QString tmpDrvNum = QString::number(drv_num);
+    tmpTextMove.append(tmpDrvNum);
+    QLineEdit* MoveToValue = findChild<QLineEdit*>(tmpTextMove);
 
-    QString tmp = "homing 4\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_Homing_5_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Homing driver 5...");
-
-    QString tmp = "homing 5\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_Homing_6_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Homing driver 6...");
-
-    QString tmp = "homing 6\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_Homing_7_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Homing driver 7...");
-
-    QString tmp = "homing 7\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_Homing_8_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Homing driver 8...");
-
-    QString tmp = "homing 8\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_Homing_9_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Homing driver 9...");
-
-    QString tmp = "homing 9\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_Homing_10_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Homing driver 10...");
-
-    QString tmp = "homing 10\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_Homing_11_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Homing driver 11...");
-
-    QString tmp = "homing 11\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_Homing_12_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Homing driver 12...");
-
-    QString tmp = "homing 12\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_Homing_13_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Homing driver 13...");
-
-    QString tmp = "homing 13\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_Homing_14_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Homing driver 14...");
-
-    QString tmp = "homing 14\n";
-
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterMov_1_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting movimentation parameters of driver 1...");
-
-    QString tmp = "get_mov_par 1\n";
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterMov_2_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting movimentation parameters of driver 2...");
-
-    QString tmp = "get_mov_par 2\n";
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterMov_3_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting movimentation parameters of driver 3...");
-
-    QString tmp = "get_mov_par 3\n";
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterMov_4_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting movimentation parameters of driver 4...");
-
-    QString tmp = "get_mov_par 4\n";
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterMov_5_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting movimentation parameters of driver 5...");
-
-    QString tmp = "get_mov_par 5\n";
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterMov_6_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting movimentation parameters of driver 6...");
-
-    QString tmp = "get_mov_par 6\n";
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterMov_7_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting movimentation parameters of driver 7...");
-
-    QString tmp = "get_mov_par 7\n";
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterMov_8_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting movimentation parameters of driver 8...");
-
-    QString tmp = "get_mov_par 8\n";
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterMov_9_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting movimentation parameters of driver 9...");
-
-    QString tmp = "get_mov_par 9\n";
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterMov_10_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting movimentation parameters of driver 10...");
-
-    QString tmp = "get_mov_par 10\n";
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterMov_11_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting movimentation parameters of driver 11...");
-
-    QString tmp = "get_mov_par 11\n";
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterMov_12_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting movimentation parameters of driver 12...");
-
-    QString tmp = "get_mov_par 12\n";
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterMov_13_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting movimentation parameters of driver 13...");
-
-    QString tmp = "get_mov_par 13\n";
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_GetParameterMov_14_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Getting movimentation parameters of driver 14...");
-
-    QString tmp = "get_mov_par 14\n";
-    QByteArray data(tmp.toUtf8()); // <-- fill with data
-    _pSocket->write( data );
-}
-
-void MainWindow::on_MoveTo_1_clicked()
-{
-    QString LocalTmpLog("Moving driver 1 to " + ui->LineEditMoveToValue_1->text());
+    QString LocalTmpLog("Moving driver " + tmpDrvNum + " to " + MoveToValue->text());
 
     main_window_log_file->LogFileExpertGUI_WriteOnLogFile(LocalTmpLog.toUtf8().constData());
 
-    QString tmp = "move_to 1 " + ui->LineEditMoveToValue_1->text() + "\n";
+
+    QString tmp = "move_to " + tmpDrvNum + " " + MoveToValue->text() + '\n';
 
     QByteArray data(tmp.toUtf8());
     _pSocket->write( data );
 }
 
-void MainWindow::on_MoveTo_2_clicked()
+void MainWindow::CheckPositionButton_clicked(int drv_num)
 {
-    QString LocalTmpLog("Moving driver 2 to " + ui->LineEditMoveToValue_2->text());
+    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Checking position of driver " + to_string(drv_num) + "...");
 
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile(LocalTmpLog.toUtf8().constData());
-
-    QString tmp = "move_to 2 " + ui->LineEditMoveToValue_2->text() + "\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_MoveTo_3_clicked()
-{
-    QString LocalTmpLog("Moving driver 3 to " + ui->LineEditMoveToValue_3->text());
-
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile(LocalTmpLog.toUtf8().constData());
-
-    QString tmp = "move_to 3 " + ui->LineEditMoveToValue_3->text() + "\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_MoveTo_4_clicked()
-{
-    QString LocalTmpLog("Moving driver 4 to " + ui->LineEditMoveToValue_4->text());
-
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile(LocalTmpLog.toUtf8().constData());
-
-    QString tmp = "move_to 4 " + ui->LineEditMoveToValue_4->text() + "\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_MoveTo_5_clicked()
-{
-    QString LocalTmpLog("Moving driver 5 to " + ui->LineEditMoveToValue_5->text());
-
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile(LocalTmpLog.toUtf8().constData());
-
-    QString tmp = "move_to 5 " + ui->LineEditMoveToValue_5->text() + "\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_MoveTo_6_clicked()
-{
-    QString LocalTmpLog("Moving driver 6 to " + ui->LineEditMoveToValue_6->text());
-
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile(LocalTmpLog.toUtf8().constData());
-
-    QString tmp = "move_to 6 " + ui->LineEditMoveToValue_6->text() + "\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_MoveTo_7_clicked()
-{
-    QString LocalTmpLog("Moving driver 7 to " + ui->LineEditMoveToValue_7->text());
-
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile(LocalTmpLog.toUtf8().constData());
-
-    QString tmp = "move_to 7 " + ui->LineEditMoveToValue_7->text() + "\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_MoveTo_8_clicked()
-{
-    QString LocalTmpLog("Moving driver 8 to " + ui->LineEditMoveToValue_8->text());
-
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile(LocalTmpLog.toUtf8().constData());
-
-    QString tmp = "move_to 8 " + ui->LineEditMoveToValue_8->text() + "\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_MoveTo_9_clicked()
-{
-    QString LocalTmpLog("Moving driver 9 to " + ui->LineEditMoveToValue_9->text());
-
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile(LocalTmpLog.toUtf8().constData());
-
-    QString tmp = "move_to 9 " + ui->LineEditMoveToValue_9->text() + "\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_MoveTo_10_clicked()
-{
-    QString LocalTmpLog("Moving driver 10 to " + ui->LineEditMoveToValue_10->text());
-
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile(LocalTmpLog.toUtf8().constData());
-
-    QString tmp = "move_to 10 " + ui->LineEditMoveToValue_10->text() + "\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_MoveTo_11_clicked()
-{
-    QString LocalTmpLog("Moving driver 11 to " + ui->LineEditMoveToValue_11->text());
-
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile(LocalTmpLog.toUtf8().constData());
-
-    QString tmp = "move_to 11 " + ui->LineEditMoveToValue_11->text() + "\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_MoveTo_12_clicked()
-{
-    QString LocalTmpLog("Moving driver 12 to " + ui->LineEditMoveToValue_12->text());
-
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile(LocalTmpLog.toUtf8().constData());
-
-    QString tmp = "move_to 12 " + ui->LineEditMoveToValue_12->text() + "\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_MoveTo_13_clicked()
-{
-    QString LocalTmpLog("Moving driver 13 to " + ui->LineEditMoveToValue_13->text());
-
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile(LocalTmpLog.toUtf8().constData());
-
-    QString tmp = "move_to 13 " + ui->LineEditMoveToValue_13->text() + "\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_MoveTo_14_clicked()
-{
-    QString LocalTmpLog("Moving driver 14 to " + ui->LineEditMoveToValue_14->text());
-
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile(LocalTmpLog.toUtf8().constData());
-
-    QString tmp = "move_to 14 " + ui->LineEditMoveToValue_14->text() + "\n";
+    QString tmp = "check_position " + QString::number(drv_num) + '\n';
 
     QByteArray data(tmp.toUtf8());
     _pSocket->write( data );
@@ -2311,146 +2011,6 @@ void MainWindow::on_ReadActualEncoderValue_clicked()
     _pSocket->write( data );
 
     AppendMessageToQtextEdit(ui->GeneralConnectionLog, "Reading actual encoder values command sent....\n");
-}
-
-void MainWindow::on_CheckPositionButton_1_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Checking position of driver 1...");
-
-    QString tmp = "check_position 1\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_CheckPositionButton_2_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Checking position of driver 2...");
-
-    QString tmp = "check_position 2\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_CheckPositionButton_3_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Checking position of driver 3...");
-
-    QString tmp = "check_position 3\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_CheckPositionButton_4_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Checking position of driver 4...");
-
-    QString tmp = "check_position 4\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_CheckPositionButton_5_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Checking position of driver 5...");
-
-    QString tmp = "check_position 5\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_CheckPositionButton_6_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Checking position of driver 6...");
-
-    QString tmp = "check_position 6\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_CheckPositionButton_7_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Checking position of driver 7...");
-
-    QString tmp = "check_position 7\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_CheckPositionButton_8_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Checking position of driver 8...");
-
-    QString tmp = "check_position 8\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_CheckPositionButton_9_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Checking position of driver 9...");
-
-    QString tmp = "check_position 9\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_CheckPositionButton_10_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Checking position of driver 10...");
-
-    QString tmp = "check_position 10\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_CheckPositionButton_11_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Checking position of driver 11...");
-
-    QString tmp = "check_position 11\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_CheckPositionButton_12_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Checking position of driver 12...");
-
-    QString tmp = "check_position 12\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_CheckPositionButton_13_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Checking position of driver 13...");
-
-    QString tmp = "check_position 13\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
-}
-
-void MainWindow::on_CheckPositionButton_14_clicked()
-{
-    main_window_log_file->LogFileExpertGUI_WriteOnLogFile("Checking position of driver 14...");
-
-    QString tmp = "check_position 14\n";
-
-    QByteArray data(tmp.toUtf8());
-    _pSocket->write( data );
 }
 
 void MainWindow::on_DeviceListButton_clicked()

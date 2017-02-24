@@ -71,45 +71,9 @@ private slots:
 
     void on_CheckParAssoc_clicked();
 
-    void on_GetParameterDriver_1_clicked();
-
-    void on_GetParameterDriver_2_clicked();
-
     void on_SetParameterDriver_1_clicked();
 
     void on_SetParameterDriver_2_clicked();
-
-    void on_Homing_1_clicked();
-
-    void on_Homing_2_clicked();
-
-    void on_GetParameterMov_1_clicked();
-
-    void on_GetParameterMov_2_clicked();
-
-    void on_MoveTo_1_clicked();
-
-    void on_MoveTo_2_clicked();
-
-    void on_GetParameterDriver_3_clicked();
-
-    void on_GetParameterDriver_4_clicked();
-
-    void on_GetParameterDriver_5_clicked();
-
-    void on_GetParameterDriver_6_clicked();
-
-    void on_GetParameterDriver_7_clicked();
-
-    void on_GetParameterDriver_8_clicked();
-
-    void on_GetParameterDriver_9_clicked();
-
-    void on_GetParameterDriver_10_clicked();
-
-    void on_GetParameterDriver_11_clicked();
-
-    void on_GetParameterDriver_12_clicked();
 
     void on_SetParameterDriver_3_clicked();
 
@@ -131,65 +95,19 @@ private slots:
 
     void on_SetParameterDriver_12_clicked();
 
-    void on_Homing_12_clicked();
+    void on_SetParameterDriver_13_clicked();
 
-    void on_Homing_3_clicked();
+    void on_SetParameterDriver_14_clicked();
 
-    void on_Homing_4_clicked();
+    void GetParameterDriver_clicked(int drv_num);
 
-    void on_Homing_5_clicked();
+    void Homing_clicked(int drv_num);
 
-    void on_Homing_6_clicked();
+    void GetParameterMov_clicked(int drv_num);
 
-    void on_Homing_7_clicked();
+    void MoveTo_clicked(int drv_num);
 
-    void on_Homing_8_clicked();
-
-    void on_Homing_9_clicked();
-
-    void on_Homing_10_clicked();
-
-    void on_Homing_11_clicked();
-
-    void on_GetParameterMov_3_clicked();
-
-    void on_GetParameterMov_4_clicked();
-
-    void on_GetParameterMov_5_clicked();
-
-    void on_GetParameterMov_6_clicked();
-
-    void on_GetParameterMov_7_clicked();
-
-    void on_GetParameterMov_8_clicked();
-
-    void on_GetParameterMov_9_clicked();
-
-    void on_GetParameterMov_10_clicked();
-
-    void on_GetParameterMov_11_clicked();
-
-    void on_GetParameterMov_12_clicked();
-
-    void on_MoveTo_3_clicked();
-
-    void on_MoveTo_4_clicked();
-
-    void on_MoveTo_5_clicked();
-
-    void on_MoveTo_6_clicked();
-
-    void on_MoveTo_7_clicked();
-
-    void on_MoveTo_8_clicked();
-
-    void on_MoveTo_9_clicked();
-
-    void on_MoveTo_10_clicked();
-
-    void on_MoveTo_11_clicked();
-
-    void on_MoveTo_12_clicked();
+    void CheckPositionButton_clicked(int drv_num);
 
     void on_GetAllParameter_clicked();
 
@@ -205,26 +123,6 @@ private slots:
 
     void on_ReadEncoderLog_clicked();
 
-    void on_GetParameterDriver_13_clicked();
-
-    void on_GetParameterDriver_14_clicked();
-
-    void on_SetParameterDriver_13_clicked();
-
-    void on_SetParameterDriver_14_clicked();
-
-    void on_GetParameterMov_13_clicked();
-
-    void on_GetParameterMov_14_clicked();
-
-    void on_MoveTo_13_clicked();
-
-    void on_MoveTo_14_clicked();
-
-    void on_Homing_13_clicked();
-
-    void on_Homing_14_clicked();
-
     void on_ReadGeneralLog_clicked();
 
     void on_CheckInternalStatus_clicked();
@@ -237,33 +135,7 @@ private slots:
 
     void on_ReadActualEncoderValue_clicked();
 
-    void on_CheckPositionButton_1_clicked();
 
-    void on_CheckPositionButton_2_clicked();
-
-    void on_CheckPositionButton_3_clicked();
-
-    void on_CheckPositionButton_4_clicked();
-
-    void on_CheckPositionButton_5_clicked();
-
-    void on_CheckPositionButton_6_clicked();
-
-    void on_CheckPositionButton_7_clicked();
-
-    void on_CheckPositionButton_8_clicked();
-
-    void on_CheckPositionButton_9_clicked();
-
-    void on_CheckPositionButton_10_clicked();
-
-    void on_CheckPositionButton_11_clicked();
-
-    void on_CheckPositionButton_12_clicked();
-
-    void on_CheckPositionButton_13_clicked();
-
-    void on_CheckPositionButton_14_clicked();
 
     void on_DeviceListButton_clicked();
 

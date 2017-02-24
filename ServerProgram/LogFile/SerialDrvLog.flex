@@ -59,7 +59,7 @@ int Analizza1LastLog = -1;
 	unsigned int uli;
 	int num_drv = atoi(yytext);
 	tmp1.drv_num = num_drv;
-	char* mypunt = FindPointer(yytext);
+	char* mypunt = SkipWord(yytext);
 	uli = strtoul(mypunt,NULL,10);
 	tmp1.serial_number=uli;
 	serial.push_back(tmp1);

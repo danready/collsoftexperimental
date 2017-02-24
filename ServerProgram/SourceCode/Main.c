@@ -636,6 +636,20 @@ int main(int argc, char *argv[])
 						Homing(ctx, encoder_drv);
 					}
 					Encode(ctx, encoder_drv, drv_enc_parameter);
+					
+					if (encoder_drv <= MAXIMUM_DRIVER)
+					{
+						
+						//Warning! Global variable modified in order to allow check_position and check_driver
+						//status operations.
+						loading_encoder_from_file_okay = 1;
+						
+						EncoderArrayValue[encoder_drv - 1].drv_num = drv_enc_parameter.drv_num;
+						EncoderArrayValue[encoder_drv - 1].slope = drv_enc_parameter.slope;
+						EncoderArrayValue[encoder_drv - 1].intercept = drv_enc_parameter.intercept;
+						EncoderArrayValue[encoder_drv - 1].coefficient = drv_enc_parameter.coefficient;
+						
+					}
 				}
 				else
 				{
@@ -686,6 +700,7 @@ int main(int argc, char *argv[])
 				{
 					for ( get_par_drv = 1; get_par_drv <= MAXIMUM_DRIVER ; get_par_drv++)
 					{
+						CheckDriverStatus(ctx, get_par_drv);
 						GetMovePar(ctx, get_par_drv);
 						GetPar(ctx, get_par_drv);
 						CheckPositionEncoderSingle(ctx, get_par_drv);
@@ -695,13 +710,38 @@ int main(int argc, char *argv[])
 				{
 					for ( get_par_drv = 1; get_par_drv <= MAXIMUM_DRIVER ; get_par_drv++)
 					{	
+						output_module->Output("check_driver_status: " + to_string(get_par_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
 						SendFailedGetPar(get_par_drv);
 						SendFailedGetMovPar(get_par_drv);
 						SendFailedGetStatusPos(get_par_drv);
 					}	
 				}
 				
-			}				
+			}
+			
+			//get_all_driver_status
+			//This command is equivalent to execute get_move_par drvnum, get_par drvnum and check_position for the all drivers.
+			else if(reg_matches (buffer, "^[Gg][Ee][Tt]_[Aa][Ll][Ll]_[Dd][Rr][Ii][Vv][Ee][Rr]_[Ss][Tt][Aa][Tt][Uu][Ss][ \t]*$") ||
+					reg_matches (command_received_by_user.command_sent_by_user, "^[Gg][Ee][Tt]_[Aa][Ll][Ll]_[Dd][Rr][Ii][Vv][Ee][Rr]_[Ss][Tt][Aa][Tt][Uu][Ss][ \t]*$"))
+			{
+				int get_par_drv = 0;
+					
+				if (STATE_CONNECT == 1)
+				{
+					for ( get_par_drv = 1; get_par_drv <= MAXIMUM_DRIVER ; get_par_drv++)
+					{
+						CheckDriverStatus(ctx, get_par_drv);
+					}
+				}
+				else
+				{
+					for ( get_par_drv = 1; get_par_drv <= MAXIMUM_DRIVER ; get_par_drv++)
+					{	
+						output_module->Output("check_driver_status: " + to_string(get_par_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
+					}	
+				}
+				
+			}						
 			
 			//Homing_mult drvnum1 drvnum2 drvnum3 drvnum....
 			//This command execute the homing procedure for the driver indicated by drvnum1, drvnum2, drvnum3, drvnum....
@@ -1784,7 +1824,8 @@ int main(int argc, char *argv[])
 				{
 					//int return_value = CheckPositionEncoder(ctx, i);
 					//output_module->OutputAll("get_pos_status " + to_string(i) + " " + to_string(return_value) );
-					CheckPositionEncoderToAll(ctx, i);
+					//CheckPositionEncoderToAll(ctx, i);
+					CheckDriverStatusToAll(ctx, i);
 				}
 			}
 		}

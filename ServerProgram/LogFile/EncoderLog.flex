@@ -62,11 +62,11 @@ int AnalizzaEncoderLastLog = -1;
 	tmp1.coefficient = -1;
 	int num_drv = atoi(yytext);
 	tmp1.drv_num = num_drv;
-	char* mypunt = FindPointer(yytext);
+	char* mypunt = SkipWord(yytext);
 	tmp1.slope = std::stod(mypunt);
-	mypunt = FindPointer(mypunt);
+	mypunt = SkipWord(mypunt);
 	tmp1.intercept = std::stod(mypunt);
-	mypunt = FindPointer(mypunt);
+	mypunt = SkipWord(mypunt);
 	tmp1.coefficient = std::stod(mypunt);
 	encoder_vector.push_back(tmp1);
 }

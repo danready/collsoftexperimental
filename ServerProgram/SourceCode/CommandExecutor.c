@@ -140,8 +140,8 @@ void HelpCommand()
 	output_module->Output("-connect absoluteprogrammerpath:\nopen a new connection with the programmer. Connect command must be execute before all others.\n\n");				
 	output_module->Output("-move_to drvnum val:\nset to val countTargetPos of the driver specified with drvnum. Each unity of val correspond to 1/128 of step\n\n");
 	output_module->Output("-moveto_mult val drvnum1 drvnum2 drvnum3 drvnumx ...:\nset to val countTargetPos of the drivers specified with drvnum. Each unity of val correspond to 1/128 of step\n\n");
-	output_module->Output("-set_par drvnum max_vel acceleration deceleration PhaseCurrent AnalogOutput0:\nset max_vel (Each unity of maxvel correspond to 0.25rpm), acceleration and deceleration (Each unity of acceleration and deceleration correspond to 1rpm/s), phasecurrent and AnalogOutput0 of the driver specified with drvnum\n\n");
-	output_module->Output("-setmult_par max_vel acceleration deceleration PhaseCurrent AnalogOutput0 drvnum1 drvnum2 drvnum3 drvnumx ...:\nset max_vel (Each unity of maxvel correspond to 0.25rpm), acceleration and deceleration (Each unity of acceleration and deceleration correspond to 1rpm/s), phasecurrent and AnalogOutput0 of the drivers specified with drvnum\n\n");
+	output_module->Output("-set_par drvnum max_vel velhome acceleration deceleration PhaseCurrent AnalogOutput0:\nset max_vel (Each unity of maxvel correspond to 0.25rpm), velhome, acceleration and deceleration (Each unity of acceleration and deceleration correspond to 1rpm/s), phasecurrent and AnalogOutput0 of the driver specified with drvnum\n\n");
+	output_module->Output("-setmult_par max_vel velhome acceleration deceleration PhaseCurrent AnalogOutput0 drvnum1 drvnum2 drvnum3 drvnumx ...:\nset max_vel (Each unity of maxvel correspond to 0.25rpm), velhome, acceleration and deceleration (Each unity of acceleration and deceleration correspond to 1rpm/s), phasecurrent and AnalogOutput0 of the drivers specified with drvnum\n\n");
 	output_module->Output("-read_serial_log:\nread the content of SerialDrvLog.txt file which contains the associations between drvnum and SerialNumber\n\n");
 	output_module->Output("-read_par_log:\nread the content of FileParLog.txt file which contains the associations between drvnum and max_vel, acceleration, deceleration, PhaseCurrent, AnalogOutput0\n\n");
 	output_module->Output("-read_encoder_log:\nread the content of EncoderLog.txt file which contains the data of the encoder linear regression\n\n");
@@ -183,6 +183,7 @@ void HelpCommand()
 	output_module->Output("-set_max_target_position drvnum max_target_position:\nthis command set to max_target_position the variable Max_TargetPos of the driver indicated by drvnum\n\n");
 	output_module->Output("-get_max_target_position drvnum:\nthis command get the variable Max_TargetPos of the driver indicated by drvnum\n\n");
 	output_module->Output("-check_driver_status drvnum:\nthis command sends to the client the status of the driver reading the status_state variable\n\n");
+	output_module->Output("-get_all_driver_status:\nthis command retrieves the status of the all drivers\n\n");
 	output_module->Output("-help:\nPrint this command list\n\n");
 	output_module->Output("-exit:\nExit from the program: this command is enabled only in stdin mode.\n\n");
 	
@@ -3437,12 +3438,12 @@ void CheckDriverStatus(modbus_t* ctx, int check_driver_status_drv)
 		if (position_status == 0)
 		{
 			output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(POSITION_MATCH) + '\n');
-			output_module->Output("Exp: driver " + to_string(check_driver_status_drv) + " has failed to load data from eeprom failed\n");
+			output_module->Output("Exp: driver " + to_string(check_driver_status_drv) + " position match\n");
 		}
 		else if (position_status == -1)
 		{
 			output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(POSITION_MISMATCH) + '\n');
-			output_module->Output("Exp: driver " + to_string(check_driver_status_drv) + " has failed to load data from eeprom failed\n");
+			output_module->Output("Exp: driver " + to_string(check_driver_status_drv) + " position mismatch\n");
 		}
 		else
 		{
@@ -3455,5 +3456,115 @@ void CheckDriverStatus(modbus_t* ctx, int check_driver_status_drv)
 	{
 		output_module->Output("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
 		output_module->Output("Exp: check driver status has returned an unknown state");
+	}
+}
+
+
+//This function sends to the client the status of the driver reading the status_state variable.
+//This values are defined in DefineGeneral.h and they reflect the firmware conventions
+//#define READY_TO_START	0
+//#define OPERATION_BEGIN	1
+//#define OPERATION_ONGOING	2
+//#define OPERATION_ENDING	3
+//#define OPERATION_FAILED	4
+//#define OPERATION_SUCCESS	5
+//#define EEPROM_LOADING_FAILED	6
+//N.B. In case of OPERATION_SUCCESS and READY_TO_START is performed a position check with the function CheckEncoderPositionSingle.
+//After that, this codes are sent to the client:
+//#define POSITION_MATCH 100
+//#define POSITION_MISMATCH 101
+//If the status_state of the driver is different from the values above, it is sent as it is.
+//This function differs from the previous one because the output is sent to all the clients connected to the server
+void CheckDriverStatusToAll(modbus_t* ctx, int check_driver_status_drv)
+{
+	
+	//This function flushes the pending datagrams to the drivers.	
+	modbus_flush(ctx);
+	
+	//This variable records the presence of an error in the communication
+	//with the driver.	
+	int error_status = 0;
+	
+	int status_state = 0;
+	
+	//Singleton to manage the output of the program.	
+	OutputModule* output_module;
+	output_module = OutputModule::Instance();	
+	
+	//Try to set the driver indicated by the moveto_drv_num as the active one.
+	error_status = modbus_set_slave(ctx, check_driver_status_drv);
+	if (error_status == -1) 
+	{	
+		output_module->OutputAll("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
+		output_module->OutputAll("Exp: error, check driver status failed: set slave failed\n");
+		return;
+	}
+	
+	error_status = 0;
+	status_state = ReadStatusState(ctx, &error_status, "Exp: ");
+	
+	//If no error occurred.
+	if (error_status == -1)
+	{
+		output_module->OutputAll("Exp: error, check_driver_status failed because an error occurred reading the register\n");
+		output_module->OutputAll("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
+		return;		
+	}
+	
+	
+	if (status_state == OPERATION_BEGIN)
+	{
+		output_module->OutputAll("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
+		output_module->OutputAll("Exp: driver " + to_string(check_driver_status_drv) + " is beginning a new operation\n");
+	}
+	else if (status_state == OPERATION_ONGOING)
+	{
+		output_module->OutputAll("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
+		output_module->OutputAll("Exp: driver " + to_string(check_driver_status_drv) +" is executing a procedure\n");
+	}
+	else if (status_state == OPERATION_ENDING)
+	{
+		output_module->OutputAll("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
+		output_module->OutputAll("Exp: driver " + to_string(check_driver_status_drv) +" is ending a procedure\n");
+	}
+	else if (status_state == OPERATION_FAILED)
+	{
+		output_module->OutputAll("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
+		output_module->OutputAll("Exp: driver " + to_string(check_driver_status_drv) + " has failed to accomplish an operation\n");
+	}
+	else if (status_state == EEPROM_LOADING_FAILED)
+	{
+		output_module->OutputAll("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
+		output_module->OutputAll("Exp: driver " + to_string(check_driver_status_drv) + " has failed to load data from eeprom failed\n");
+	}
+	else if (status_state == READY_TO_START || status_state == OPERATION_SUCCESS)
+	{
+		int position_status = 0;
+
+		if (loading_encoder_from_file_okay == 0)
+			output_module->OutputAll("Check position warning! You have to press the button Load Encoder From File in General tab or you have to digit load_encoder_from_file command in order to accomplished the check position procedure in a consistent way!\n");
+		
+		position_status = CheckPositionEncoderToAll (ctx, check_driver_status_drv);
+		if (position_status == 0)
+		{
+			output_module->OutputAll("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(POSITION_MATCH) + '\n');
+			output_module->OutputAll("Exp: driver " + to_string(check_driver_status_drv) + " position match\n");
+		}
+		else if (position_status == -1)
+		{
+			output_module->OutputAll("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(POSITION_MISMATCH) + '\n');
+			output_module->OutputAll("Exp: driver " + to_string(check_driver_status_drv) + " position mismatch\n");
+		}
+		else
+		{
+			output_module->OutputAll("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(NEGATIVE_RESPONSE_TO_CLIENT) + '\n');
+			output_module->OutputAll("Exp: checking position of driver " + to_string(check_driver_status_drv) + "failed\n");
+		}
+		
+	}
+	else
+	{
+		output_module->OutputAll("check_driver_status: " + to_string(check_driver_status_drv) + " " + to_string(status_state) + '\n');
+		output_module->OutputAll("Exp: check driver status has returned an unknown state");
 	}
 }
